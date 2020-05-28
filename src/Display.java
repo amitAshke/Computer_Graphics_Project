@@ -27,6 +27,11 @@ public class Display implements GLEventListener {
     static Frame frame = new Frame();
     static Animator animator = new Animator(canvas);
 
+    private int framesRendered = 0, tickCount = 0;
+    private double unprocessedSeconds = 0, secondsPerTick = 1 / 60.0;
+    private long previousTime = System.nanoTime();
+    private boolean ticked = false;
+
 
     public static void main(String[] args) {
         canvas.addGLEventListener(new Display());
@@ -71,7 +76,29 @@ public class Display implements GLEventListener {
     public void dispose(GLAutoDrawable glAutoDrawable) {}
 
     public void display(GLAutoDrawable glAutoDrawable) {
-        System.out.println("display");
+        long currentTime = System.nanoTime();
+        long passedTime = currentTime - previousTime;
+        previousTime = currentTime;
+        unprocessedSeconds += passedTime / 1000000000.0;
+
+        while (unprocessedSeconds > secondsPerTick) {
+            //tick();
+            unprocessedSeconds -= secondsPerTick;
+            ticked = true;
+            ++tickCount;
+            if (tickCount % 60 == 0) {
+                System.out.println(framesRendered + " FPS");
+                previousTime += 1000;
+                framesRendered = 0;
+            }
+        }
+
+        if (ticked) {
+            //render();
+            ++framesRendered;
+        }
+        //render();
+        ++framesRendered;
     }
 
     public void reshape(GLAutoDrawable glAutoDrawable, int i, int i1, int i2, int i3) {}
