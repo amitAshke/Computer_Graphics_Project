@@ -16,7 +16,7 @@ import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 
-public class Display extends GLCanvas {
+public class Display implements GLEventListener {
 
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
@@ -29,8 +29,7 @@ public class Display extends GLCanvas {
 
 
     public static void main(String[] args) {
-        Display game = new Display();
-        frame.add(game);
+        frame.add(canvas);
         frame.pack();
         frame.setTitle(TITLE);
         frame.setSize(WIDTH, HEIGHT);
@@ -43,4 +42,28 @@ public class Display extends GLCanvas {
             }
         });
     }
+
+    @Override
+    public void init(GLAutoDrawable glAutoDrawable) {
+        GL2 gl = glAutoDrawable.getGL().getGL2();
+        gl.glShadeModel(GL2.GL_SMOOTH); // Enable Smooth Shading
+        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f); // Black Background
+        gl.glClearDepth(1.0f); // Depth Buffer Setup
+        gl.glEnable(GL2.GL_DEPTH_TEST); // Enables Depth Testing
+        gl.glDepthFunc(GL2.GL_LEQUAL); // The Type Of Depth Testing To Do
+
+        // Really Nice Perspective Calculations
+        gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
+    }
+
+    @Override
+    public void dispose(GLAutoDrawable glAutoDrawable) {}
+
+    @Override
+    public void display(GLAutoDrawable glAutoDrawable) {
+
+    }
+
+    @Override
+    public void reshape(GLAutoDrawable glAutoDrawable, int i, int i1, int i2, int i3) {}
 }
