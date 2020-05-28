@@ -29,6 +29,7 @@ public class Display implements GLEventListener {
 
 
     public static void main(String[] args) {
+        canvas.addGLEventListener(new Display());
         frame.add(canvas);
         frame.pack();
         frame.setTitle(TITLE);
@@ -36,14 +37,25 @@ public class Display implements GLEventListener {
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setVisible(true);
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                new Thread(new Runnable() {
+                    public void run() {
+                        animator.stop();
+                        System.exit(0);
+                    }
+                }).start();
+            }
+        });
         frame.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
             }
         });
+        animator.start();
+        canvas.requestFocus();
     }
 
-    @Override
     public void init(GLAutoDrawable glAutoDrawable) {
         GL2 gl = glAutoDrawable.getGL().getGL2();
         gl.glShadeModel(GL2.GL_SMOOTH); // Enable Smooth Shading
@@ -56,14 +68,11 @@ public class Display implements GLEventListener {
         gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
     }
 
-    @Override
     public void dispose(GLAutoDrawable glAutoDrawable) {}
 
-    @Override
     public void display(GLAutoDrawable glAutoDrawable) {
-
+        System.out.println("display");
     }
 
-    @Override
     public void reshape(GLAutoDrawable glAutoDrawable, int i, int i1, int i2, int i3) {}
 }
