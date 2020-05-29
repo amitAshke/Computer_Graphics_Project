@@ -7,6 +7,7 @@ import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
 import java.awt.Frame;
@@ -26,6 +27,7 @@ public class Display implements GLEventListener {
     static GLCanvas canvas = new GLCanvas();
     static Frame frame = new Frame();
     static Animator animator = new Animator(canvas);
+    static Render3D render3D;
 
     private int framesRendered = 0, tickCount = 0;
     private double unprocessedSeconds = 0, secondsPerTick = 1 / 60.0;
@@ -71,6 +73,8 @@ public class Display implements GLEventListener {
 
         // Really Nice Perspective Calculations
         gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
+
+        render3D = new Render3D(gl);
     }
 
     public void dispose(GLAutoDrawable glAutoDrawable) {}
@@ -99,6 +103,20 @@ public class Display implements GLEventListener {
         }
         //render();
         ++framesRendered;
+
+        GL2 gl = glAutoDrawable.getGL().getGL2();
+        gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+
+        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+        gl.glLoadIdentity();
+        glu.gluLookAt(0.5, 1, 0.5, 0.5, 1, 1.5, 0, 1, 0);
+
+        gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
+        gl.glLoadIdentity();
+        glu.gluPerspective(50,WIDTH/HEIGHT,1,1000);
+
+        render3D.floor(gl, 0, 0, 10);
+
     }
 
     public void reshape(GLAutoDrawable glAutoDrawable, int i, int i1, int i2, int i3) {}
