@@ -8,7 +8,6 @@ import com.jogamp.opengl.util.texture.TextureIO;
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
-import javax.media.opengl.glu.GLU;
 
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
@@ -17,22 +16,23 @@ import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 
+import static com.sun.java.accessibility.util.AWTEventMonitor.*;
+
 public class Display implements GLEventListener {
 
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
     public static final String TITLE = "CG_Project_Blue";
 
-    static GLU glu = new GLU();
     static GLCanvas canvas = new GLCanvas();
     static Frame frame = new Frame();
     static Animator animator = new Animator(canvas);
     static Render3D render3D;
+    private Player player = new Player();
 
     private int framesRendered = 0, tickCount = 0;
     private double unprocessedSeconds = 0, secondsPerTick = 1 / 60.0;
     private long previousTime = System.nanoTime();
-    private boolean ticked = false;
 
 
     public static void main(String[] args) {
@@ -75,6 +75,11 @@ public class Display implements GLEventListener {
         gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
 
         render3D = new Render3D(gl);
+
+        canvas.addKeyListener(player.getInputHandler());
+        canvas.addMouseListener(player.getInputHandler());
+        canvas.addMouseMotionListener(player.getInputHandler());
+        canvas.addFocusListener(player.getInputHandler());
     }
 
     public void dispose(GLAutoDrawable glAutoDrawable) {}
@@ -85,10 +90,9 @@ public class Display implements GLEventListener {
         previousTime = currentTime;
         unprocessedSeconds += passedTime / 1000000000.0;
 
-        while (unprocessedSeconds > secondsPerTick) {
-            //tick();
-            unprocessedSeconds -= secondsPerTick;
-            ticked = true;
+        if (unprocessedSeconds > secondsPerTick) {
+            unprocessedSeconds %= secondsPerTick;
+            player.tick();
             ++tickCount;
             if (tickCount % 60 == 0) {
                 System.out.println(framesRendered + " FPS");
@@ -96,27 +100,8 @@ public class Display implements GLEventListener {
                 framesRendered = 0;
             }
         }
-
-        if (ticked) {
-            //render();
-            ++framesRendered;
-        }
-        //render();
+        render3D.renderAll(glAutoDrawable, player);
         ++framesRendered;
-
-        GL2 gl = glAutoDrawable.getGL().getGL2();
-        gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
-
-        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-        gl.glLoadIdentity();
-        glu.gluLookAt(0.5, 1, 0.5, 0.5, 1, 1.5, 0, 1, 0);
-
-        gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
-        gl.glLoadIdentity();
-        glu.gluPerspective(50,WIDTH/HEIGHT,1,1000);
-
-        render3D.floor(gl, 0, 0, 10);
-
     }
 
     public void reshape(GLAutoDrawable glAutoDrawable, int i, int i1, int i2, int i3) {}

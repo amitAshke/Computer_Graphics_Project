@@ -3,14 +3,21 @@ import com.jogamp.opengl.util.texture.TextureIO;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
+import javax.media.opengl.glu.GLU;
 import java.io.File;
 import java.io.IOException;
 
 public class Render3D {
 
+    static GLU glu;
     private Texture floorTex;
+    private int distance = 10;
 
     public Render3D(GL2 gl) {
+        glu = new GLU();
+
         gl.glEnable(GL.GL_TEXTURE_2D);
         try {
             String filename="src\\resources\\textures\\stone_floor_texture.jpg"; // the FileName to open
@@ -23,7 +30,7 @@ public class Render3D {
         gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
     }
 
-    public void floor(GL2 gl, int centerX, int centerZ, int distance) {
+    public void floor(GL2 gl, double centerX, double centerZ) {
 
         float[] material = {0.8f,0.8f,0.8f,1.0f};
 
@@ -36,8 +43,8 @@ public class Render3D {
 
         gl.glBegin(GL2.GL_QUADS);
 
-        int startX = centerX - distance, endX = centerX + distance;
-        int startZ = centerZ - distance, endZ = centerZ + distance;
+        int startX = (int)centerX - distance, endX = (int)centerX + distance;
+        int startZ = (int)centerZ - distance, endZ = (int)centerZ + distance;
 
         for(int x = startX; x < endX; ++x) {
 
@@ -56,5 +63,21 @@ public class Render3D {
         }
 
         gl.glEnd();
+    }
+
+    public void renderAll(GLAutoDrawable glAutoDrawable, Player player) {
+
+        GL2 gl = glAutoDrawable.getGL().getGL2();
+        gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+
+        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+        gl.glLoadIdentity();
+        player.setView(glu);
+
+        gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
+        gl.glLoadIdentity();
+        glu.gluPerspective(50,Display.WIDTH/Display.HEIGHT,1,1000);
+
+        floor(gl, player.getCamera().getPosition().getX(), player.getCamera().getPosition().getZ());
     }
 }
