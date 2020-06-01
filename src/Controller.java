@@ -14,7 +14,7 @@ public class Controller {
 
     public InputHandler getInputHandler() { return inputHandler; }
 
-    public Vector3D handleMovement(Camera camera) {
+    public void handleMovement(Camera camera) {
         HashMap<Integer, Boolean> key = inputHandler.key;
         Vector3D newPosition = camera.position, w_Projection = camera.projectWtoXZ(), u_Projection = camera.u_Vector;
         if (key.get(KeyEvent.VK_W) && key.get(KeyEvent.VK_D)) {
@@ -36,7 +36,6 @@ public class Controller {
             if (key.get(KeyEvent.VK_A)) { newPosition = newPosition.scaleAdd(-1 * straightSpeed, u_Projection); }
         }
         camera.position = newPosition;
-        return newPosition;
     }
 
     public void handleRotation(Camera camera) {
