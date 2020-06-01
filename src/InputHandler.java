@@ -1,9 +1,16 @@
+import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Point2D;
 import java.util.HashMap;
 
 public class InputHandler implements KeyListener, MouseListener, MouseMotionListener, FocusListener {
 
+    Robot robot;
+    private boolean robotEvent = false;
+    private final Point2D windowCenter = new Point2D.Double(Display.WINDOW_WIDTH / 2.0, Display.WINDOW_HEIGHT / 2.0);
+
     public HashMap<Integer, Boolean> key = new HashMap<>();
+    public Point2D mouseDistance = new Point2D.Double(0, 0);
 
     public InputHandler() {
 
@@ -11,6 +18,21 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         key.put(KeyEvent.VK_A, false);
         key.put(KeyEvent.VK_S, false);
         key.put(KeyEvent.VK_D, false);
+
+        try {
+            robot = new Robot();
+            robot.mouseMove(Display.MONITOR_WIDTH / 2, Display.MONITOR_HEIGHT / 2);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    public void resetMouseDistance() {
+        mouseDistance.setLocation(0, 0);
+    }
+
+    private void recenterMouse() {
+        robot.mouseMove(Display.MONITOR_WIDTH / 2 + 8, Display.MONITOR_HEIGHT / 2 + 10);
     }
 
     @Override
@@ -71,6 +93,11 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
-
+        Point2D newMousePosition = mouseEvent.getPoint();
+        mouseDistance = new Point2D.Double(newMousePosition.getX() - windowCenter.getX(),
+                newMousePosition.getY() - windowCenter.getY());
+        if (mouseDistance.getX() != 0 || mouseDistance.getY() != 0) {
+            recenterMouse();
+        }
     }
 }
