@@ -6,6 +6,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -47,9 +48,7 @@ public class Render3D {
         int startZ = (int)centerZ - distance, endZ = (int)centerZ + distance;
 
         for(int x = startX; x < endX; ++x) {
-
             for(int z = startZ; z < endZ; ++z) {
-
                 gl.glNormal3f(0.0f, 1.0f, 0.0f);
                 gl.glTexCoord2f(1.0f, 0.0f);
                 gl.glVertex3f((x + 1), 0, z);
@@ -76,7 +75,7 @@ public class Render3D {
 
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluPerspective(50,Display.WIDTH/Display.HEIGHT,1,1000);
+        glu.gluPerspective(50,Display.WINDOW_WIDTH / Display.WINDOW_HEIGHT,1,1000);
 
         floor(gl, player.getCamera().getPosition().getX(), player.getCamera().getPosition().getZ());
     }

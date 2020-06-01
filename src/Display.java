@@ -1,27 +1,19 @@
-import com.jogamp.newt.Window;
-import com.jogamp.newt.event.KeyAdapter;
-import com.jogamp.newt.event.KeyEvent;
-import com.jogamp.newt.event.awt.AWTKeyAdapter;
 import com.jogamp.opengl.util.Animator;
-import com.jogamp.opengl.util.texture.Texture;
-import com.jogamp.opengl.util.texture.TextureIO;
+
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
-import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.ImageObserver;
-import java.io.File;
-import java.io.IOException;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.*;
+import java.awt.image.BufferedImage;
 
 public class Display implements GLEventListener {
 
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 600;
+    public static final int WINDOW_WIDTH = 800;
+    public static final int WINDOW_HEIGHT = 600;
+    public static int MONITOR_WIDTH;
+    public static int MONITOR_HEIGHT;
     public static final String TITLE = "CG_Project_Blue";
 
     static GLCanvas canvas = new GLCanvas();
@@ -36,14 +28,22 @@ public class Display implements GLEventListener {
 
 
     public static void main(String[] args) {
+        // create the cursor
+        Toolkit t = Toolkit.getDefaultToolkit();
+        Image i = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        MONITOR_WIDTH = (int)t.getScreenSize().getWidth();
+        MONITOR_HEIGHT = (int)t.getScreenSize().getHeight();
+        Cursor noCursor = t.createCustomCursor(i, new Point(0, 0), "none");
+
         canvas.addGLEventListener(new Display());
         frame.add(canvas);
         frame.pack();
         frame.setTitle(TITLE);
-        frame.setSize(WIDTH, HEIGHT);
+        frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setVisible(true);
+        frame.setCursor(noCursor);
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 new Thread(new Runnable() {
@@ -76,10 +76,10 @@ public class Display implements GLEventListener {
 
         render3D = new Render3D(gl);
 
-        canvas.addKeyListener(player.getInputHandler());
-        canvas.addMouseListener(player.getInputHandler());
-        canvas.addMouseMotionListener(player.getInputHandler());
-        canvas.addFocusListener(player.getInputHandler());
+        canvas.addKeyListener(player.getController().getInputHandler());
+        canvas.addMouseListener(player.getController().getInputHandler());
+        canvas.addMouseMotionListener(player.getController().getInputHandler());
+        canvas.addFocusListener(player.getController().getInputHandler());
     }
 
     public void dispose(GLAutoDrawable glAutoDrawable) {}
