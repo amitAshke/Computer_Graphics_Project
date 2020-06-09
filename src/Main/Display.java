@@ -1,3 +1,5 @@
+package Main;
+
 import com.jogamp.opengl.util.Animator;
 
 import javax.media.opengl.*;
@@ -19,8 +21,8 @@ public class Display implements GLEventListener {
     static GLCanvas canvas = new GLCanvas();
     static Frame frame = new Frame();
     static Animator animator = new Animator(canvas);
-    static Render3D render3D;
-    private Player player = new Player();
+    private World world;
+    Render3D render3D;
 
     private int framesRendered = 0, tickCount = 0;
     private double unprocessedSeconds = 0, secondsPerTick = 1 / 60.0;
@@ -76,15 +78,18 @@ public class Display implements GLEventListener {
 
         render3D = new Render3D(gl);
 
-        canvas.addKeyListener(player.getController().getInputHandler());
-        canvas.addMouseListener(player.getController().getInputHandler());
-        canvas.addMouseMotionListener(player.getController().getInputHandler());
-        canvas.addFocusListener(player.getController().getInputHandler());
+        world = new World("src\\map.txt", render3D);
+
+        canvas.addKeyListener(world.getPlayer().getController().getInputHandler());
+        canvas.addMouseListener(world.getPlayer().getController().getInputHandler());
+        canvas.addMouseMotionListener(world.getPlayer().getController().getInputHandler());
+        canvas.addFocusListener(world.getPlayer().getController().getInputHandler());
     }
 
     public void dispose(GLAutoDrawable glAutoDrawable) {}
 
     public void display(GLAutoDrawable glAutoDrawable) {
+        if (world == null) { return; }
         long currentTime = System.nanoTime();
         long passedTime = currentTime - previousTime;
         previousTime = currentTime;
@@ -92,7 +97,8 @@ public class Display implements GLEventListener {
 
         if (unprocessedSeconds > secondsPerTick) {
             unprocessedSeconds %= secondsPerTick;
-            player.tick();
+
+            world.tick();
             ++tickCount;
             if (tickCount % 60 == 0) {
                 System.out.println(framesRendered + " FPS");
@@ -100,7 +106,7 @@ public class Display implements GLEventListener {
                 framesRendered = 0;
             }
         }
-        render3D.renderAll(glAutoDrawable, player);
+        world.render(glAutoDrawable);
         ++framesRendered;
     }
 
