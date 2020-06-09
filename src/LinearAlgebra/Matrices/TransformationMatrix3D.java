@@ -1,3 +1,7 @@
+package LinearAlgebra.Matrices;
+
+import LinearAlgebra.Vectors.Vector3D;
+
 public class TransformationMatrix3D {
     protected double[][] matrix;
     protected Vector3D pos;

@@ -1,4 +1,6 @@
-import java.awt.geom.Point2D;
+package LinearAlgebra.Matrices;
+
+import LinearAlgebra.Matrices.TransformationMatrix3D;
 
 public class TranslateMatrix3D extends TransformationMatrix3D {
     public TranslateMatrix3D(double a, double b, double c) {

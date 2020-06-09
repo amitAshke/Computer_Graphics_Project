@@ -1,3 +1,7 @@
+package LinearAlgebra.Matrices;
+
+import LinearAlgebra.Vectors.Vector3D;
+
 public class WorldViewMatrix3D extends TransformationMatrix3D {
     public WorldViewMatrix3D(Vector3D position, Vector3D[] uvw) {
         super(position);
