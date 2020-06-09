@@ -1,3 +1,9 @@
+package Player;
+
+import LinearAlgebra.Matrices.RotationMatrix3D;
+import LinearAlgebra.Matrices.WorldViewMatrix3D;
+import LinearAlgebra.Vectors.Vector3D;
+
 import javax.media.opengl.glu.GLU;
 
 public class Camera {
@@ -69,7 +75,7 @@ public class Camera {
         RotationMatrix3D rotate = new RotationMatrix3D(angle, 'x');
         WorldViewMatrix3D reversedWorldViewMatrix = worldViewMatrix.transpose();
 
-//        TransformationMatrix3D transformation = reversedWorldViewMatrix.matrixMultiplication(rotate.matrixMultiplication(worldViewMatrix));
+//        LinearAlgebra.Matrices.TransformationMatrix3D transformation = reversedWorldViewMatrix.matrixMultiplication(rotate.matrixMultiplication(worldViewMatrix));
 //        w_Vector = transformation.transform(w_Vector);
 //        v_Vector = transformation.transform(v_Vector);
 
@@ -92,13 +98,13 @@ public class Camera {
 
         if (angle == 0) { return; }
 
-//        Vector3D[] uvw = {u_Vector, v_Vector, w_Vector};
+//        LinearAlgebra.Vectors.Vector3D[] uvw = {u_Vector, v_Vector, w_Vector};
 
-//        WorldViewMatrix3D worldViewMatrix = new WorldViewMatrix3D(position, uvw);
+//        LinearAlgebra.Matrices.WorldViewMatrix3D worldViewMatrix = new LinearAlgebra.Matrices.WorldViewMatrix3D(position, uvw);
         RotationMatrix3D rotate = new RotationMatrix3D(angle, 'y');
-//        WorldViewMatrix3D reversedWorldViewMatrix = worldViewMatrix.transpose();
+//        LinearAlgebra.Matrices.WorldViewMatrix3D reversedWorldViewMatrix = worldViewMatrix.transpose();
 
-//        TransformationMatrix3D transformation = reversedWorldViewMatrix.matrixMultiplication(rotate.matrixMultiplication(worldViewMatrix));
+//        LinearAlgebra.Matrices.TransformationMatrix3D transformation = reversedWorldViewMatrix.matrixMultiplication(rotate.matrixMultiplication(worldViewMatrix));
 //        w_Vector = transformation.transform(w_Vector);
 //        u_Vector = transformation.transform(u_Vector);
 
@@ -121,9 +127,9 @@ public class Camera {
         RotationMatrix3D rotate = new RotationMatrix3D(angle, 'z');
         WorldViewMatrix3D reversedWorldViewMatrix = worldViewMatrix.transpose();
 
-//        TransformationMatrix3D transformation = reversedWorldViewMatrix.matrixMultiplication(rotate.matrixMultiplication(worldViewMatrix));
-//        Vector3D u_Test = transformation.transform(u_Vector);
-//        Vector3D v_Test = transformation.transform(v_Vector);
+//        LinearAlgebra.Matrices.TransformationMatrix3D transformation = reversedWorldViewMatrix.matrixMultiplication(rotate.matrixMultiplication(worldViewMatrix));
+//        LinearAlgebra.Vectors.Vector3D u_Test = transformation.transform(u_Vector);
+//        LinearAlgebra.Vectors.Vector3D v_Test = transformation.transform(v_Vector);
 
         u_Vector = worldViewMatrix.transform(u_Vector).normalize();
         u_Vector = rotate.transform(u_Vector).normalize();
