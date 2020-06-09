@@ -1,3 +1,7 @@
+package Player;
+
+import Main.Display;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
@@ -96,7 +100,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         Point2D newMousePosition = mouseEvent.getPoint();
         mouseDistance = new Point2D.Double(newMousePosition.getX() - windowCenter.getX(),
                 newMousePosition.getY() - windowCenter.getY());
-        if (mouseDistance.getX() != 0 || mouseDistance.getY() != 0) {
+        if (Math.abs(mouseDistance.getX()) > 3 || Math.abs(mouseDistance.getY()) > 3) {
             recenterMouse();
         }
     }
