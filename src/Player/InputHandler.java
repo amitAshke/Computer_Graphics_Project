@@ -22,6 +22,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         key.put(KeyEvent.VK_A, false);
         key.put(KeyEvent.VK_S, false);
         key.put(KeyEvent.VK_D, false);
+        key.put(1, false);
 
         try {
             robot = new Robot();
@@ -34,6 +35,8 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
     public void resetMouseDistance() {
         mouseDistance.setLocation(0, 0);
     }
+
+    public void resetMouseButtons() { key.replace(1, false); }
 
     private void recenterMouse() {
         robot.mouseMove(Display.MONITOR_WIDTH / 2 + 8, Display.MONITOR_HEIGHT / 2 + 10);
@@ -72,7 +75,8 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
-
+        key.replace(mouseEvent.getButton(), true);
+        System.out.println("mouse pressed");
     }
 
     @Override
@@ -92,7 +96,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
-
+        mouseMoved(mouseEvent);
     }
 
     @Override
