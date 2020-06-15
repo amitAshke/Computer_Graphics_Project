@@ -1,9 +1,11 @@
 package Main;
 
+import Player.Player;
 import com.jogamp.opengl.util.Animator;
 
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -75,6 +77,7 @@ public class Display implements GLEventListener {
 
         // Really Nice Perspective Calculations
         gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
+        gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 
         render3D = new Render3D(gl);
 
@@ -110,5 +113,12 @@ public class Display implements GLEventListener {
         ++framesRendered;
     }
 
-    public void reshape(GLAutoDrawable glAutoDrawable, int i, int i1, int i2, int i3) {}
+    public void reshape(GLAutoDrawable glAutoDrawable, int i, int i1, int i2, int i3) {
+        GL2 gl = glAutoDrawable.getGL().getGL2();
+        gl.glMatrixMode(GL2.GL_PROJECTION);
+        gl.glLoadIdentity();
+        Render3D.glu.gluPerspective(50, Display.WINDOW_WIDTH / Display.WINDOW_HEIGHT, Player.HIT_RADIUS - 0.2,1000);
+        gl.glMatrixMode(GL2.GL_MODELVIEW);
+        gl.glLoadIdentity();
+    }
 }
