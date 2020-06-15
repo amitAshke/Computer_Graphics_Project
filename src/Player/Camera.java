@@ -117,31 +117,6 @@ public class Camera {
 //        u_Vector = reversedWorldViewMatrix.transform(u_Vector).normalize();
     }
 
-    public void rotateSideways(double angle) {
-
-        if (angle == 0) { return; }
-
-        Vector3D[] uvw = {u_Vector, v_Vector, w_Vector};
-
-        WorldViewMatrix3D worldViewMatrix = new WorldViewMatrix3D(position, uvw);
-        RotationMatrix3D rotate = new RotationMatrix3D(angle, 'z');
-        WorldViewMatrix3D reversedWorldViewMatrix = worldViewMatrix.transpose();
-
-//        LinearAlgebra.Matrices.TransformationMatrix3D transformation = reversedWorldViewMatrix.matrixMultiplication(rotate.matrixMultiplication(worldViewMatrix));
-//        LinearAlgebra.Vectors.Vector3D u_Test = transformation.transform(u_Vector);
-//        LinearAlgebra.Vectors.Vector3D v_Test = transformation.transform(v_Vector);
-
-        u_Vector = worldViewMatrix.transform(u_Vector).normalize();
-        u_Vector = rotate.transform(u_Vector).normalize();
-        u_Vector = reversedWorldViewMatrix.transform(u_Vector).normalize();
-
-        v_Vector = worldViewMatrix.transform(v_Vector).normalize();
-        v_Vector = rotate.transform(v_Vector).normalize();
-        v_Vector = reversedWorldViewMatrix.transform(v_Vector).normalize();
-
-        return;
-    }
-
     public Vector3D projectWtoXZ() {
         return new Vector3D(w_Vector.getX(), 0, w_Vector.getZ()).normalize();
     }
@@ -150,5 +125,33 @@ public class Camera {
         glu.gluLookAt(	position.getX(), position.getY(), position.getZ(),
                 position.getX() + w_Vector.getX(), position.getY() + w_Vector.getY(), position.getZ() + w_Vector.getZ(),
                 v_Vector.getX(), v_Vector.getY(), v_Vector.getZ());
+    }
+
+    public double getUpDownAngle() {
+        double angle = Math.toDegrees(Math.acos(this.projectWtoXZ().dotProduct(w_Vector)));
+
+        if (w_Vector.getY() > 0) {
+            angle *= -1;
+        }
+
+        return angle;
+    }
+
+    public double getLeftRightAngle() {
+        double angle = 0;
+
+        if (Player.camera.w_Vector.getX() < 0) {
+            angle = Math.toDegrees(Math.acos(Player.camera.projectWtoXZ().dotProduct(new Vector3D(0, 0, 1)))) * -1;
+        } else if (Player.camera.w_Vector.getX() > 0) {
+            angle = Math.toDegrees(Math.acos(Player.camera.projectWtoXZ().dotProduct(new Vector3D(0, 0, 1))));
+        } else {
+            if (Player.camera.v_Vector.getX() < 0) {
+                angle = Math.toDegrees(Math.acos(Player.camera.v_Vector.dotProduct(new Vector3D(0, 0, 1)))) * -1;
+            } else if (Player.camera.v_Vector.getX() > 0) {
+                angle = Math.toDegrees(Math.acos(Player.camera.v_Vector.dotProduct(new Vector3D(0, 0, 1))));
+            }
+        }
+
+        return angle;
     }
 }
