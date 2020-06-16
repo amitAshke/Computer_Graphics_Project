@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class WallBlock implements Renderable, Collidable {
     private float x1, x2, z1, z2;
-    private Texture wallTex;
+    private static Texture wallTex = null;
 
     public WallBlock(float x1, float z1) {
         this.x1 = x1;
@@ -20,13 +20,15 @@ public class WallBlock implements Renderable, Collidable {
         this.z1 = z1;
         this.z2 = z1 + 1;
 
-        try {
-            String filename="src\\resources\\textures\\brick_wall_texture.jpg";
-            wallTex = TextureIO.newTexture(new File( filename ),true);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+//        if (wallTex == null) {
+            try {
+                String filename="src\\resources\\textures\\brick_wall_texture.jpg";
+                wallTex = TextureIO.newTexture(new File( filename ),true);
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+//        }
     }
 
     public float getX1() {
@@ -46,8 +48,11 @@ public class WallBlock implements Renderable, Collidable {
     }
 
     public void render(GL2 gl) {
-        int texID = wallTex.getTextureObject(gl), texTarget = wallTex.getTarget();
-        gl.glBindTexture(texTarget, texID);
+        wallTex.enable(gl);
+        wallTex.bind(gl);
+
+        gl.glBegin(GL2.GL_QUADS);
+
         gl.glNormal3f(0,0,1);
         gl.glTexCoord2f(1, 0);
         gl.glVertex3f(x2, 0, z1);
@@ -88,9 +93,9 @@ public class WallBlock implements Renderable, Collidable {
         gl.glTexCoord2f(0, 0);
         gl.glVertex3f(x2, 0, z1);
 
+        gl.glEnd();
 
-        gl.glBindTexture(texTarget, 0);
-//        gl.glDeleteTextures(1, new int[]{texID}, 0);
+        wallTex.disable(gl);
     }
 
     public boolean isCollidingWithPlayer(Vector3D playerPosition) {
@@ -157,5 +162,45 @@ public class WallBlock implements Renderable, Collidable {
         }
 
         return playerPosition;
+    }
+
+    public boolean isCollidingWithProjectile(Vector3D position, double length, double radius, Vector3D direction) {
+        Vector3D start, end;
+
+        if (direction.getY() >= 0) {
+            start = position.scaleAdd(-1 * length, direction);
+            end = position.scaleAdd(length, direction);
+        } else {
+            start = position.scaleAdd(length, direction);
+            end = position.scaleAdd(-1 * length, direction);
+        }
+
+        if (end.getY() < 0 || start.getY() > 2) {
+            if ((Math.abs(start.getX() - x2) < radius || Math.abs(start.getX() - x1) < radius ||
+                    Math.abs(start.getZ() - z2) < radius || Math.abs(start.getZ() - z1) < radius) &&
+                    Math.abs(start.getY() - 2) < radius || Math.abs(start.getY() - 0) < radius) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            Vector3D tip;
+
+            if (direction.getY() >= 0) {
+                tip = end;
+            } else {
+                tip = start;
+            }
+
+            double x = Math.max(x1, Math.min(tip.getX(), x2));
+            double y = Math.max(0, Math.min(tip.getY(), 2));
+            double z = Math.max(z1, Math.min(tip.getZ(), z2));
+
+            double distance = Math.sqrt((x - tip.getX()) * (x - tip.getX()) +
+                    (y - tip.getY()) * (y - tip.getY()) +
+                    (z - tip.getZ()) * (z - tip.getZ()));
+
+            return distance < radius;
+        }
     }
 }
