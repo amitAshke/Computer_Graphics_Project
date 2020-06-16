@@ -2,7 +2,9 @@ package Player;
 
 import Collision.Collidable;
 import Collision.CollisionHandler;
+import Collision.Projectile;
 import LinearAlgebra.Vectors.Vector3D;
+import Main.World;
 
 import java.awt.event.KeyEvent;
 import java.util.Collections;
@@ -11,14 +13,12 @@ import java.util.HashMap;
 public class Controller {
 
     private InputHandler inputHandler;
-    private CollisionHandler collisionHandler;
 
     private double straightSpeed = 0.05, diagonalSpeed = straightSpeed * Math.sqrt(2) / 2;
     private double horizontalSensitivity = 0.03, verticalSensitivity = 0.03;
 
     public Controller() {
         this.inputHandler = new InputHandler();
-        this.collisionHandler = new CollisionHandler();
     }
 
     public InputHandler getInputHandler() { return inputHandler; }
@@ -63,7 +63,6 @@ public class Controller {
                 newPosition = newPosition.scaleAdd(-1 * straightSpeed, u_Projection);
             }
         }
-        newPosition = collisionHandler.handleCollisionWithPlayer(newPosition);
 
         camera.position = newPosition;
     }
@@ -74,13 +73,20 @@ public class Controller {
 
         if (leftRightAngle != 0 || upDownAngle != 0) {
             camera.rotateUpDown(upDownAngle);
-            if (camera.v_Vector.getY() == 0) {
-                camera.rotateSideways(leftRightAngle);
-            } else {
-                camera.rotateLeftRight(leftRightAngle);
-            }
+            camera.rotateLeftRight(leftRightAngle);
             camera.fixOrthogonality();
         }
         inputHandler.resetMouseDistance();
+    }
+
+    public void handleFire(Camera camera) {
+        if (inputHandler.key.get(1)) {
+            World.projectiles.add(new Projectile("src\\resources\\models\\Dagger.obj",
+                    "src\\resources\\models\\textures\\Dagger_1K_Diffuse.png",
+                    "",
+                    camera.position, camera.w_Vector, camera.v_Vector,
+                    camera.getUpDownAngle(), camera.getLeftRightAngle()));
+            inputHandler.resetMouseButtons();
+        }
     }
 }
