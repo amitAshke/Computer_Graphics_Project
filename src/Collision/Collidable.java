@@ -15,4 +15,6 @@ public interface Collidable {
     public boolean isCollidingWithPlayer(Vector3D playerPosition);
 
     public Vector3D handlePlayerCollision(Vector3D newPosition);
+
+    public boolean isCollidingWithProjectile(Vector3D position, double length, double radius, Vector3D direction);
 }
