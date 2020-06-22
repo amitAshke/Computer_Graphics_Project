@@ -32,6 +32,15 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         }
     }
 
+    public int getMovementKeysPressed() {
+        int counter = 0;
+        if (key.get(KeyEvent.VK_W)) { ++counter; }
+        if (key.get(KeyEvent.VK_A)) { ++counter; }
+        if (key.get(KeyEvent.VK_S)) { ++counter; }
+        if (key.get(KeyEvent.VK_D)) { ++counter; }
+        return counter;
+    }
+
     public void resetMouseDistance() {
         mouseDistance.setLocation(0, 0);
     }
