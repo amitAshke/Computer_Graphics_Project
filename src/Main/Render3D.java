@@ -1,5 +1,6 @@
 package Main;
 
+import Collision.Dummy;
 import Collision.Projectile;
 import LinearAlgebra.Vectors.Vector3D;
 import Main.Display;
@@ -27,7 +28,7 @@ public class Render3D {
         gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
     }
 
-    public void renderAllV2(GLAutoDrawable glAutoDrawable, Player player, List<Renderable> renderables, List<Projectile> projectiles) {
+    public void renderAllV2(GLAutoDrawable glAutoDrawable, Player player, List<Renderable> renderables) {
         float[] material = {0.8f,0.8f,0.8f,1.0f};
 
         GL2 gl = glAutoDrawable.getGL().getGL2();
@@ -43,8 +44,16 @@ public class Render3D {
 
         gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, material, 0);
 
-        for (Renderable projectile : projectiles) {
+        if (Player.altProjectile != null) {
+            Player.altProjectile.render(gl);
+        }
+
+        for (Renderable projectile : Player.projectiles) {
             projectile.render(gl);
+        }
+
+        for (Dummy dummy : World.dummies) {
+            dummy.render(gl);
         }
 
         for (Renderable renderable : renderables) {
