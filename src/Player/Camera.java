@@ -118,7 +118,7 @@ public class Camera {
     }
 
     public Vector3D projectWtoXZ() {
-        return new Vector3D(w_Vector.getX(), 0, w_Vector.getZ()).normalize();
+        return w_Vector.projectToXZ();
     }
 
     public void setView(GLU glu) {
