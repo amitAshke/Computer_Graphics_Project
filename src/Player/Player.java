@@ -1,7 +1,6 @@
 package Player;
 
-import Collision.Collidable;
-import Collision.CollisionHandler;
+import Collision.*;
 import LinearAlgebra.Vectors.Vector3D;
 import Main.World;
 import Renderables.WallBlock;
@@ -43,14 +42,17 @@ public class Player implements TimeBound {
         updatePlayerCollidables();
     }
 
-    public Camera getCamera() {
-        return camera;
-    }
 
 
     public Controller getController() { return controller; }
 
     public boolean tick() {
+
+        if (altProjectile != null) {
+            if (!altProjectile.tick()) {
+                altProjectile = null;
+            }
+        }
 
         for(int index = 0; index < projectiles.size(); ++index) {
             boolean alive = projectiles.get(index).tick();
