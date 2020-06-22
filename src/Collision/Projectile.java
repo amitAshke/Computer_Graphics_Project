@@ -1,8 +1,8 @@
 package Collision;
 
 import LinearAlgebra.Vectors.Vector3D;
+import Main.Display;
 import Main.World;
-import Player.Player;
 import Renderables.*;
 
 import Time.TimeBound;
@@ -17,23 +17,23 @@ import java.util.List;
 
 public class Projectile implements Renderable, TimeBound {
 
-    private WavefrontObject model = null;
-    private MaterialProps material;
-    private Texture texture;
-    private Vector3D position, forward, up;
-    private double upDownAngle, leftRightAngle;
-    private double speed = 0.01, length = 0.3, hitRadius = 0.05;
-    private double yrot = 0;
-    private List<Collidable> projectileCollidables;
-    private int mapX, mapZ;
-    private CollisionHandler collisionHandler;
-    private boolean collided = false;
-    long collisionTime;
+    private long collisionTime;
 
+    protected CollisionHandler collisionHandler;
+    protected List<Collidable> projectileCollidables;
+    protected int mapX, mapZ;
+//    protected boolean independence;
+    protected WavefrontObject model = null;
+    protected MaterialProps material;
+    protected Texture texture;
+    protected Vector3D position, forward, up;
+    protected double upDownAngle, leftRightAngle, maxRange, rotation, speed, length, hitRadius;;
+    protected boolean collided;
+    protected Capsule capsule;
 
 
     public Projectile(String modelPath, String texturePath, String materialPath,
-                      Vector3D position, Vector3D forward, Vector3D up, double upDownAngle, double leftRightAngle) {
+                      Vector3D position, Vector3D forward, Vector3D up) {
         try {
             if (!texturePath.equals("")) {
                 this.texture = TextureIO.newTexture(new File( texturePath ),true);
@@ -53,17 +53,92 @@ public class Projectile implements Renderable, TimeBound {
             this.material = null;
         }
 
-        this.position = position;
+        setDefaults(position, forward, up);
+
+        updateCollisionCapsule();
+//        updateProjectileCollidables();
+    }
+
+    public Projectile(WavefrontObject model, MaterialProps material, Texture texture,
+                      Vector3D position, Vector3D forward, Vector3D up) {
+        this.model = model;
+        this.material = material;
+        this.texture = texture;
+
+        setDefaults(position, forward, up);
+
+        updateCollisionCapsule();
+        updateProjectileCollidables();
+    }
+
+    private void setDefaults(Vector3D position, Vector3D forward, Vector3D up) {
+        this.position = new Vector3D(position.getX() + forward.getX() * 0.2 + up.getX() * -0.1,
+                position.getY() + forward.getY() * 0.2 + up.getY() * -0.1,
+                position.getZ() + forward.getZ() * 0.2 + up.getZ() * -0.1);;
         this.forward = forward;
         this.up = up;
-        this.upDownAngle = upDownAngle;
-        this.leftRightAngle = leftRightAngle;
+        this.upDownAngle = calculateUpDownAngle();
+        this.leftRightAngle = calculateLeftRightAngle();
         this.projectileCollidables = new ArrayList<>();
         this.mapX = -1;
         this.mapZ = -1;
         this.collisionHandler = new CollisionHandler();
+        this.rotation = 0;
+        this.speed = 0;
+        this.length = 0.33;
+        this.hitRadius = 0.04;
+        this.maxRange = 15;
+        this.collided = false;
+//        this.independence = false;
+    }
 
-        updateProjectileCollidables();
+    public void setPosition(Vector3D position) {
+        this.position = new Vector3D(position.getX() + forward.getX() * 0.2 + up.getX() * -0.1,
+                position.getY() + forward.getY() * 0.2 + up.getY() * -0.1,
+                position.getZ() + forward.getZ() * 0.2 + up.getZ() * -0.1);;
+    }
+
+    public void setForward(Vector3D forward) {
+        this.forward = forward;
+    }
+
+    public void setLeftRightAngle(double leftRightAngle) {
+        this.leftRightAngle = leftRightAngle;
+    }
+
+    public double calculateUpDownAngle() {
+        Vector3D projectedForward = new Vector3D(forward.getX(), 0, forward.getZ());
+        double angle = Math.toDegrees(Math.acos(projectedForward.dotProduct(forward)));
+
+        if (forward.getY() > 0) {
+            angle *= -1;
+        }
+
+        return angle;
+    }
+
+    public double calculateLeftRightAngle() {
+        Vector3D projectedForward = new Vector3D(forward.getX(), 0, forward.getZ());
+        double angle = 0;
+
+        if (forward.getX() < 0) {
+            angle = Math.toDegrees(Math.acos(projectedForward.dotProduct(new Vector3D(0, 0, 1)))) * -1;
+        } else if (forward.getX() > 0) {
+            angle = Math.toDegrees(Math.acos(projectedForward.dotProduct(new Vector3D(0, 0, 1))));
+        } else {
+            if (up.getX() < 0) {
+                angle = Math.toDegrees(Math.acos(up.dotProduct(new Vector3D(0, 0, 1)))) * -1;
+            } else if (up.getX() > 0) {
+                angle = Math.toDegrees(Math.acos(up.dotProduct(new Vector3D(0, 0, 1))));
+            }
+        }
+
+        return angle;
+    }
+
+    public void makeIndependent() {
+//        independence = true;
+        speed = 0.01;
     }
 
     public void render(GL2 gl) {
@@ -93,30 +168,46 @@ public class Projectile implements Renderable, TimeBound {
 
 //        System.out.println(leftRightAngle + "   " + upDownAngle);
 
-        gl.glPushMatrix();
+//        if (independence) {
+            gl.glPushMatrix();
+//        }
 
-        gl.glTranslated(position.getX() + forward.getX() * 0.2 + up.getX() * -0.1,
-                position.getY() + forward.getY() * 0.2 + up.getY() * -0.1,
-                position.getZ() + forward.getZ() * 0.2 + up.getZ() * -0.1);
+        gl.glTranslated(position.getX(), position.getY(), position.getZ());
 
         gl.glRotated(leftRightAngle, 0, 1, 0);
         gl.glRotated(upDownAngle, 1, 0, 0);
 
         gl.glRotated(-90, 0, 1, 0);
         gl.glRotated(-90, 0, 0, 1);
-        gl.glRotated(yrot, 0, 1, 0);
+        gl.glRotated(rotation, 0, 1, 0);
+        gl.glTranslated(0, 0.06, 0);
 
-        model.drawModel(gl);
+        gl.glCallList(Display.projectileModel);
 
         if (texture != null) {
             texture.disable(gl);
         }
 
-        gl.glPopMatrix();
+//        if (independence) {
+            gl.glPopMatrix();
+//        }
 
     }
 
-    private void updateProjectileCollidables() {
+    protected void updateCollisionCapsule() {
+        Vector3D botton, top;
+        if (forward.getY() >= 0) {
+            botton = position;
+            top = position.scaleAdd(length, forward);
+        } else {
+            botton = position.scaleAdd(length, forward);
+            top = position;
+        }
+        capsule = new Capsule(botton, top, hitRadius);
+    }
+
+    protected void updateProjectileCollidables() {
+//        if (!independence || (mapX == (int)position.getX() && mapZ == (int)position.getZ())) {
         if (mapX == (int)position.getX() && mapZ == (int)position.getZ()) {
             return;
         }
@@ -132,9 +223,12 @@ public class Projectile implements Renderable, TimeBound {
                         WallBlock newWallBlock = new WallBlock(row, col);
                         projectileCollidables.add(newWallBlock);
                         break;
+                    case (2):
+                        projectileCollidables.add(new Dummy(row, col, 0));
                     case (1):
                         FloorTile newFloorTile = new FloorTile(row, col);
                         projectileCollidables.add(newFloorTile);
+                        projectileCollidables.add(new CeilingTile(row, col));
                         break;
                     default:
                 }
@@ -142,18 +236,25 @@ public class Projectile implements Renderable, TimeBound {
         }
     }
 
+    public void setProjectileCollidables(List<Collidable> projectileCollidables) {
+        this.projectileCollidables = projectileCollidables;
+    }
+
     public boolean tick() {
         if (model == null) { return false; }
 
         if (!collided) {
-            ++yrot;
-            updateProjectileCollidables();
-            this.position = position.scaleAdd(speed, forward);
-            Collidable collidable = collisionHandler.handleCollisionWithProjectile(position, length, hitRadius, forward, projectileCollidables);
-            if (collidable != null) {
-                collided = true;
-                collisionTime = System.nanoTime();
-            }
+//            if (independence) {
+                ++rotation;
+                this.position = position.scaleAdd(speed, forward);
+                updateCollisionCapsule();
+                updateProjectileCollidables();
+                Collidable collidable = collisionHandler.handleCollisionWithProjectile(capsule, projectileCollidables);
+                if (collidable != null) {
+                    collided = true;
+                    collisionTime = System.nanoTime();
+                }
+//            }
         } else {
             long sinceCollision = System.nanoTime() - collisionTime;
             if (sinceCollision > 1000000000.0) {
