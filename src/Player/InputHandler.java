@@ -10,12 +10,10 @@ import java.util.HashMap;
 public class InputHandler implements KeyListener, MouseListener, MouseMotionListener, FocusListener {
 
     Robot robot;
-    private boolean robotEvent = false;
     private final Point2D windowCenter = new Point2D.Double(Display.WINDOW_WIDTH / 2.0, Display.WINDOW_HEIGHT / 2.0);
 
     public HashMap<Integer, Boolean> key = new HashMap<>();
     public Point2D mouseDistance = new Point2D.Double(0, 0);
-
     public InputHandler() {
 
         key.put(KeyEvent.VK_W, false);
@@ -23,6 +21,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         key.put(KeyEvent.VK_S, false);
         key.put(KeyEvent.VK_D, false);
         key.put(1, false);
+        key.put(3, false);
 
         try {
             robot = new Robot();
@@ -45,7 +44,10 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         mouseDistance.setLocation(0, 0);
     }
 
-    public void resetMouseButtons() { key.replace(1, false); }
+    public void resetMouseButtons() {
+        key.replace(1, false);
+        key.replace(3, false);
+    }
 
     private void recenterMouse() {
         robot.mouseMove(Display.MONITOR_WIDTH / 2 + 8, Display.MONITOR_HEIGHT / 2 + 10);
@@ -85,7 +87,6 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
         key.replace(mouseEvent.getButton(), true);
-        System.out.println("mouse pressed");
     }
 
     @Override
