@@ -1,5 +1,7 @@
 package LinearAlgebra.Vectors;
 
+import LinearAlgebra.Matrices.RotationMatrix3D;
+
 public class Vector3D {
     private double x, y, z;
 
@@ -42,6 +44,10 @@ public class Vector3D {
         double b = this.getY() - y1;
         double c = this.getZ() - z1;
         return Math.sqrt(a * a + b * b + c * c);
+    }
+
+    public Vector3D neg() {
+        return new Vector3D(-1 * x, -1 * y, -1 * z);
     }
 
     public double distance(Vector3D point) {
@@ -155,6 +161,15 @@ public class Vector3D {
             Vector3D other = (Vector3D)obj;
             return this.getX() == other.getX() && this.getY() == other.getY() && this.getZ() == other.getZ();
         }
+    }
+
+    public Vector3D rotate(double angle, char axis) {
+        RotationMatrix3D rotationMatrix = new RotationMatrix3D(angle, axis);
+        return rotationMatrix.transform(this);
+    }
+
+    public Vector3D projectToXZ() {
+        return new Vector3D(x, 0 , z);
     }
 
     public String toString() {
