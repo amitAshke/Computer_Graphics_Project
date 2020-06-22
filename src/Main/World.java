@@ -1,9 +1,9 @@
 package Main;
 
-import Collision.Collidable;
-import Collision.Projectile;
+import Collision.Dummy;
 import LinearAlgebra.Vectors.Vector3D;
 import Player.Player;
+import Renderables.CeilingTile;
 import Renderables.FloorTile;
 import Renderables.Renderable;
 import Renderables.WallBlock;
@@ -21,13 +21,13 @@ public class World implements TimeBound {
     private Render3D render3D;
 
     public static int[][] map;
-    public static List<Projectile> projectiles;
+    public static List<Dummy> dummies;
 
     public World(String mapFilePath, Render3D render3D) {
         this.mapReader = new MapReader();
         this.render3D = render3D;
         this.renderables = new ArrayList<>();
-        this.projectiles = new ArrayList<>();
+        this.dummies = new ArrayList<>();
 
         this.map = mapReader.loadMap(mapFilePath);
         getRenderablesAndCollidablesInMap();
@@ -50,8 +50,15 @@ public class World implements TimeBound {
                         WallBlock newWallBlock = new WallBlock(row, col);
                         renderables.add(newWallBlock);
                         break;
+                    case (2):
+                        Dummy dummy = new Dummy("src\\resources\\models\\18489_Knight_V1_.obj",
+                                "src\\resources\\models\\textures\\rough.tif",
+                                "",
+                                row, col, 0);
+                        dummies.add(dummy);
                     case (1):
                         renderables.add(new FloorTile(row, col));
+                        renderables.add(new CeilingTile(row, col));
                         break;
                     default:
                 }
@@ -61,20 +68,12 @@ public class World implements TimeBound {
 
     public boolean tick() {
 
-        for(int index = 0; index < projectiles.size(); ++index) {
-            boolean alive = projectiles.get(index).tick();
-            if (!alive) {
-                projectiles.remove(index);
-                --index;
-            }
-        }
-
         player.tick();
 
         return true;
     }
 
     public void render(GLAutoDrawable glAutoDrawable) {
-        render3D.renderAllV2(glAutoDrawable, player, renderables, projectiles);
+        render3D.renderAllV2(glAutoDrawable, player, renderables);
     }
 }
