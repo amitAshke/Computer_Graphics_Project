@@ -17,14 +17,16 @@ public class Player implements TimeBound {
     private CollisionHandler collisionHandler;
     private List<Collidable> playerCollidables;
     private int mapX, mapZ;
+    private Capsule capsule;
 
     public static List<Projectile> projectiles;
+    public static AltProjectile altProjectile = null;
     public static Camera camera;
     public static final double HIT_RADIUS = 0.3;
 
     public Player() {
 
-        Vector3D position = new Vector3D(1.3, 1.2, 3),
+        Vector3D position = new Vector3D(3.5, 1.2, 2.8),
 //                w_Vector = new Vector3D(Math.sin(Math.toRadians(-30)), 0, Math.cos(Math.toRadians(-30))),
                 w_Vector = new Vector3D(0, 0, 1),
                 v_Vector = new Vector3D(0, 1, 0);
@@ -37,6 +39,7 @@ public class Player implements TimeBound {
         this.mapX = -1;
         this.mapZ = -1;
 
+        updatePlayerHitbox();
         updatePlayerCollidables();
     }
 
@@ -61,12 +64,15 @@ public class Player implements TimeBound {
 
         controller.handleMovement();
 
-        controller.handleRotation(camera);
+        updatePlayerHitbox();
+
         controller.handleRotation();
 
         controller.handleFire();
 
-        camera.position = collisionHandler.handleCollisionWithPlayer(camera.position, playerCollidables);
+        camera.position = collisionHandler.handleCollisionWithPlayer(capsule, camera.position, playerCollidables);
+
+        updatePlayerHitbox();
 
         return true;
 
@@ -74,6 +80,12 @@ public class Player implements TimeBound {
 
     public void setView(GLU glu) {
         camera.setView(glu);
+    }
+
+    private void updatePlayerHitbox() {
+        Vector3D top = new Vector3D(camera.position.getX(), camera.position.getY() - 0.2, camera.position.getZ());
+        Vector3D bottom = new Vector3D(camera.position.getX(), HIT_RADIUS, camera.position.getZ());
+        capsule = new Capsule(bottom, top, HIT_RADIUS);
     }
 
     private void updatePlayerCollidables() {
@@ -91,6 +103,13 @@ public class Player implements TimeBound {
                     case (0):
                         WallBlock newWallBlock = new WallBlock(row, col);
                         playerCollidables.add(newWallBlock);
+                        break;
+                    case (2):
+                        Dummy dummy = new Dummy("src\\resources\\models\\18489_Knight_V1_.obj",
+                                "",
+                                "src\\resources\\models\\textures\\1165.jpg",
+                                row, col, 0);
+                        playerCollidables.add(dummy);
                         break;
                     default:
                 }
