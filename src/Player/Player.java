@@ -18,6 +18,7 @@ public class Player implements TimeBound {
     private List<Collidable> playerCollidables;
     private int mapX, mapZ;
 
+    public static List<Projectile> projectiles;
     public static Camera camera;
     public static final double HIT_RADIUS = 0.3;
 
@@ -31,6 +32,7 @@ public class Player implements TimeBound {
         controller = new Controller();
         collisionHandler = new CollisionHandler();
         playerCollidables = new ArrayList<>();
+        projectiles = new ArrayList<>();
 
         this.mapX = -1;
         this.mapZ = -1;
@@ -42,17 +44,27 @@ public class Player implements TimeBound {
         return camera;
     }
 
+
     public Controller getController() { return controller; }
 
     public boolean tick() {
 
+        for(int index = 0; index < projectiles.size(); ++index) {
+            boolean alive = projectiles.get(index).tick();
+            if (!alive) {
+                projectiles.remove(index);
+                --index;
+            }
+        }
+
         updatePlayerCollidables();
 
-        controller.handleMovement(camera);
+        controller.handleMovement();
 
         controller.handleRotation(camera);
+        controller.handleRotation();
 
-        controller.handleFire(camera);
+        controller.handleFire();
 
         camera.position = collisionHandler.handleCollisionWithPlayer(camera.position, playerCollidables);
 
