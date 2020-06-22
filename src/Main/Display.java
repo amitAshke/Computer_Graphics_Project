@@ -1,6 +1,7 @@
 package Main;
 
 import Player.Player;
+import Renderables.WavefrontObject;
 import com.jogamp.opengl.util.Animator;
 
 import javax.media.opengl.*;
@@ -19,6 +20,8 @@ public class Display implements GLEventListener {
     public static int MONITOR_WIDTH;
     public static int MONITOR_HEIGHT;
     public static final String TITLE = "CG_Project_Blue";
+    public static int projectileModel;
+    public static int dummyModel;
 
     static GLCanvas canvas = new GLCanvas();
     static Frame frame = new Frame();
@@ -87,6 +90,9 @@ public class Display implements GLEventListener {
         canvas.addMouseListener(world.getPlayer().getController().getInputHandler());
         canvas.addMouseMotionListener(world.getPlayer().getController().getInputHandler());
         canvas.addFocusListener(world.getPlayer().getController().getInputHandler());
+
+        projectileModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\Dagger.obj");
+        dummyModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\18489_Knight_V1_.obj");
     }
 
     public void dispose(GLAutoDrawable glAutoDrawable) {}
