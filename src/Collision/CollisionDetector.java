@@ -34,7 +34,7 @@ public class CollisionDetector {
                 (y - c.getY()) * (y - c.getY()) +
                 (z - c.getZ()) * (z - c.getZ()));
 
-        return distance < r + 0.0001;
+        return distance < r;
     }
 
     public boolean detectCollision(Capsule capsule1, Capsule capsule2) {

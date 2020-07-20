@@ -127,6 +127,10 @@ public class Dummy implements Collidable, Renderable {
     }
 
     public void projectileCollisionEffect() {
-
+        --hitPoints;
+        if (hitPoints <= 0) {
+            playerCollisionCapsule = null;
+            projectileCollisionCapsule = null;
+        }
     }
 }

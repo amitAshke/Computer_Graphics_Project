@@ -28,10 +28,9 @@ public class Render3D {
         gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
     }
 
-    public void renderAllV2(GLAutoDrawable glAutoDrawable, Player player, List<Renderable> renderables) {
+    public void renderAllV2(GL2 gl, Player player, List<Renderable> renderables) {
         float[] material = {0.8f,0.8f,0.8f,1.0f};
 
-        GL2 gl = glAutoDrawable.getGL().getGL2();
 
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 

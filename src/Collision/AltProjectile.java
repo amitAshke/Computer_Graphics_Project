@@ -27,7 +27,8 @@ public class AltProjectile extends Projectile implements Renderable, TimeBound {
         for (int i = 1; i <= projectileLimit; ++i) {
             double angle = (360.0 / projectileLimit) * i + yrot;
             Vector3D projForward = forward.rotate(Math.toRadians(angle), 'y').normalize();
-            projectiles.add(new Projectile(model, material, texture, position, projForward, up));
+//            projectiles.add(new Projectile(model, material, texture, position, projForward, up));
+            projectiles.add(new StandardProjectile(model, material, texture, position, projForward, up));
         }
 
         this.position = position;
@@ -44,28 +45,7 @@ public class AltProjectile extends Projectile implements Renderable, TimeBound {
 
     @Override
     protected void updateProjectileCollidables() {
-        if (mapX == (int)position.getX() && mapZ == (int)position.getZ()) {
-            return;
-        }
-        mapX = (int)position.getX();
-        mapZ = (int)position.getZ();
-        projectileCollidables.clear();
-        int rowLowerLimit = Math.max(0, mapX - 1), rowUpperLimit = Math.min(mapX + 2, World.map.length);
-        int colLowerLimit = Math.max(0, mapZ - 1), colUpperLimit = Math.min(mapZ + 2, World.map[0].length);
-        for (int row = rowLowerLimit; row < rowUpperLimit; ++row) {
-            for (int col = colLowerLimit; col < colUpperLimit; ++col) {
-                switch (World.map[row][col]) {
-                    case (2):
-                        Dummy dummy = new Dummy(row, col, 0);
-                        projectileCollidables.add(dummy);
-                        break;
-                    default:
-                }
-            }
-        }
-        for (Projectile projectile : projectiles) {
-            projectile.setProjectileCollidables(projectileCollidables);
-        }
+        projectileCollidables.addAll(World.dummies);
     }
 
     @Override
@@ -76,7 +56,6 @@ public class AltProjectile extends Projectile implements Renderable, TimeBound {
             projectile.setPosition(position);
             projectile.updateCollisionCapsule();
         }
-        updateProjectileCollidables();
     }
 
     private void rotateProjectiles() {
@@ -115,7 +94,6 @@ public class AltProjectile extends Projectile implements Renderable, TimeBound {
             if (!detached) {
                 yrot = (yrot + 2) % 360;
                 this.setPosition(Player.camera.position);
-//                updateProjectileCollidables();
                 for(int index = 0; index < projectiles.size(); ++index) {
                     Projectile projectile = projectiles.get(index);
                     Collidable collidable = collisionHandler.handleCollisionWithProjectile(projectile.capsule, projectileCollidables);
@@ -126,7 +104,6 @@ public class AltProjectile extends Projectile implements Renderable, TimeBound {
                 }
             }
         } else {
-//            this.resetValues();
             return false;
         }
         return true;

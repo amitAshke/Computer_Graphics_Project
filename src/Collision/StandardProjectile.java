@@ -5,6 +5,7 @@ import Main.Display;
 import Main.World;
 import Renderables.*;
 import Time.TimeBound;
+import com.jogamp.opengl.util.texture.Texture;
 
 import javax.media.opengl.GL2;
 import java.util.List;
@@ -22,9 +23,13 @@ public class StandardProjectile extends Projectile implements Renderable, TimeBo
         updateProjectileCollidables();
     }
 
+    public StandardProjectile(WavefrontObject model, MaterialProps material, Texture texture,
+                      Vector3D position, Vector3D forward, Vector3D up) {
+        super(model, material, texture, position, forward, up);
+    }
+
     private void setDefaults() {
         this.speed = 0.01;
-//        this.independence = true;
     }
 
     @Override
@@ -36,9 +41,6 @@ public class StandardProjectile extends Projectile implements Renderable, TimeBo
             if (material.getShininess() != -1) {
                 gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, material.getShininess());
             }
-//            if (material.getDissolve() != -1) {
-//                gl.glMaterialf(GL2.GL_FRONT_AND_BACK, , material.getShininess());
-//            }
             if (material.getLuminance() != -1) {
                 gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_LUMINANCE, material.getLuminance());
             }
@@ -55,9 +57,7 @@ public class StandardProjectile extends Projectile implements Renderable, TimeBo
 
         gl.glPushMatrix();
 
-        gl.glTranslated(position.getX() + forward.getX() * 0.2 + up.getX() * -0.1,
-                position.getY() + forward.getY() * 0.2 + up.getY() * -0.1,
-                position.getZ() + forward.getZ() * 0.2 + up.getZ() * -0.1);
+        gl.glTranslated(position.getX(), position.getY(), position.getZ());
 
         gl.glRotated(leftRightAngle, 0, 1, 0);
         gl.glRotated(upDownAngle, 1, 0, 0);
@@ -94,7 +94,6 @@ public class StandardProjectile extends Projectile implements Renderable, TimeBo
                         projectileCollidables.add(newWallBlock);
                         break;
                     case (2):
-                        projectileCollidables.add(new Dummy(row, col, 0));
                     case (1):
                         FloorTile newFloorTile = new FloorTile(row, col);
                         projectileCollidables.add(newFloorTile);
@@ -104,6 +103,7 @@ public class StandardProjectile extends Projectile implements Renderable, TimeBo
                 }
             }
         }
+        projectileCollidables.addAll(World.dummies);
     }
 
     public void setProjectileCollidables(List<Collidable> projectileCollidables) {
@@ -125,7 +125,7 @@ public class StandardProjectile extends Projectile implements Renderable, TimeBo
             }
         } else {
             long sinceCollision = System.nanoTime() - collisionTime;
-            if (sinceCollision > 1000000000.0) {
+            if (sinceCollision > 1000000000.0 / 5) {
                 this.resetValues();
                 return false;
             }

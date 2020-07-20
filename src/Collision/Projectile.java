@@ -107,7 +107,7 @@ public class Projectile implements Renderable, TimeBound {
     }
 
     public double calculateUpDownAngle() {
-        Vector3D projectedForward = new Vector3D(forward.getX(), 0, forward.getZ());
+        Vector3D projectedForward = new Vector3D(forward.getX(), 0, forward.getZ()).normalize();
         double angle = Math.toDegrees(Math.acos(projectedForward.dotProduct(forward)));
 
         if (forward.getY() > 0) {
@@ -118,7 +118,7 @@ public class Projectile implements Renderable, TimeBound {
     }
 
     public double calculateLeftRightAngle() {
-        Vector3D projectedForward = new Vector3D(forward.getX(), 0, forward.getZ());
+        Vector3D projectedForward = new Vector3D(forward.getX(), 0, forward.getZ()).normalize();
         double angle = 0;
 
         if (forward.getX() < 0) {

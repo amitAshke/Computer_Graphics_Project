@@ -44,6 +44,9 @@ public class CollisionHandler {
                     collided = collidable;
                 }
             }
+            if (collided != null) {
+                collided.projectileCollisionEffect();
+            }
         }
         return collided;
     }

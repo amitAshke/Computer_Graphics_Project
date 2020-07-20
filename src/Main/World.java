@@ -70,10 +70,17 @@ public class World implements TimeBound {
 
         player.tick();
 
+        for (int i = 0; i < dummies.size(); ++i) {
+            if (dummies.get(i).getHitPoints() <= 0) {
+                dummies.remove(i);
+                --i;
+            }
+        }
+
         return true;
     }
 
-    public void render(GLAutoDrawable glAutoDrawable) {
-        render3D.renderAllV2(glAutoDrawable, player, renderables);
+    public void render(GL2 gl) {
+        render3D.renderAllV2(gl, player, renderables);
     }
 }
