@@ -12,12 +12,13 @@ import java.util.List;
 
 public class Player implements TimeBound {
 
-    private Controller controller;
+    private static Controller controller;
     private CollisionHandler collisionHandler;
     private List<Collidable> playerCollidables;
     private int mapX, mapZ;
     private Capsule capsule;
 
+    public static int projectileLimit = 4;
     public static List<Projectile> projectiles;
     public static AltProjectile altProjectile = null;
     public static Camera camera;
@@ -42,15 +43,18 @@ public class Player implements TimeBound {
         updatePlayerCollidables();
     }
 
+    public static Controller getController() { return controller; }
 
-
-    public Controller getController() { return controller; }
+    public int getProjectileLimit() {
+        return projectileLimit;
+    }
 
     public boolean tick() {
 
         if (altProjectile != null) {
+            boolean alive = altProjectile.tick();
             if (!altProjectile.tick()) {
-                altProjectile = null;
+                controller.setAltActive(alive);
             }
         }
 
@@ -106,16 +110,10 @@ public class Player implements TimeBound {
                         WallBlock newWallBlock = new WallBlock(row, col);
                         playerCollidables.add(newWallBlock);
                         break;
-                    case (2):
-                        Dummy dummy = new Dummy("src\\resources\\models\\18489_Knight_V1_.obj",
-                                "",
-                                "src\\resources\\models\\textures\\1165.jpg",
-                                row, col, 0);
-                        playerCollidables.add(dummy);
-                        break;
                     default:
                 }
             }
         }
+        playerCollidables.addAll(World.dummies);
     }
 }
