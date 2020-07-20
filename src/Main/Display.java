@@ -22,6 +22,8 @@ public class Display implements GLEventListener {
     public static final String TITLE = "CG_Project_Blue";
     public static int projectileModel;
     public static int dummyModel;
+    public static int lampBaseModel;
+    public static int sphereModel;
 
     static GLCanvas canvas = new GLCanvas();
     static Frame frame = new Frame();
@@ -78,6 +80,14 @@ public class Display implements GLEventListener {
         gl.glEnable(GL2.GL_DEPTH_TEST); // Enables Depth Testing
         gl.glDepthFunc(GL2.GL_LEQUAL); // The Type Of Depth Testing To Do
 
+        // Initialize lighting
+        float	ambient[] = {0.1f,0.1f,0.1f,1.0f};
+        float	diffuse0[] = {1f,1f,1f,1.0f};
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, ambient, 0);
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, diffuse0, 0);
+        gl.glEnable(GL2.GL_LIGHT0);
+        gl.glEnable(GL2.GL_LIGHTING);
+
         // Really Nice Perspective Calculations
         gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
@@ -93,6 +103,8 @@ public class Display implements GLEventListener {
 
         projectileModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\Dagger.obj");
         dummyModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\18489_Knight_V1_.obj");
+        lampBaseModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\lampobj.obj");
+        sphereModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\sphere.obj");
     }
 
     public void dispose(GLAutoDrawable glAutoDrawable) {}

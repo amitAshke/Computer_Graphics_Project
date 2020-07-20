@@ -3,12 +3,10 @@ package Main;
 import Collision.Dummy;
 import LinearAlgebra.Vectors.Vector3D;
 import Player.Player;
-import Renderables.CeilingTile;
-import Renderables.FloorTile;
-import Renderables.Renderable;
-import Renderables.WallBlock;
+import Renderables.*;
 import Time.TimeBound;
 
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +54,14 @@ public class World implements TimeBound {
                                 "",
                                 row, col, 0);
                         dummies.add(dummy);
+                        renderables.add(new FloorTile(row, col));
+                        renderables.add(new CeilingTile(row, col));
+                        break;
+                    case (3):
+                        renderables.add(new Lamp("src\\resources\\models\\textures\\black.png", row, col));
+                        renderables.add(new FloorTile(row, col));
+                        renderables.add(new CeilingTile(row, col));
+                        break;
                     case (1):
                         renderables.add(new FloorTile(row, col));
                         renderables.add(new CeilingTile(row, col));
