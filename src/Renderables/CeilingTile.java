@@ -27,7 +27,7 @@ public class CeilingTile implements Renderable, Collidable {
         aabb = new AABB(x1, x2, y1, y2, z1, z2);
 
         try {
-            String filename="src\\resources\\textures\\stone_floor_texture.jpg";
+            String filename="src\\resources\\textures\\metal_ceiling_tiles.jpg";
             floorTex = TextureIO.newTexture(new File( filename ),true);
         } catch (IOException e) {
             e.printStackTrace();

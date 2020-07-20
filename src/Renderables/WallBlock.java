@@ -29,7 +29,7 @@ public class WallBlock implements Renderable, Collidable {
 
 //        if (wallTex == null) {
             try {
-                String filename="src\\resources\\textures\\brick_wall_texture.jpg";
+                String filename="src\\resources\\textures\\stone_wall.jpg";
                 wallTex = TextureIO.newTexture(new File( filename ),true);
             } catch (IOException e) {
                 e.printStackTrace();
