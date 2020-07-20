@@ -12,16 +12,18 @@ public class MapReader {
             DataInputStream din = new DataInputStream(fis);
             BufferedReader br = new BufferedReader(new InputStreamReader(din));
             String line  = br.readLine();
-            int size, row = 0;
+            int rowSize, colSize, row = 0;
             if (line != null) {
-                size = Integer.parseInt(line);
-                if (size <= 0) {
+                String[] split = line.split(" ");
+                rowSize = Integer.parseInt(split[0]);
+                colSize = Integer.parseInt((split[1]));
+                if (rowSize <= 0 || colSize <= 0) {
                     return null;
                 }
             } else {
                 return null;
             }
-            int[][] map = new int[size][size];
+            int[][] map = new int[rowSize][colSize];
             while ((line = br.readLine()) != null)   {
                 String[] split = line.split(" ");
                 for (int col = 0; col < split.length; ++col) {
