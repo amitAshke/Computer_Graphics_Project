@@ -31,7 +31,7 @@ public class Lamp implements Renderable {
 
     @Override
     public void render(GL2 gl) {
-        float[] fPosition = { (float) position.getX(), (float) position.getY() - 0.1f, (float) position.getZ(), 1.0f };
+        float[] fPosition = { (float) position.getX(), (float) position.getY(), (float) position.getZ(), 1.0f };
 
         if (material != null) {
             if (material.getShininess() != -1) {
@@ -58,14 +58,14 @@ public class Lamp implements Renderable {
 
         gl.glPushMatrix();
 
-        gl.glTranslated(position.getX(), position.getY() + 0.2, position.getZ());
+        gl.glTranslated(position.getX(), position.getY() + 0.4, position.getZ());
         gl.glCallList(Display.lampBaseModel);
 
         if (texture != null) {
             texture.disable(gl);
         }
 
-        gl.glTranslated(0, -0.2, 0);
+        gl.glTranslated(0, -0.1, 0);
         gl.glScaled(0.8, 0.8, 0.8);
         gl.glCallList(Display.sphereModel);
 
