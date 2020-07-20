@@ -2,7 +2,6 @@ package Player;
 
 import Collision.*;
 import LinearAlgebra.Vectors.Vector3D;
-import Main.World;
 
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
@@ -10,7 +9,6 @@ import java.util.HashMap;
 public class Controller {
 
     private InputHandler inputHandler;
-
     private double straightSpeed = 0.05, diagonalSpeed = straightSpeed * Math.sqrt(2) / 2;
     private double horizontalSensitivity = 0.03, verticalSensitivity = 0.03;
     private boolean altActive = false;
@@ -20,6 +18,10 @@ public class Controller {
     }
 
     public InputHandler getInputHandler() { return inputHandler; }
+
+    public void setAltActive(boolean altActive) {
+        this.altActive = altActive;
+    }
 
     public void handleMovement() {
         Camera camera = Player.camera;
@@ -93,10 +95,12 @@ public class Controller {
         Camera camera = Player.camera;
 
         if (inputHandler.key.get(1)) {
-            Player.projectiles.add(new StandardProjectile("src\\resources\\models\\Dagger.obj",
-                    "src\\resources\\models\\textures\\Dagger_1K_Diffuse.png",
-                    "",
-                    camera.position, camera.w_Vector, camera.v_Vector));
+            if (Player.projectiles.size() < Player.projectileLimit) {
+                Player.projectiles.add(new StandardProjectile("src\\resources\\models\\Dagger.obj",
+                        "src\\resources\\models\\textures\\Dagger_1K_Diffuse.png",
+                        "",
+                        camera.position, camera.w_Vector, camera.v_Vector));
+            }
             inputHandler.resetMouseButtons();
         } else if (inputHandler.key.get(3)) {
             if (!altActive && Player.projectiles.size() == 0) {
