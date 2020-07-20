@@ -4,17 +4,21 @@ import Collision.*;
 import LinearAlgebra.Vectors.Vector3D;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.HashMap;
 
 public class Controller {
 
     private InputHandler inputHandler;
+    private SoundPlayer soundPlayer;
     private double straightSpeed = 0.05, diagonalSpeed = straightSpeed * Math.sqrt(2) / 2;
     private double horizontalSensitivity = 0.03, verticalSensitivity = 0.03;
     private boolean altActive = false;
+    File soundFile = new File("src\\resources\\sfx\\StandardActivation1.wav");
 
     public Controller() {
         this.inputHandler = new InputHandler();
+        this.soundPlayer = new SoundPlayer();
     }
 
     public InputHandler getInputHandler() { return inputHandler; }
@@ -100,6 +104,7 @@ public class Controller {
                         "src\\resources\\models\\textures\\Dagger_1K_Diffuse.png",
                         "",
                         camera.position, camera.w_Vector, camera.v_Vector));
+                soundPlayer.playStandard();
             }
             inputHandler.resetMouseButtons();
         } else if (inputHandler.key.get(3)) {
@@ -110,6 +115,7 @@ public class Controller {
                         camera.position, new Vector3D(0, 0, 1));
                 inputHandler.resetMouseButtons();
                 altActive = true;
+                soundPlayer.playSpecial();
             } else if (altActive) {
                 Player.altProjectile.detachProjectiles();
                 Player.projectiles = Player.altProjectile.getProjectiles();
