@@ -3,12 +3,14 @@ package Main;
 import Player.Player;
 import Renderables.WavefrontObject;
 import com.jogamp.opengl.util.Animator;
+import com.jogamp.opengl.util.gl2.GLUT;
 
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -20,19 +22,20 @@ public class Display implements GLEventListener {
     public static int MONITOR_WIDTH;
     public static int MONITOR_HEIGHT;
     public static final String TITLE = "CG_Project_Blue";
+
     public static int projectileModel;
     public static int dummyModel;
     public static int lampBaseModel;
     public static int sphereModel;
 
-    static GLCanvas canvas = new GLCanvas();
+    static GLCanvas canvas;
     static Frame frame = new Frame();
-    static Animator animator = new Animator(canvas);
+    static Animator animator;
     private World world;
     Render3D render3D;
 
-    private int framesRendered = 0, tickCount = 0;
-    private double unprocessedSeconds = 0, secondsPerTick = 1 / 60.0;
+    private int framesRendered = 0;
+    private double unprocessedSeconds = 0;
     private long previousTime = System.nanoTime();
 
 
@@ -44,7 +47,9 @@ public class Display implements GLEventListener {
         MONITOR_HEIGHT = (int)t.getScreenSize().getHeight();
         Cursor noCursor = t.createCustomCursor(i, new Point(0, 0), "none");
 
+        canvas = createCanvas();
         canvas.addGLEventListener(new Display());
+
         frame.add(canvas);
         frame.pack();
         frame.setTitle(TITLE);
@@ -63,14 +68,30 @@ public class Display implements GLEventListener {
                 }).start();
             }
         });
-        frame.addWindowListener(new WindowAdapter(){
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+        animator = new Animator(canvas);
         animator.start();
         canvas.requestFocus();
     }
+
+    public static GLCanvas createCanvas() {
+        // create a profile, in this case OpenGL 2 or later
+        GLProfile profile = GLProfile.get(GLProfile.GL2);
+
+        // configure context
+        GLCapabilities capabilities = new GLCapabilities(profile);
+
+        // setup z-buffer
+        capabilities.setDepthBits(16);
+
+        // for anti-aliasing
+        capabilities.setSampleBuffers(true);
+        capabilities.setNumSamples(2);
+
+        // initialize a GLDrawable of your choice
+        GLCanvas canvas = new GLCanvas(capabilities);
+        return canvas;
+    }
+
 
     public void init(GLAutoDrawable glAutoDrawable) {
         GL2 gl = glAutoDrawable.getGL().getGL2();
@@ -111,24 +132,37 @@ public class Display implements GLEventListener {
 
     public void display(GLAutoDrawable glAutoDrawable) {
         if (world == null) { return; }
-        long currentTime = System.nanoTime();
-        long passedTime = currentTime - previousTime;
+        GL2 gl = glAutoDrawable.getGL().getGL2();
+        GLUT glut = new GLUT();
+        long currentTime = System.nanoTime(), passedTime = currentTime - previousTime;
+        double secondsPerTick = 1 / 60.0;
+        boolean isPaused = Player.getController().getInputHandler().key.get(KeyEvent.VK_F1);
+
         previousTime = currentTime;
         unprocessedSeconds += passedTime / 1000000000.0;
 
-        if (unprocessedSeconds > secondsPerTick) {
-            unprocessedSeconds %= secondsPerTick;
-
-            world.tick();
-            ++tickCount;
-            if (tickCount % 60 == 0) {
-                System.out.println(framesRendered + " FPS");
-                previousTime += 1000;
-                framesRendered = 0;
+        if (!isPaused) {
+            if (unprocessedSeconds > secondsPerTick) {
+                unprocessedSeconds %= secondsPerTick;
+                world.tick();
             }
         }
-        world.render(glAutoDrawable);
+        world.render(gl);
         ++framesRendered;
+
+        System.out.println(1 / unprocessedSeconds + " FPS");
+        gl.glDisable( GL.GL_TEXTURE_2D );
+
+
+        if (isPaused) {
+            renderInstructions(gl, glut);
+        } else {
+            gl.glColor3f( 1.0f, 1.0f, 1.0f );
+            gl.glWindowPos2d( 20, WINDOW_HEIGHT - 60 );
+            glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, (int) (1 / unprocessedSeconds) + " FPS");
+            gl.glRasterPos2d( 0, 0 );
+            gl.glColor3f( 1.0f, 1.0f, 1.0f );
+        }
     }
 
     public void reshape(GLAutoDrawable glAutoDrawable, int i, int i1, int i2, int i3) {
@@ -137,6 +171,31 @@ public class Display implements GLEventListener {
         gl.glLoadIdentity();
         Render3D.glu.gluPerspective(50, Display.WINDOW_WIDTH / Display.WINDOW_HEIGHT, Player.HIT_RADIUS - 0.2,1000);
         gl.glMatrixMode(GL2.GL_MODELVIEW);
-        gl.glLoadIdentity();
+    }
+
+    private void renderInstructions(GL2 gl, GLUT glut) {
+        gl.glDisable( GL.GL_TEXTURE_2D );
+        gl.glColor3f( 1.0f, 1.0f, 1.0f );
+
+        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 100 );
+        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "Objective: shoot the knight status.");
+        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 140 );
+        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "Controls:");
+        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 160 );
+        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "W - move forward");
+        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 180 );
+        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "A - move left:");
+        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 200 );
+        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "S - move back:");
+        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 220 );
+        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "D - move right:");
+        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 240 );
+        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "Left mouse button - shoot");
+        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 260 );
+        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "right mouse button - activate special ability");
+        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 280 );
+        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "right mouse button while special ability is active - shoot all projectiles");
+        gl.glRasterPos2d( 0, 0 );
+        gl.glColor3f( 1.0f, 1.0f, 1.0f );
     }
 }
