@@ -1,20 +1,16 @@
 package Main;
 
 import Collision.Dummy;
-import LinearAlgebra.Vectors.Vector3D;
-import Player.Player;
 import Renderables.*;
 import Time.TimeBound;
 
 import javax.media.opengl.GL2;
-import javax.media.opengl.GLAutoDrawable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class World implements TimeBound {
 
     private MapReader mapReader;
-    private Player player;
     private List<Renderable> renderables;
     private Render3D render3D;
 
@@ -29,15 +25,10 @@ public class World implements TimeBound {
 
         this.map = mapReader.loadMap(mapFilePath);
         getRenderablesAndCollidablesInMap();
-        this.player = new Player();
     }
 
     public int[][] getMap() {
         return map;
-    }
-
-    public Player getPlayer() {
-        return player;
     }
 
     private void getRenderablesAndCollidablesInMap() {
@@ -74,8 +65,6 @@ public class World implements TimeBound {
 
     public boolean tick() {
 
-        player.tick();
-
         for (int i = 0; i < dummies.size(); ++i) {
             if (dummies.get(i).getHitPoints() <= 0) {
                 dummies.remove(i);
@@ -87,6 +76,6 @@ public class World implements TimeBound {
     }
 
     public void render(GL2 gl) {
-        render3D.renderAllV2(gl, player, renderables);
+        render3D.renderAllV2(gl, renderables);
     }
 }

@@ -28,20 +28,44 @@ public class Render3D {
         gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
     }
 
-    public void renderAllV2(GL2 gl, Player player, List<Renderable> renderables) {
+    public void renderAllV2(GL2 gl, List<Renderable> renderables) {
         float[] material = {0.8f,0.8f,0.8f,1.0f};
 
+//        gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 
-        gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
-
-        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-        gl.glLoadIdentity();
-        player.setView(glu);
+//        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+//        gl.glLoadIdentity();
+//        player.setView(glu);
 
         gl.glTexParameteri(GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_T, GL2.GL_REPEAT);
         gl.glTexParameteri(GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_S, GL2.GL_REPEAT);
 
         gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, material, 0);
+
+        for (Dummy dummy : World.dummies) {
+            dummy.render(gl);
+        }
+
+        for (Renderable renderable : renderables) {
+            renderable.render(gl);
+        }
+
+//        gl.glPopMatrix();
+    }
+
+    public void renderPlayer(GL2 gl, Player player) {
+//        float[] material = {0.8f,0.8f,0.8f,1.0f};
+
+        gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+
+//        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+//        gl.glLoadIdentity();
+        player.setView(glu);
+
+        gl.glTexParameteri(GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_T, GL2.GL_REPEAT);
+        gl.glTexParameteri(GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_S, GL2.GL_REPEAT);
+
+//        gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, material, 0);
 
         if (Player.altProjectile != null) {
             Player.altProjectile.render(gl);
@@ -51,12 +75,6 @@ public class Render3D {
             projectile.render(gl);
         }
 
-        for (Dummy dummy : World.dummies) {
-            dummy.render(gl);
-        }
-
-        for (Renderable renderable : renderables) {
-            renderable.render(gl);
-        }
+//        gl.glPopMatrix();
     }
 }
