@@ -49,6 +49,8 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
     public void resetMouseButtons() {
         key.replace(1, false);
         key.replace(3, false);
+        key.replace(KeyEvent.VK_F1, false);
+        key.replace(KeyEvent.VK_F2, false);
     }
 
     private void recenterMouse() {
@@ -74,8 +76,6 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         int keyCode = keyEvent.getKeyCode();
         if (keyCode != KeyEvent.VK_F1 && keyCode != KeyEvent.VK_F2) {
             key.replace(keyCode, true);
-        } else {
-            key.replace(keyCode, !key.get(keyCode));
         }
     }
 
@@ -84,12 +84,13 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         int keyCode = keyEvent.getKeyCode();
         if (keyCode != KeyEvent.VK_F1 && keyCode != KeyEvent.VK_F2) {
             key.replace(keyCode, false);
+        } else {
+            key.replace(keyCode, !key.get(keyCode));
         }
     }
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-
     }
 
     @Override
