@@ -9,19 +9,18 @@ import java.util.HashMap;
 
 public class Controller {
 
-    private InputHandler inputHandler;
     private SoundPlayer soundPlayer;
     private double straightSpeed = 0.05, diagonalSpeed = straightSpeed * Math.sqrt(2) / 2;
     private double horizontalSensitivity = 0.03, verticalSensitivity = 0.03;
     private boolean altActive = false;
     File soundFile = new File("src\\resources\\sfx\\StandardActivation1.wav");
 
+    public static InputHandler InputHandler;
+
     public Controller() {
-        this.inputHandler = new InputHandler();
+        InputHandler = new InputHandler();
         this.soundPlayer = new SoundPlayer();
     }
-
-    public InputHandler getInputHandler() { return inputHandler; }
 
     public void setAltActive(boolean altActive) {
         this.altActive = altActive;
@@ -29,7 +28,7 @@ public class Controller {
 
     public void handleMovement() {
         Camera camera = Player.camera;
-        HashMap<Integer, Boolean> key = inputHandler.key;
+        HashMap<Integer, Boolean> key = InputHandler.key;
 
         Vector3D oldPosition = camera.position, newPosition = oldPosition, u_Projection = camera.u_Vector, w_Projection;
 
@@ -43,7 +42,7 @@ public class Controller {
             }
         }
 
-        if (inputHandler.getMovementKeysPressed() > 1) {
+        if (InputHandler.getMovementKeysPressed() > 1) {
             if (key.get(KeyEvent.VK_W) && key.get(KeyEvent.VK_D)) {
                 newPosition = newPosition.scaleAdd(diagonalSpeed, w_Projection);
                 newPosition = newPosition.scaleAdd(diagonalSpeed, u_Projection);
@@ -84,21 +83,21 @@ public class Controller {
 
     public void handleRotation() {
         Camera camera = Player.camera;
-        double leftRightAngle = inputHandler.mouseDistance.getX() * horizontalSensitivity;
-        double upDownAngle = inputHandler.mouseDistance.getY() * verticalSensitivity;
+        double leftRightAngle = InputHandler.mouseDistance.getX() * horizontalSensitivity;
+        double upDownAngle = InputHandler.mouseDistance.getY() * verticalSensitivity;
 
         if (leftRightAngle != 0 || upDownAngle != 0) {
             camera.rotateUpDown(upDownAngle);
             camera.rotateLeftRight(leftRightAngle);
             camera.fixOrthogonality();
         }
-        inputHandler.resetMouseDistance();
+        InputHandler.resetMouseDistance();
     }
 
     public void handleFire() {
         Camera camera = Player.camera;
 
-        if (inputHandler.key.get(1)) {
+        if (InputHandler.key.get(1)) {
             if (Player.projectiles.size() < Player.projectileLimit) {
                 Player.projectiles.add(new StandardProjectile("src\\resources\\models\\Dagger.obj",
                         "src\\resources\\models\\textures\\Dagger_1K_Diffuse.png",
@@ -106,24 +105,24 @@ public class Controller {
                         camera.position, camera.w_Vector, camera.v_Vector));
                 soundPlayer.playStandard();
             }
-            inputHandler.resetMouseButtons();
-        } else if (inputHandler.key.get(3)) {
+            InputHandler.resetMouseButtons();
+        } else if (InputHandler.key.get(3)) {
             if (!altActive && Player.projectiles.size() == 0) {
                 Player.altProjectile = new AltProjectile("src\\resources\\models\\Dagger.obj",
                         "src\\resources\\models\\textures\\Dagger_1K_Diffuse.png",
                         "",
                         camera.position, new Vector3D(0, 0, 1));
-                inputHandler.resetMouseButtons();
+                InputHandler.resetMouseButtons();
                 altActive = true;
                 soundPlayer.playSpecial();
             } else if (altActive) {
                 Player.altProjectile.detachProjectiles();
                 Player.projectiles = Player.altProjectile.getProjectiles();
                 altActive = false;
-                inputHandler.resetMouseButtons();
+                InputHandler.resetMouseButtons();
                 Player.altProjectile = null;
             }
         }
-        inputHandler.resetMouseButtons();
+        InputHandler.resetMouseButtons();
     }
 }
