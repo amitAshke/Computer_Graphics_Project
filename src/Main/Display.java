@@ -15,6 +15,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
+import static Player.Controller.InputHandler;
+
 public class Display implements GLEventListener {
 
     public static final int WINDOW_WIDTH = 800;
@@ -31,8 +33,9 @@ public class Display implements GLEventListener {
     static GLCanvas canvas;
     static Frame frame = new Frame();
     static Animator animator;
+    private static LevelManager levelManager;
     private World world;
-    Render3D render3D;
+    private Render3D render3D;
 
     private int framesRendered = 0;
     private double unprocessedSeconds = 0;
@@ -115,12 +118,16 @@ public class Display implements GLEventListener {
 
         render3D = new Render3D(gl);
 
-        world = new World("src\\map.txt", render3D);
+        levelManager = new LevelManager(render3D);
 
-        canvas.addKeyListener(world.getPlayer().getController().getInputHandler());
-        canvas.addMouseListener(world.getPlayer().getController().getInputHandler());
-        canvas.addMouseMotionListener(world.getPlayer().getController().getInputHandler());
-        canvas.addFocusListener(world.getPlayer().getController().getInputHandler());
+        world = levelManager.getLevel();
+
+//        world = new World("src\\map1.txt", render3D);
+
+        canvas.addKeyListener(InputHandler);
+        canvas.addMouseListener(InputHandler);
+        canvas.addMouseMotionListener(InputHandler);
+        canvas.addFocusListener(InputHandler);
 
         projectileModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\Dagger.obj");
         dummyModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\18489_Knight_V1_.obj");
@@ -136,7 +143,7 @@ public class Display implements GLEventListener {
         GLUT glut = new GLUT();
         long currentTime = System.nanoTime(), passedTime = currentTime - previousTime;
         double secondsPerTick = 1 / 60.0;
-        boolean isPaused = Player.getController().getInputHandler().key.get(KeyEvent.VK_F1);
+        boolean isPaused = InputHandler.key.get(KeyEvent.VK_F1);
 
         previousTime = currentTime;
         unprocessedSeconds += passedTime / 1000000000.0;
@@ -144,14 +151,19 @@ public class Display implements GLEventListener {
         if (!isPaused) {
             if (unprocessedSeconds > secondsPerTick) {
                 unprocessedSeconds %= secondsPerTick;
+                levelManager.player.tick();
                 world.tick();
             }
         }
+        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+        gl.glLoadIdentity();
+
+        render3D.renderPlayer(gl, levelManager.player);
         world.render(gl);
         ++framesRendered;
 
-        System.out.println(1 / unprocessedSeconds + " FPS");
         gl.glDisable( GL.GL_TEXTURE_2D );
+        gl.glPopMatrix();
 
 
         if (isPaused) {
@@ -162,6 +174,12 @@ public class Display implements GLEventListener {
             glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, (int) (1 / unprocessedSeconds) + " FPS");
             gl.glRasterPos2d( 0, 0 );
             gl.glColor3f( 1.0f, 1.0f, 1.0f );
+        }
+
+        if (world.dummies.isEmpty() || InputHandler.key.get(KeyEvent.VK_F2)) {
+            System.out.println("New Level");
+//            renderLoading(gl, glut);
+            world = levelManager.getLevel();
         }
     }
 
@@ -195,7 +213,21 @@ public class Display implements GLEventListener {
         glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "right mouse button - activate special ability");
         gl.glWindowPos2d( 20, WINDOW_HEIGHT - 280 );
         glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "right mouse button while special ability is active - shoot all projectiles");
+
         gl.glRasterPos2d( 0, 0 );
         gl.glColor3f( 1.0f, 1.0f, 1.0f );
     }
+
+//    private void renderLoading(GL2 gl, GLUT glut) {
+//        gl.glDisable( GL.GL_TEXTURE_2D );
+//        gl.glColor3f( 1.0f, 1.0f, 1.0f );
+//
+//        gl.glWindowPos2d( WINDOW_WIDTH / 2 - 50, WINDOW_HEIGHT / 2 );
+//        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "Loading...");
+//
+//        gl.glRasterPos2d( 0, 0 );
+//        gl.glColor3f( 1.0f, 1.0f, 1.0f );
+//    }
+
+//    private void renderYouWin()
 }
