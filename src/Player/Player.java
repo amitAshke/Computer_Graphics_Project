@@ -12,12 +12,12 @@ import java.util.List;
 
 public class Player implements TimeBound {
 
-    private static Controller controller;
     private CollisionHandler collisionHandler;
     private List<Collidable> playerCollidables;
     private int mapX, mapZ;
     private Capsule capsule;
 
+    public static Controller controller;
     public static int projectileLimit = 4;
     public static List<Projectile> projectiles;
     public static AltProjectile altProjectile = null;
@@ -40,7 +40,7 @@ public class Player implements TimeBound {
         this.mapZ = -1;
 
         updatePlayerHitbox();
-        updatePlayerCollidables();
+//        updatePlayerCollidables();
     }
 
     public static Controller getController() { return controller; }
