@@ -13,6 +13,14 @@ public class MapReader {
             BufferedReader br = new BufferedReader(new InputStreamReader(din));
             String line  = br.readLine();
             int rowSize, colSize, row = 0;
+            while ((line = br.readLine()) != null) {
+                String[] split = line.split(" ");
+                if (split[0].equals("#")) {
+                    continue;
+                } else {
+                    break;
+                }
+            }
             if (line != null) {
                 String[] split = line.split(" ");
                 rowSize = Integer.parseInt(split[0]);
@@ -26,6 +34,9 @@ public class MapReader {
             int[][] map = new int[rowSize][colSize];
             while ((line = br.readLine()) != null)   {
                 String[] split = line.split(" ");
+                if (split[0].equals("#") || line.equals("")) {
+                    continue;
+                }
                 for (int col = 0; col < split.length; ++col) {
                     map[row][col] = Integer.parseInt(split[col]);
                 }
