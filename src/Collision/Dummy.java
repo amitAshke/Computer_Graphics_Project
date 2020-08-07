@@ -18,7 +18,7 @@ public class Dummy implements Collidable, Renderable {
     private MaterialProps material;
     private Texture texture;
     private Vector3D position;
-    private double leftRightAngle, projectileHitRadius = 0.15, playerHitRadius = 0.4, playerHitHeight = 1.2, projectileHitHeight = 1.4;
+    private double leftRightAngle, projectileHitRadius = 0.15, playerHitRadius = 0.4, playerHitHeight = 1.2, projectileHitHeight = 1.2;
     private int hitPoints = 3;
     private Capsule playerCollisionCapsule, projectileCollisionCapsule;
 
