@@ -22,7 +22,7 @@ public class Player implements TimeBound {
     public static List<Projectile> projectiles;
     public static AltProjectile altProjectile = null;
     public static Camera camera;
-    public static final double HIT_RADIUS = 0.3;
+    public static final double HIT_RADIUS = 0.3, COOLDOWN = 0.3;
 
     public Player() {
 

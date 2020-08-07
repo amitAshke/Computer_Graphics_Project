@@ -12,6 +12,7 @@ public class Controller {
     private SoundPlayer soundPlayer;
     private double straightSpeed = 0.05, diagonalSpeed = straightSpeed * Math.sqrt(2) / 2;
     private double horizontalSensitivity = 0.03, verticalSensitivity = 0.03;
+    private long lastTimeFired = System.nanoTime();
     private boolean altActive = false;
     File soundFile = new File("src\\resources\\sfx\\StandardActivation1.wav");
 
@@ -98,12 +99,17 @@ public class Controller {
         Camera camera = Player.camera;
 
         if (InputHandler.key.get(1)) {
-            if (Player.projectiles.size() < Player.projectileLimit) {
-                Player.projectiles.add(new StandardProjectile("src\\resources\\models\\Dagger.obj",
-                        "src\\resources\\models\\textures\\Dagger_1K_Diffuse.png",
-                        "",
-                        camera.position, camera.w_Vector, camera.v_Vector));
-                soundPlayer.playStandard();
+            if (Player.projectiles.size() < Player.projectileLimit && !altActive) {
+                long currentTimeFire = System.nanoTime(), passedTime = currentTimeFire - lastTimeFired;
+                if (passedTime / 1000000000.0 > Player.COOLDOWN) {
+                    lastTimeFired = currentTimeFire;
+
+                    Player.projectiles.add(new StandardProjectile("src\\resources\\models\\Dagger.obj",
+                            "src\\resources\\models\\textures\\Dagger_1K_Diffuse.png",
+                            "",
+                            camera.position, camera.w_Vector, camera.v_Vector));
+                    soundPlayer.playStandard();
+                }
             }
             InputHandler.resetMouseButtons();
         } else if (InputHandler.key.get(3)) {
