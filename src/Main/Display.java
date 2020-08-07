@@ -138,9 +138,14 @@ public class Display implements GLEventListener {
     public void dispose(GLAutoDrawable glAutoDrawable) {}
 
     public void display(GLAutoDrawable glAutoDrawable) {
-        if (world == null) { return; }
         GL2 gl = glAutoDrawable.getGL().getGL2();
         GLUT glut = new GLUT();
+
+        if (world == null) {
+            renderYouWin(gl, glut);
+            return;
+        }
+
         long currentTime = System.nanoTime(), passedTime = currentTime - previousTime;
         double secondsPerTick = 1 / 60.0;
         boolean isPaused = InputHandler.key.get(KeyEvent.VK_F1);
@@ -176,9 +181,7 @@ public class Display implements GLEventListener {
             gl.glColor3f( 1.0f, 1.0f, 1.0f );
         }
 
-        if (world.dummies.isEmpty() || InputHandler.key.get(KeyEvent.VK_F2)) {
-            System.out.println("New Level");
-//            renderLoading(gl, glut);
+        if (World.dummies.isEmpty() || InputHandler.key.get(KeyEvent.VK_F2)) {
             world = levelManager.getLevel();
         }
     }
@@ -229,5 +232,15 @@ public class Display implements GLEventListener {
 //        gl.glColor3f( 1.0f, 1.0f, 1.0f );
 //    }
 
-//    private void renderYouWin()
+    private void renderYouWin(GL2 gl, GLUT glut) {
+        gl.glLoadIdentity();
+        gl.glDisable( GL.GL_TEXTURE_2D );
+        gl.glColor3f( 1.0f, 1.0f, 1.0f );
+
+        gl.glWindowPos2d( WINDOW_WIDTH / 2 - 50, WINDOW_HEIGHT / 2 );
+        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "YOU WIN!");
+
+        gl.glRasterPos2d( 0, 0 );
+        gl.glColor3f( 1.0f, 1.0f, 1.0f );
+    }
 }
