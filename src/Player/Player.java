@@ -26,7 +26,7 @@ public class Player implements TimeBound {
 
     public Player() {
 
-        Vector3D position = new Vector3D(3.5, 1.2, 2.8),
+        Vector3D position = new Vector3D(0, 0, 0),
 //                w_Vector = new Vector3D(Math.sin(Math.toRadians(-30)), 0, Math.cos(Math.toRadians(-30))),
                 w_Vector = new Vector3D(0, 0, 1),
                 v_Vector = new Vector3D(0, 1, 0);
@@ -115,5 +115,12 @@ public class Player implements TimeBound {
             }
         }
         playerCollidables.addAll(World.dummies);
+    }
+
+    public void reset(Vector3D newPosition) {
+        playerCollidables.clear();
+        projectiles.clear();
+        altProjectile = null;
+        camera.position = newPosition;
     }
 }

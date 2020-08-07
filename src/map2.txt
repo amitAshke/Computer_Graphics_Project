@@ -2,15 +2,16 @@
 7 11
 
 # Legend:
-# 0 - Wall block
-# 1 - Floor + ceiling
-# 2 - Floor + ceiling + dummy
-# 3 - Floor + ceiling + light
+# 0 - wall block
+# 1 - floor + ceiling
+# 2 - floor + ceiling + dummy
+# 3 - floor + ceiling + light
+# 4 - player + floor + ceiling
 
 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 1 1 1 1 2 1 0
 0 1 1 0 1 1 1 1 3 1 0
-0 1 3 1 1 1 1 1 2 1 0
+0 4 3 1 1 1 1 1 2 1 0
 0 1 1 0 1 1 1 1 3 1 0
 0 0 0 0 1 1 1 1 2 1 0
 0 0 0 0 0 0 0 0 0 0 0

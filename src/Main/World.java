@@ -10,20 +10,18 @@ import java.util.List;
 
 public class World implements TimeBound {
 
-    private MapReader mapReader;
     private List<Renderable> renderables;
     private Render3D render3D;
 
     public static int[][] map;
     public static List<Dummy> dummies;
 
-    public World(String mapFilePath, Render3D render3D) {
-        this.mapReader = new MapReader();
+    public World(int[][] map, Render3D render3D) {
         this.render3D = render3D;
         this.renderables = new ArrayList<>();
         this.dummies = new ArrayList<>();
 
-        this.map = mapReader.loadMap(mapFilePath);
+        this.map = map;
         getRenderablesAndCollidablesInMap();
     }
 
@@ -53,6 +51,7 @@ public class World implements TimeBound {
                         renderables.add(new FloorTile(row, col));
                         renderables.add(new CeilingTile(row, col));
                         break;
+                    case (4):
                     case (1):
                         renderables.add(new FloorTile(row, col));
                         renderables.add(new CeilingTile(row, col));
