@@ -15,7 +15,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
-import static Player.Controller.InputHandler;
+import static Player.Controller.inputHandler;
 
 /**
  * Main class from which the game runs.
@@ -134,10 +134,10 @@ public class Display implements GLEventListener {
         level = levelManager.getNextLevel();
 
         // Set input listeners for canvas.
-        canvas.addKeyListener(InputHandler);
-        canvas.addMouseListener(InputHandler);
-        canvas.addMouseMotionListener(InputHandler);
-        canvas.addFocusListener(InputHandler);
+        canvas.addKeyListener(inputHandler);
+        canvas.addMouseListener(inputHandler);
+        canvas.addMouseMotionListener(inputHandler);
+        canvas.addFocusListener(inputHandler);
 
         // Set models IDs.
         projectileModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\Dagger.obj");
@@ -160,11 +160,16 @@ public class Display implements GLEventListener {
 
         long currentTime = System.nanoTime(), passedTime = currentTime - previousTime;
         double secondsPerTick = 1 / 60.0;
-        boolean isPaused = InputHandler.key.get(KeyEvent.VK_F1),
-                winCondition = Level.dummies.isEmpty() || InputHandler.key.get(KeyEvent.VK_F2);
+        boolean isPaused = inputHandler.key.get(KeyEvent.VK_F1),
+                winCondition = Level.dummies.isEmpty() || inputHandler.key.get(KeyEvent.VK_F2);
 
         previousTime = currentTime;
         unprocessedSeconds += passedTime / 1000000000.0;
+
+        if (winCondition) {
+            level = levelManager.getNextLevel();
+            return;
+        }
 
         // If the player hasn't paused and enough time passed (0.016 seconds).
         if (!isPaused && unprocessedSeconds > secondsPerTick) {
@@ -181,10 +186,6 @@ public class Display implements GLEventListener {
             renderInstructions(gl, glut);
         } else {
             renderFpsCounter(gl, glut);
-        }
-
-        if (winCondition) {
-            level = levelManager.getNextLevel();
         }
     }
 
