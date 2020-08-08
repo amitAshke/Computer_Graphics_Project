@@ -2,6 +2,9 @@ package LinearAlgebra.Matrices;
 
 import java.lang.Math;
 
+/**
+ * Rotation matrix class used to rotate the camera.
+ */
 public class RotationMatrix3D extends TransformationMatrix3D {
 
     public RotationMatrix3D(double theta, char axis) {

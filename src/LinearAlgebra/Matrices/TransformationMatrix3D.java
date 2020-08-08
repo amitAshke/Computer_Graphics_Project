@@ -2,6 +2,9 @@ package LinearAlgebra.Matrices;
 
 import LinearAlgebra.Vectors.Vector3D;
 
+/**
+ * General transformation matrix class used to move and rotate the camera.
+ */
 public class TransformationMatrix3D {
     protected double[][] matrix;
     protected Vector3D pos;

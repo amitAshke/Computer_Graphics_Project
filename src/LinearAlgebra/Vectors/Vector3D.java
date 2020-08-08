@@ -2,6 +2,9 @@ package LinearAlgebra.Vectors;
 
 import LinearAlgebra.Matrices.RotationMatrix3D;
 
+/**
+ * General vector in 3D space. It's first point at the origin.
+ */
 public class Vector3D {
     private double x, y, z;
 

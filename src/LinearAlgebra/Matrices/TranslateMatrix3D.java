@@ -2,6 +2,9 @@ package LinearAlgebra.Matrices;
 
 import LinearAlgebra.Matrices.TransformationMatrix3D;
 
+/**
+ * Translation matrix class used to move the camera.
+ */
 public class TranslateMatrix3D extends TransformationMatrix3D {
     public TranslateMatrix3D(double a, double b, double c) {
         super();
