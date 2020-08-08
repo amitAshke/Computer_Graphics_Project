@@ -2,6 +2,9 @@ package Collision;
 
 import LinearAlgebra.Vectors.Vector3D;
 
+/**
+ * This class represents a collision shape of type capsule.
+ */
 public class Capsule implements Hitbox {
     public Vector3D a, b;
     public double radius;
