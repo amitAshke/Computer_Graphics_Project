@@ -55,15 +55,17 @@ public class CollisionHandler {
             if (hitbox instanceof AABB) {
                 if(detector.detectCollision(capsule, (AABB) hitbox)) {
                     collided = collidable;
+                    break;
                 }
             } else if (hitbox instanceof Capsule) {
                 if (detector.detectCollision(capsule, (Capsule) hitbox)) {
                     collided = collidable;
+                    break;
                 }
             }
-            if (collided != null) {
-                collided.projectileCollisionEffect();
-            }
+        }
+        if (collided != null) {
+            collided.projectileCollisionEffect();
         }
         return collided;
     }
