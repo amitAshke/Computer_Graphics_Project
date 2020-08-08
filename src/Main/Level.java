@@ -8,6 +8,9 @@ import javax.media.opengl.GL2;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This Class represents the game's level.
+ */
 public class Level implements TimeBound {
 
     private List<Renderable> renderables;
@@ -25,7 +28,9 @@ public class Level implements TimeBound {
         getRenderablesAndCollidablesInMap();
     }
 
-    // Sets up renderable and collidable objects in the level.
+    /**
+     * Sets up renderable and collidable objects in the level.
+     */
     private void getRenderablesAndCollidablesInMap() {
         for (int row = 0; row < map.length; ++row) {
             for (int col = 0; col < map[0].length; ++col) {
@@ -59,9 +64,12 @@ public class Level implements TimeBound {
         }
     }
 
-    // Function which signifies the flow of time.
+    /**
+     * Function which signifies the flow of time.
+     */
     public boolean tick() {
 
+        // Checks if a dummy "died" and removes it if so.
         for (int i = 0; i < dummies.size(); ++i) {
             if (dummies.get(i).getHitPoints() <= 0) {
                 dummies.remove(i);
@@ -72,7 +80,9 @@ public class Level implements TimeBound {
         return true;
     }
 
-    // Render the Level.
+    /**
+     * Render the level.
+     */
     public void render(GL2 gl) {
         render3D.renderLevel(gl, renderables);
     }

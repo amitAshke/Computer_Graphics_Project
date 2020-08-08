@@ -17,42 +17,52 @@ import java.awt.image.BufferedImage;
 
 import static Player.Controller.InputHandler;
 
+/**
+ * Main class from which the game runs.
+ */
 public class Display implements GLEventListener {
 
+    // Static variables used at various points in the code.
     public static final int WINDOW_WIDTH = 800;
     public static final int WINDOW_HEIGHT = 600;
     public static int MONITOR_WIDTH;
     public static int MONITOR_HEIGHT;
     public static final String TITLE = "CG_Project_Blue";
 
+    // Variable used to save the models' IDs.
     public static int projectileModel;
     public static int dummyModel;
     public static int lampBaseModel;
     public static int sphereModel;
 
+    // Variables used for presentation of window, animation and rendering.
     static GLCanvas canvas;
     static Frame frame = new Frame();
     static Animator animator;
-    private static LevelManager levelManager;
-    private World world;
     private Render3D render3D;
 
-    private int framesRendered = 0;
+    // Variables for game flow.
+    private LevelManager levelManager;
+    private Level level;
+
+    // Variables for "fps" calculation and time functions.
     private double unprocessedSeconds = 0;
     private long previousTime = System.nanoTime();
 
 
     public static void main(String[] args) {
-        // create the cursor
+        // Make cursor invisible.
         Toolkit t = Toolkit.getDefaultToolkit();
         Image i = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         MONITOR_WIDTH = (int)t.getScreenSize().getWidth();
         MONITOR_HEIGHT = (int)t.getScreenSize().getHeight();
         Cursor noCursor = t.createCustomCursor(i, new Point(0, 0), "none");
 
+        // Make canvas.
         canvas = createCanvas();
         canvas.addGLEventListener(new Display());
 
+        // Make frame
         frame.add(canvas);
         frame.pack();
         frame.setTitle(TITLE);
@@ -71,8 +81,11 @@ public class Display implements GLEventListener {
                 }).start();
             }
         });
+
+        // Make animation.
         animator = new Animator(canvas);
         animator.start();
+
         canvas.requestFocus();
     }
 
@@ -95,7 +108,6 @@ public class Display implements GLEventListener {
         return canvas;
     }
 
-
     public void init(GLAutoDrawable glAutoDrawable) {
         GL2 gl = glAutoDrawable.getGL().getGL2();
         gl.glShadeModel(GL2.GL_SMOOTH); // Enable Smooth Shading
@@ -106,10 +118,11 @@ public class Display implements GLEventListener {
 
         // Initialize lighting
         float	ambient[] = {0.1f,0.1f,0.1f,1.0f};
-        float	diffuse0[] = {1f,1f,1f,1.0f};
-        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, ambient, 0);
-        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, diffuse0, 0);
-        gl.glEnable(GL2.GL_LIGHT0);
+        float	diffuse[] = {1f,1f,1f,1.0f};
+//        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, ambient, 0);
+        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_DIFFUSE, diffuse, 0);
+//        gl.glEnable(GL2.GL_LIGHT0);
+        gl.glEnable(GL2.GL_LIGHT1);
         gl.glEnable(GL2.GL_LIGHTING);
 
         // Really Nice Perspective Calculations
@@ -117,18 +130,16 @@ public class Display implements GLEventListener {
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 
         render3D = new Render3D(gl);
-
         levelManager = new LevelManager(render3D);
+        level = levelManager.getNextLevel();
 
-        world = levelManager.getLevel();
-
-//        world = new World("src\\map1.txt", render3D);
-
+        // Set input listeners for canvas.
         canvas.addKeyListener(InputHandler);
         canvas.addMouseListener(InputHandler);
         canvas.addMouseMotionListener(InputHandler);
         canvas.addFocusListener(InputHandler);
 
+        // Set models IDs.
         projectileModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\Dagger.obj");
         dummyModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\Knight_Statue.obj");
         lampBaseModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\lampobj.obj");
@@ -141,48 +152,39 @@ public class Display implements GLEventListener {
         GL2 gl = glAutoDrawable.getGL().getGL2();
         GLUT glut = new GLUT();
 
-        if (world == null) {
+        // Predicate true only if the player won (finished all of the levels).
+        if (level == null) {
             renderYouWin(gl, glut);
             return;
         }
 
         long currentTime = System.nanoTime(), passedTime = currentTime - previousTime;
         double secondsPerTick = 1 / 60.0;
-        boolean isPaused = InputHandler.key.get(KeyEvent.VK_F1);
+        boolean isPaused = InputHandler.key.get(KeyEvent.VK_F1),
+                winCondition = Level.dummies.isEmpty() || InputHandler.key.get(KeyEvent.VK_F2);
 
         previousTime = currentTime;
         unprocessedSeconds += passedTime / 1000000000.0;
 
-        if (!isPaused) {
-            if (unprocessedSeconds > secondsPerTick) {
-                unprocessedSeconds %= secondsPerTick;
-                levelManager.player.tick();
-                world.tick();
-            }
+        // If the player hasn't paused and enough time passed (0.016 seconds).
+        if (!isPaused && unprocessedSeconds > secondsPerTick) {
+            unprocessedSeconds %= secondsPerTick;
+
+            // World and player "feel" the passage of time.
+            levelManager.player.tick();
+            level.tick();
         }
-        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-        gl.glLoadIdentity();
 
-        render3D.renderPlayer(gl, levelManager.player);
-        world.render(gl);
-        ++framesRendered;
-
-        gl.glDisable( GL.GL_TEXTURE_2D );
-        gl.glPopMatrix();
-
+        renderNextFrame(gl);
 
         if (isPaused) {
             renderInstructions(gl, glut);
         } else {
-            gl.glColor3f( 1.0f, 1.0f, 1.0f );
-            gl.glWindowPos2d( 20, WINDOW_HEIGHT - 60 );
-            glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, (int) (1 / unprocessedSeconds) + " FPS");
-            gl.glRasterPos2d( 0, 0 );
-            gl.glColor3f( 1.0f, 1.0f, 1.0f );
+            renderFpsCounter(gl, glut);
         }
 
-        if (World.dummies.isEmpty() || InputHandler.key.get(KeyEvent.VK_F2)) {
-            world = levelManager.getLevel();
+        if (winCondition) {
+            level = levelManager.getNextLevel();
         }
     }
 
@@ -221,16 +223,13 @@ public class Display implements GLEventListener {
         gl.glColor3f( 1.0f, 1.0f, 1.0f );
     }
 
-//    private void renderLoading(GL2 gl, GLUT glut) {
-//        gl.glDisable( GL.GL_TEXTURE_2D );
-//        gl.glColor3f( 1.0f, 1.0f, 1.0f );
-//
-//        gl.glWindowPos2d( WINDOW_WIDTH / 2 - 50, WINDOW_HEIGHT / 2 );
-//        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "Loading...");
-//
-//        gl.glRasterPos2d( 0, 0 );
-//        gl.glColor3f( 1.0f, 1.0f, 1.0f );
-//    }
+    private void renderFpsCounter(GL2 gl, GLUT glut) {
+        gl.glColor3f( 1.0f, 1.0f, 1.0f );
+        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 60 );
+        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, (int) (1 / unprocessedSeconds) + " FPS");
+        gl.glRasterPos2d( 0, 0 );
+        gl.glColor3f( 1.0f, 1.0f, 1.0f );
+    }
 
     private void renderYouWin(GL2 gl, GLUT glut) {
         gl.glLoadIdentity();
@@ -242,5 +241,14 @@ public class Display implements GLEventListener {
 
         gl.glRasterPos2d( 0, 0 );
         gl.glColor3f( 1.0f, 1.0f, 1.0f );
+    }
+
+    private void renderNextFrame(GL2 gl) {
+        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+        gl.glLoadIdentity();
+        render3D.renderPlayer(gl, levelManager.player);
+        level.render(gl);
+        gl.glDisable( GL.GL_TEXTURE_2D );
+        gl.glPopMatrix();
     }
 }

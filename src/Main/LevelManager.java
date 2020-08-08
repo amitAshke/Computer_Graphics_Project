@@ -3,8 +3,9 @@ package Main;
 import LinearAlgebra.Vectors.Vector3D;
 import Player.Player;
 
-import javax.media.opengl.GL2;
-
+/**
+ * This class dictates the flow of the levels in the game. It also keeps a property of Player to move it between levels.
+ */
 public class LevelManager {
     private Render3D render3D;
     private int currentLevel;
@@ -21,6 +22,9 @@ public class LevelManager {
         mapReader = new MapReader();
     }
 
+    /**
+     * This functions returns location of the player's camera based on the 2D matrix that represents the map of the current level.
+     */
     private Vector3D getNewPlayerPosition(int[][] map) {
         for (int row = 0; row < map.length; ++row) {
             for (int col = 0; col < map[0].length; ++col) {
@@ -32,12 +36,15 @@ public class LevelManager {
         return null;
     }
 
-    public World getLevel() {
+    /**
+     * This functions return the next level.
+     */
+    public Level getNextLevel() {
         ++currentLevel;
         if (currentLevel >= levelFiles.length) { return null; }
         int[][] map = mapReader.loadMap(levelFiles[currentLevel]);
         Vector3D newPlayerPosition = getNewPlayerPosition(map);
         player.reset(newPlayerPosition);
-        return new World(map, render3D);
+        return new Level(map, render3D);
     }
 }

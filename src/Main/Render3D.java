@@ -1,20 +1,18 @@
 package Main;
 
 import Collision.Dummy;
-import Collision.Projectile;
-import LinearAlgebra.Vectors.Vector3D;
-import Main.Display;
 import Player.Player;
 import Renderables.Renderable;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
 import java.util.List;
 
+/**
+ * This class is responsible for all of the rendering of the game.
+ */
 public class Render3D {
 
     public static GLU glu;
@@ -28,7 +26,8 @@ public class Render3D {
         gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
     }
 
-    public void renderAllV2(GL2 gl, List<Renderable> renderables) {
+    // Render level related objects.
+    public void renderLevel(GL2 gl, List<Renderable> renderables) {
         float[] material = {0.8f,0.8f,0.8f,1.0f};
 
 //        gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
@@ -42,7 +41,7 @@ public class Render3D {
 
         gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, material, 0);
 
-        for (Dummy dummy : World.dummies) {
+        for (Dummy dummy : Level.dummies) {
             dummy.render(gl);
         }
 
@@ -53,6 +52,7 @@ public class Render3D {
 //        gl.glPopMatrix();
     }
 
+    // Render player related objects.
     public void renderPlayer(GL2 gl, Player player) {
 //        float[] material = {0.8f,0.8f,0.8f,1.0f};
 

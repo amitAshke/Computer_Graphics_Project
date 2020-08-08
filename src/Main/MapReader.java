@@ -4,6 +4,9 @@ import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * A class  with a single function. Read a txt file and make a 2D matrix of integers accordingly.
+ */
 public class MapReader {
     public int[][] loadMap(String fileName) {
         try {
