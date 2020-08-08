@@ -144,6 +144,8 @@ public class Display implements GLEventListener {
         dummyModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\Knight_Statue.obj");
         lampBaseModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\lampobj.obj");
         sphereModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\sphere.obj");
+
+        playBackgroundMusic();
     }
 
     public void dispose(GLAutoDrawable glAutoDrawable) {}
@@ -251,5 +253,15 @@ public class Display implements GLEventListener {
         level.render(gl);
         gl.glDisable( GL.GL_TEXTURE_2D );
         gl.glPopMatrix();
+    }
+
+    private void playBackgroundMusic() {
+        try {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(new File("src\\resources\\sfx\\BGM.wav")));
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 }
