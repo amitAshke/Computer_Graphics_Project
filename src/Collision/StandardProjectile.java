@@ -13,6 +13,7 @@ import java.util.List;
 public class StandardProjectile extends Projectile implements Renderable, TimeBound {
 
     private long collisionTime;
+    private final double initialSpeed = 0.08, rotationAngle = 6, lifeSpanAfterCollision = 1000000000.0 / 5;
 
     public StandardProjectile(String modelPath, String texturePath, String materialPath,
                               Vector3D position, Vector3D forward, Vector3D up) {
@@ -29,7 +30,7 @@ public class StandardProjectile extends Projectile implements Renderable, TimeBo
     }
 
     private void setDefaults() {
-        this.speed = 0.01;
+        this.speed = initialSpeed;
     }
 
     @Override
@@ -114,7 +115,7 @@ public class StandardProjectile extends Projectile implements Renderable, TimeBo
         if (model == null) { return false; }
 
         if (!collided) {
-            ++rotation;
+            rotation += rotationAngle;
             this.position = position.scaleAdd(speed, forward);
             updateCollisionCapsule();
             updateProjectileCollidables();
@@ -125,7 +126,7 @@ public class StandardProjectile extends Projectile implements Renderable, TimeBo
             }
         } else {
             long sinceCollision = System.nanoTime() - collisionTime;
-            if (sinceCollision > 1000000000.0 / 5) {
+            if (sinceCollision > lifeSpanAfterCollision) {
                 this.resetValues();
                 return false;
             }
