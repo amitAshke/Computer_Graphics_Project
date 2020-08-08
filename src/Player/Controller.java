@@ -17,10 +17,10 @@ public class Controller {
     private long lastTimeFired = System.nanoTime();
     private boolean altActive = false;
 
-    public static InputHandler InputHandler;
+    public static InputHandler inputHandler;
 
     public Controller() {
-        InputHandler = new InputHandler();
+        inputHandler = new InputHandler();
         this.soundPlayer = new SoundPlayer();
     }
 
@@ -33,7 +33,7 @@ public class Controller {
      */
     public void handleMovement() {
         Camera camera = Player.camera;
-        HashMap<Integer, Boolean> key = InputHandler.key;
+        HashMap<Integer, Boolean> key = inputHandler.key;
 
         Vector3D oldPosition = camera.position, newPosition = oldPosition, u_Projection = camera.u_Vector, w_Projection;
 
@@ -49,7 +49,7 @@ public class Controller {
         }
 
         // If more than one movement button is pressed.
-        if (InputHandler.getMovementKeysPressed() > 1) {
+        if (inputHandler.getMovementKeysPressed() > 1) {
             if (key.get(KeyEvent.VK_W) && key.get(KeyEvent.VK_D)) {
                 newPosition = newPosition.scaleAdd(diagonalSpeed, w_Projection);
                 newPosition = newPosition.scaleAdd(diagonalSpeed, u_Projection);
@@ -96,15 +96,15 @@ public class Controller {
      */
     public void handleRotation() {
         Camera camera = Player.camera;
-        double leftRightAngle = InputHandler.mouseDistance.getX() * horizontalSensitivity;
-        double upDownAngle = InputHandler.mouseDistance.getY() * verticalSensitivity;
+        double leftRightAngle = inputHandler.mouseDistance.getX() * horizontalSensitivity;
+        double upDownAngle = inputHandler.mouseDistance.getY() * verticalSensitivity;
 
         if (leftRightAngle != 0 || upDownAngle != 0) {
             camera.rotateUpDown(upDownAngle);
             camera.rotateLeftRight(leftRightAngle);
             camera.fixOrthogonality();
         }
-        InputHandler.resetMouseDistance();
+        inputHandler.resetMouseDistance();
     }
 
     /**
@@ -114,7 +114,7 @@ public class Controller {
         Camera camera = Player.camera;
 
         // If the player clicked on the left mouse button.
-        if (InputHandler.key.get(1)) {
+        if (inputHandler.key.get(1)) {
             // If the player has not reached his projectile limit and the special attack is not active.
             if (Player.projectiles.size() < Player.projectileLimit && !altActive) {
                 long currentTimeFire = System.nanoTime(), passedTime = currentTimeFire - lastTimeFired;
@@ -129,28 +129,28 @@ public class Controller {
                     soundPlayer.playStandard();
                 }
             }
-            InputHandler.resetMouseButtons();
+            inputHandler.resetMouseButtons();
         }
         // If the player clicked on the right button.
-        else if (InputHandler.key.get(3)) {
+        else if (inputHandler.key.get(3)) {
             if (!altActive && Player.projectiles.size() == 0) {
                 Player.altProjectile = new AltProjectile("src\\resources\\models\\Dagger.obj",
                         "src\\resources\\models\\textures\\Dagger_1K_Diffuse.png",
                         "",
                         camera.position, new Vector3D(0, 0, 1));
-                InputHandler.resetMouseButtons();
+                inputHandler.resetMouseButtons();
                 altActive = true;
                 soundPlayer.playSpecial();
             } else if (altActive) {
                 Player.altProjectile.detachProjectiles();
                 Player.projectiles = Player.altProjectile.getProjectiles();
                 altActive = false;
-                InputHandler.resetMouseButtons();
+                inputHandler.resetMouseButtons();
                 Player.altProjectile = null;
             }
         }
 
         // Reset the mouse buttons.
-        InputHandler.resetMouseButtons();
+        inputHandler.resetMouseButtons();
     }
 }

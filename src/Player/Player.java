@@ -132,5 +132,6 @@ public class Player implements TimeBound {
         projectiles.clear();
         altProjectile = null;
         camera.position = newPosition;
+        Controller.inputHandler.resetMouseButtons();
     }
 }
