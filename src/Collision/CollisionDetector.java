@@ -2,25 +2,30 @@ package Collision;
 
 import LinearAlgebra.Vectors.Vector3D;
 
+/**
+ * This class represents an entity that uses algorithms to detection between different shapes.
+ */
 public class CollisionDetector {
 
+    /**
+     * This function runs an algorithms that detects a collision between a capsule and an AABB and returns the result.
+     */
     public boolean detectCollision(Capsule capsule, AABB aabb) {
         Vector3D a = capsule.a, b = capsule.b;
         double r = capsule.radius, maxX = aabb.maxX(), minX = aabb.minX(), maxY = aabb.maxY(), minY = aabb.minY(), maxZ = aabb.maxZ(), minZ = aabb.minZ();
 
         if (b.getY() < minY || a.getY() > maxY) {
-            if ((Math.abs(a.getX() - maxX) < r || Math.abs(a.getX() - minX) < r ||
-                    Math.abs(a.getZ() - maxZ) < r || Math.abs(a.getZ() - minZ) < r)&&
-                    Math.abs(a.getY() - maxY) < r || Math.abs(a.getY() - minY) < r) {
-                return true;
-            } else {
-                return false;
-            }
+            return (Math.abs(a.getX() - maxX) < r || Math.abs(a.getX() - minX) < r ||
+                    Math.abs(a.getZ() - maxZ) < r || Math.abs(a.getZ() - minZ) < r) &&
+                    Math.abs(a.getY() - maxY) < r || Math.abs(a.getY() - minY) < r;
         } else {
             return detectCollision(new Sphere(a, r), aabb) || detectCollision(new Sphere(b, r), aabb);
         }
     }
 
+    /**
+     * This function runs an algorithms that detects a collision between a sphere and an AABB and returns the result.
+     */
     public boolean detectCollision(Sphere sphere, AABB aabb) {
         Vector3D c = sphere.center;
         double r = sphere.radius, maxX = aabb.maxX(), minX = aabb.minX(), maxY = aabb.maxY(), minY = aabb.minY(), maxZ = aabb.maxZ(), minZ = aabb.minZ();
@@ -29,7 +34,6 @@ public class CollisionDetector {
         double y = Math.max(minY, Math.min(c.getY(), maxY));
         double z = Math.max(minZ, Math.min(c.getZ(), maxZ));
 
-        // this is the same as isPointInsideSphere
         double distance = Math.sqrt((x - c.getX()) * (x - c.getX()) +
                 (y - c.getY()) * (y - c.getY()) +
                 (z - c.getZ()) * (z - c.getZ()));
@@ -37,6 +41,9 @@ public class CollisionDetector {
         return distance < r;
     }
 
+    /**
+     * This function runs an algorithms that detects a collision between two capsules and returns the result.
+     */
     public boolean detectCollision(Capsule capsule1, Capsule capsule2) {
         Vector3D a1 = capsule1.a, b1 = capsule1.b, a2 = capsule2.a, b2 = capsule2.b;
         double r1 = capsule1.radius, r2 = capsule2.radius, distance;
