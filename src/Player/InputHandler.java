@@ -7,13 +7,20 @@ import java.awt.event.*;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
 
+/**
+ * This class is the game's input handler that keeps track of the players input through the keyboard and mouse.
+ */
 public class InputHandler implements KeyListener, MouseListener, MouseMotionListener, FocusListener {
 
+    // A Robot object to to recenter the mouse after each movement to the center of the screen.
     Robot robot;
+
     private final Point2D windowCenter = new Point2D.Double(Display.WINDOW_WIDTH / 2.0, Display.WINDOW_HEIGHT / 2.0);
 
+    // A hashmap that hold  all of the information regarding which key is pressed (mouse and keyboard).
     public HashMap<Integer, Boolean> key = new HashMap<>();
     public Point2D mouseDistance = new Point2D.Double(0, 0);
+
     public InputHandler() {
 
         key.put(KeyEvent.VK_W, false);
@@ -33,6 +40,9 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         }
     }
 
+    /**
+     * This functions returns the number of movement keys that are pressed.
+     */
     public int getMovementKeysPressed() {
         int counter = 0;
         if (key.get(KeyEvent.VK_W)) { ++counter; }
@@ -46,6 +56,9 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         mouseDistance.setLocation(0, 0);
     }
 
+    /**
+     * This functions reset the mouse, pause and skip keys.
+     */
     public void resetMouseButtons() {
         key.replace(1, false);
         key.replace(3, false);
@@ -53,6 +66,9 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         key.replace(KeyEvent.VK_F2, false);
     }
 
+    /**
+     * This functions recenter the mouse to the center of the screen.
+     */
     private void recenterMouse() {
         robot.mouseMove(Display.MONITOR_WIDTH / 2 + 8, Display.MONITOR_HEIGHT / 2 + 10);
     }
@@ -69,6 +85,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
     @Override
     public void keyTyped(KeyEvent keyEvent) {
+        int keyCode = keyEvent.getKeyCode();
     }
 
     @Override
@@ -123,7 +140,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         Point2D newMousePosition = mouseEvent.getPoint();
         mouseDistance = new Point2D.Double(newMousePosition.getX() - windowCenter.getX(),
                 newMousePosition.getY() - windowCenter.getY());
-        if (Math.abs(mouseDistance.getX()) > 3 || Math.abs(mouseDistance.getY()) > 3) {
+        if (Math.abs(mouseDistance.getX()) > 2 || Math.abs(mouseDistance.getY()) > 2) {
             recenterMouse();
         }
     }

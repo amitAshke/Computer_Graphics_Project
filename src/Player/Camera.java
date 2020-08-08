@@ -6,6 +6,9 @@ import LinearAlgebra.Vectors.Vector3D;
 
 import javax.media.opengl.glu.GLU;
 
+/**
+ * This class represents the camera of the game.
+ */
 public class Camera {
     public Vector3D position, w_Vector, u_Vector, v_Vector;
 
@@ -20,14 +23,13 @@ public class Camera {
 
     public void move_w(double linearSpeed) { position = position.scaleAdd(linearSpeed, w_Vector); }
 
-    public void move_u(double linearSpeed) {
-        position = position.scaleAdd(linearSpeed, u_Vector);
-    }
+    public void move_u(double linearSpeed) { position = position.scaleAdd(linearSpeed, u_Vector); }
 
-    public void move_v(double linearSpeed) {
-        position = position.scaleAdd(linearSpeed, v_Vector);
-    }
+    public void move_v(double linearSpeed) { position = position.scaleAdd(linearSpeed, v_Vector); }
 
+    /**
+     * This function fix inconsistencies with the orthogonality of the camera's vectors.
+     */
     public void fixOrthogonality() {
         if (w_Vector.dotProduct(u_Vector) > 0.01 || w_Vector.dotProduct(u_Vector) < -0.01) {
 //            System.out.println(w_Vector.dotProduct(u_Vector) + " => w-u: not orthogonal");
@@ -117,10 +119,14 @@ public class Camera {
 //        u_Vector = reversedWorldViewMatrix.transform(u_Vector).normalize();
     }
 
+
     public Vector3D projectWtoXZ() {
         return w_Vector.projectToXZ();
     }
 
+    /**
+     * Sets the camera view of the game using a GLU object.
+     */
     public void setView(GLU glu) {
         glu.gluLookAt(	position.getX(), position.getY(), position.getZ(),
                 position.getX() + w_Vector.getX(), position.getY() + w_Vector.getY(), position.getZ() + w_Vector.getZ(),

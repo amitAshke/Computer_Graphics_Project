@@ -2,7 +2,7 @@ package Player;
 
 import Collision.*;
 import LinearAlgebra.Vectors.Vector3D;
-import Main.World;
+import Main.Level;
 import Renderables.WallBlock;
 import Time.TimeBound;
 
@@ -10,12 +10,17 @@ import javax.media.opengl.glu.GLU;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents the player in the game.
+ */
 public class Player implements TimeBound {
 
     private CollisionHandler collisionHandler;
-    private List<Collidable> playerCollidables;
     private int mapX, mapZ;
     private Capsule capsule;
+    // A list of objects in the level that the player can collide with.
+    private List<Collidable> playerCollidables;
+
 
     public static Controller controller;
     public static int projectileLimit = 4;
@@ -27,7 +32,6 @@ public class Player implements TimeBound {
     public Player() {
 
         Vector3D position = new Vector3D(0, 0, 0),
-//                w_Vector = new Vector3D(Math.sin(Math.toRadians(-30)), 0, Math.cos(Math.toRadians(-30))),
                 w_Vector = new Vector3D(0, 0, 1),
                 v_Vector = new Vector3D(0, 1, 0);
         camera = new Camera(position, w_Vector, v_Vector);
@@ -40,15 +44,12 @@ public class Player implements TimeBound {
         this.mapZ = -1;
 
         updatePlayerHitbox();
-//        updatePlayerCollidables();
     }
 
-    public static Controller getController() { return controller; }
-
-    public int getProjectileLimit() {
-        return projectileLimit;
-    }
-
+    /**
+     * This function signifies the flow of time for the player.
+     * @return true if the player is alive and false otherwise.
+     */
     public boolean tick() {
 
         if (altProjectile != null) {
@@ -81,19 +82,24 @@ public class Player implements TimeBound {
         updatePlayerHitbox();
 
         return true;
-
     }
 
     public void setView(GLU glu) {
         camera.setView(glu);
     }
 
+    /**
+     * This functions update the players collision shape.
+     */
     private void updatePlayerHitbox() {
         Vector3D top = new Vector3D(camera.position.getX(), camera.position.getY() - 0.2, camera.position.getZ());
         Vector3D bottom = new Vector3D(camera.position.getX(), HIT_RADIUS, camera.position.getZ());
         capsule = new Capsule(bottom, top, HIT_RADIUS);
     }
 
+    /**
+     * This functions keep track of the objects in the level that the player can collide with.
+     */
     private void updatePlayerCollidables() {
         if (mapX == (int)camera.position.getX() && mapZ == (int)camera.position.getZ()) {
             return;
@@ -101,11 +107,11 @@ public class Player implements TimeBound {
         mapX = (int)camera.position.getX();
         mapZ = (int)camera.position.getZ();
         playerCollidables.clear();
-        int rowLowerLimit = Math.max(0, mapX - 1), rowUpperLimit = Math.min(mapX + 2, World.map.length);
-        int colLowerLimit = Math.max(0, mapZ - 1), colUpperLimit = Math.min(mapZ + 2, World.map[0].length);
+        int rowLowerLimit = Math.max(0, mapX - 1), rowUpperLimit = Math.min(mapX + 2, Level.map.length);
+        int colLowerLimit = Math.max(0, mapZ - 1), colUpperLimit = Math.min(mapZ + 2, Level.map[0].length);
         for (int row = rowLowerLimit; row < rowUpperLimit; ++row) {
             for (int col = colLowerLimit; col < colUpperLimit; ++col) {
-                switch (World.map[row][col]) {
+                switch (Level.map[row][col]) {
                     case (0):
                         WallBlock newWallBlock = new WallBlock(row, col);
                         playerCollidables.add(newWallBlock);
@@ -114,9 +120,13 @@ public class Player implements TimeBound {
                 }
             }
         }
-        playerCollidables.addAll(World.dummies);
+        playerCollidables.addAll(Level.dummies);
     }
 
+    /**
+     * This functions reset the player for the next level.
+     * @param newPosition is the players new position.
+     */
     public void reset(Vector3D newPosition) {
         playerCollidables.clear();
         projectiles.clear();

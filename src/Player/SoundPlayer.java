@@ -5,6 +5,9 @@ import javax.sound.sampled.Clip;
 import java.io.File;
 import java.util.Random;
 
+/**
+ * This class represents the sound effects player.
+ */
 public class SoundPlayer {
     private File[] standardSounds = new File[2];
     private File specialSound;
@@ -16,6 +19,9 @@ public class SoundPlayer {
         specialSound = new File("src\\resources\\sfx\\SpecialActivation.wav");
     }
 
+    /**
+     * Plays one of the sound effects for the standard projectile.
+     */
     public void playStandard() {
         try {
             Random rand = new Random();
@@ -28,6 +34,9 @@ public class SoundPlayer {
         }
     }
 
+    /**
+     * Plays the sound effect of the special projectile.
+     */
     public void playSpecial() {
         try {
             Clip clip = AudioSystem.getClip();
