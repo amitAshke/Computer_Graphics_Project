@@ -8,7 +8,7 @@ import javax.media.opengl.GL2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class World implements TimeBound {
+public class Level implements TimeBound {
 
     private List<Renderable> renderables;
     private Render3D render3D;
@@ -16,7 +16,7 @@ public class World implements TimeBound {
     public static int[][] map;
     public static List<Dummy> dummies;
 
-    public World(int[][] map, Render3D render3D) {
+    public Level(int[][] map, Render3D render3D) {
         this.render3D = render3D;
         this.renderables = new ArrayList<>();
         this.dummies = new ArrayList<>();
@@ -25,10 +25,7 @@ public class World implements TimeBound {
         getRenderablesAndCollidablesInMap();
     }
 
-    public int[][] getMap() {
-        return map;
-    }
-
+    // Sets up renderable and collidable objects in the level.
     private void getRenderablesAndCollidablesInMap() {
         for (int row = 0; row < map.length; ++row) {
             for (int col = 0; col < map[0].length; ++col) {
@@ -62,6 +59,7 @@ public class World implements TimeBound {
         }
     }
 
+    // Function which signifies the flow of time.
     public boolean tick() {
 
         for (int i = 0; i < dummies.size(); ++i) {
@@ -74,7 +72,8 @@ public class World implements TimeBound {
         return true;
     }
 
+    // Render the Level.
     public void render(GL2 gl) {
-        render3D.renderAllV2(gl, renderables);
+        render3D.renderLevel(gl, renderables);
     }
 }
