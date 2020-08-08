@@ -11,13 +11,13 @@ import java.util.HashMap;
  */
 public class Controller {
 
-    private SoundPlayer soundPlayer;
     private double straightSpeed = 0.05, diagonalSpeed = straightSpeed * Math.sqrt(2) / 2;
     private double horizontalSensitivity = 0.03, verticalSensitivity = 0.03;
     private long lastTimeFired = System.nanoTime();
     private boolean altActive = false;
 
     public static InputHandler inputHandler;
+    public static SoundPlayer soundPlayer;
 
     public Controller() {
         inputHandler = new InputHandler();

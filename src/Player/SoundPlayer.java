@@ -11,12 +11,19 @@ import java.util.Random;
 public class SoundPlayer {
     private File[] standardSounds = new File[2];
     private File specialSound;
+    private File[] dummyHitSound = new File[2];
+    private File dummyKillSound;
 
     public SoundPlayer() {
         standardSounds[0] = new File("src\\resources\\sfx\\StandardActivation1.wav");
         standardSounds[1] = new File("src\\resources\\sfx\\StandardActivation2.wav");
 
         specialSound = new File("src\\resources\\sfx\\SpecialActivation.wav");
+
+        dummyHitSound[0] = new File("src\\resources\\sfx\\HitSound1.wav");
+        dummyHitSound[1] = new File("src\\resources\\sfx\\HitSound2.wav");
+
+        dummyKillSound = new File("src\\resources\\sfx\\KillSound.wav");
     }
 
     /**
@@ -41,6 +48,34 @@ public class SoundPlayer {
         try {
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(specialSound));
+            clip.start();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    /**
+     * Plays the sound effect of an enemy hit.
+     */
+    public void playHit() {
+        try {
+            Random rand = new Random();
+            int randomIndex = rand.nextInt(dummyHitSound.length);
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(dummyHitSound[randomIndex]));
+            clip.start();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    /**
+     * Plays the sound effect of an enemy kill.
+     */
+    public void playKill() {
+        try {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(dummyKillSound));
             clip.start();
         } catch (Exception e) {
             System.out.println(e.toString());

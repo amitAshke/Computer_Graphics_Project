@@ -13,6 +13,8 @@ import javax.media.opengl.GL2;
 import java.io.File;
 import java.io.IOException;
 
+import static Player.Controller.soundPlayer;
+
 public class Dummy implements Collidable, Renderable {
     private WavefrontObject model = null;
     private MaterialProps material;
@@ -129,8 +131,11 @@ public class Dummy implements Collidable, Renderable {
     public void projectileCollisionEffect() {
         --hitPoints;
         if (hitPoints <= 0) {
+            soundPlayer.playKill();
             playerCollisionCapsule = null;
             projectileCollisionCapsule = null;
+        } else {
+            soundPlayer.playHit();
         }
     }
 }
