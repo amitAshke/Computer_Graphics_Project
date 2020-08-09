@@ -122,9 +122,7 @@ public class Controller {
                 if (passedTime / 1000000000.0 > Player.COOLDOWN) {
                     lastTimeFired = currentTimeFire;
 
-                    Player.projectiles.add(new StandardProjectile(
-                            "src\\resources\\models\\textures\\Dagger_1K_Diffuse.png",
-                            "", camera.position, camera.w_Vector, camera.v_Vector, -1));
+                    Player.projectiles.add(new StandardProjectile(camera.position, camera.w_Vector, camera.v_Vector, -1));
                     soundPlayer.playStandard();
                 }
             }
@@ -133,10 +131,7 @@ public class Controller {
         // If the player clicked on the right button.
         else if (inputHandler.key.get(3)) {
             if (!altActive && Player.projectiles.size() == 0) {
-                Player.altProjectile = new AltProjectile("src\\resources\\models\\Dagger.obj",
-                        "src\\resources\\models\\textures\\Dagger_1K_Diffuse.png",
-                        "",
-                        camera.position, new Vector3D(0, 0, 1));
+                Player.altProjectile = new AltProjectile(camera.position, new Vector3D(0, 0, 1));
                 inputHandler.resetMouseButtons();
                 altActive = true;
                 soundPlayer.playSpecial();
