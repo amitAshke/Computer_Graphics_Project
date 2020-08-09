@@ -4,18 +4,15 @@ import LinearAlgebra.Vectors.Vector3D;
 import Main.Display;
 import Main.Render3D;
 import com.jogamp.opengl.util.texture.Texture;
-import com.jogamp.opengl.util.texture.TextureIO;
 
 import javax.media.opengl.GL2;
-import java.io.File;
-import java.io.IOException;
 
 public class Lamp implements Renderable {
     private Vector3D position;
     private Texture texture;
     private MaterialProps material;
 
-    public Lamp(String texturePath, int row, int col) {
+    public Lamp(int row, int col) {
 
         texture = Render3D.lampTex;
 
