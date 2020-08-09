@@ -122,10 +122,9 @@ public class Controller {
                 if (passedTime / 1000000000.0 > Player.COOLDOWN) {
                     lastTimeFired = currentTimeFire;
 
-                    Player.projectiles.add(new StandardProjectile("src\\resources\\models\\Dagger.obj",
+                    Player.projectiles.add(new StandardProjectile(
                             "src\\resources\\models\\textures\\Dagger_1K_Diffuse.png",
-                            "",
-                            camera.position, camera.w_Vector, camera.v_Vector));
+                            "", camera.position, camera.w_Vector, camera.v_Vector, -1));
                     soundPlayer.playStandard();
                 }
             }
@@ -152,5 +151,9 @@ public class Controller {
 
         // Reset the mouse buttons.
         inputHandler.resetMouseButtons();
+    }
+
+    public void resetValues() {
+        altActive = false;
     }
 }
