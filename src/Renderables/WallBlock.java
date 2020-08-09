@@ -42,7 +42,7 @@ public class WallBlock implements Renderable, Collidable {
 
         gl.glBegin(GL2.GL_QUADS);
 
-        gl.glNormal3f(0,0,1);
+        gl.glNormal3f(0,0,-1);
         gl.glTexCoord2f(1, 0);
         gl.glVertex3f(x2, y1, z1);
         gl.glTexCoord2f(1, 2);
@@ -52,7 +52,7 @@ public class WallBlock implements Renderable, Collidable {
         gl.glTexCoord2f(0, 0);
         gl.glVertex3f(x1, y1, z1);
 
-        gl.glNormal3f(0,0,-1);
+        gl.glNormal3f(0,0,1);
         gl.glTexCoord2f(1, 0);
         gl.glVertex3f(x2, y1, z2);
         gl.glTexCoord2f(1, 2);
