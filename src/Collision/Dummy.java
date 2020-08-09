@@ -25,30 +25,10 @@ public class Dummy implements Collidable, Renderable {
     private int hitPoints = 3;
     private Capsule playerCollisionCapsule, projectileCollisionCapsule;
 
-    public Dummy(String modelPath, String texturePath, String materialPath,
-                      int row, int col, double leftRightAngle) {
+    public Dummy(int row, int col, double leftRightAngle) {
 
         texture = Render3D.dummyTex;
 
-//        if (!materialPath.equals("")) {
-//            this.material = new MaterialProps(materialPath);
-//        } else {
-//            this.material = null;
-//        }
-
-        this.position = new Vector3D(row + 0.5, 0, col + 0.5);
-        this.leftRightAngle = leftRightAngle;
-
-        Vector3D topVectorPlayerHit = new Vector3D(position.getX(), position.getY() + playerHitHeight + playerHitRadius, position.getZ());
-        Vector3D bottomVectorPlayerHit = new Vector3D(position.getX(), position.getY() + playerHitRadius, position.getZ());
-        playerCollisionCapsule = new Capsule(bottomVectorPlayerHit, topVectorPlayerHit, playerHitRadius);
-
-        Vector3D topVectorProjectileHit = new Vector3D(position.getX(), position.getY() + projectileHitHeight + projectileHitRadius, position.getZ());
-        Vector3D bottomVectorProjectileHit = new Vector3D(position.getX(), position.getY() + projectileHitRadius, position.getZ());
-        projectileCollisionCapsule = new Capsule(bottomVectorProjectileHit, topVectorProjectileHit, projectileHitRadius);
-    }
-
-    public Dummy(int row, int col, double leftRightAngle) {
         this.position = new Vector3D(row + 0.5, 0, col + 0.5);
         this.leftRightAngle = leftRightAngle;
 
