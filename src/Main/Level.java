@@ -23,7 +23,6 @@ public class Level implements TimeBound {
         this.render3D = render3D;
         this.renderables = new ArrayList<>();
         this.dummies = new ArrayList<>();
-
         this.map = map;
         getRenderablesAndCollidablesInMap();
     }
@@ -68,7 +67,7 @@ public class Level implements TimeBound {
 
         // Checks if a dummy "died" and removes it if so.
         for (int i = 0; i < dummies.size(); ++i) {
-            if (dummies.get(i).getHitPoints() <= 0) {
+            if (!dummies.get(i).tick()) {
                 dummies.remove(i);
                 --i;
             }

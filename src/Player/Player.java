@@ -13,18 +13,18 @@ import java.util.List;
 /**
  * This class represents the player in the game.
  */
-public class Player implements TimeBound {
+public class Player implements TimeBound, Collidable {
 
     private CollisionHandler collisionHandler;
-    private int mapX, mapZ;
+    private int mapX, mapZ, hitPoints = 5;
     private Capsule capsule;
     // A list of objects in the level that the player can collide with.
     private List<Collidable> playerCollidables;
 
 
     public static Controller controller;
-    public static int projectileLimit = 4;
-    public static List<Projectile> projectiles;
+    public static int projectileLimit = 8;
+    public static List<StandardProjectile> projectiles;
     public static AltProjectile altProjectile = null;
     public static Camera camera;
     public static final double HIT_RADIUS = 0.3, COOLDOWN = 0.3;
@@ -51,6 +51,7 @@ public class Player implements TimeBound {
      * @return true if the player is alive and false otherwise.
      */
     public boolean tick() {
+        Vector3D oldPosition = camera.position;
 
         if (altProjectile != null) {
             boolean alive = altProjectile.tick();
@@ -77,7 +78,7 @@ public class Player implements TimeBound {
 
         controller.handleFire();
 
-        camera.position = collisionHandler.handleCollisionWithPlayer(capsule, camera.position, playerCollidables);
+        camera.position = collisionHandler.handleCollisionWithPlayer(capsule, oldPosition, camera.position, playerCollidables);
 
         updatePlayerHitbox();
 
@@ -134,5 +135,29 @@ public class Player implements TimeBound {
         camera.position = newPosition;
         Controller.inputHandler.resetMouseButtons();
         controller.resetValues();
+    }
+
+    @Override
+    public Hitbox getProjectileCollisionShape() {
+        return null;
+    }
+
+    @Override
+    public Hitbox getPlayerCollisionShape() {
+        return capsule;
+    }
+
+    @Override
+    public Vector3D handlePlayerCollision(Vector3D newPosition) {
+        return newPosition;
+    }
+
+    @Override
+    public void projectileCollisionEffect() {
+    }
+
+    public void playerHit() {
+        --hitPoints;
+        System.out.println(hitPoints);
     }
 }
