@@ -24,7 +24,7 @@ public class CollisionHandler {
      * @return the new position of the player. Same as received if no collision was detected, and a new fixed position
        in case a collision occured.
      */
-    public Vector3D handleCollisionWithPlayer(Capsule capsule, Vector3D newPosition, List<Collidable> collidables) {
+    public Vector3D handleCollisionWithPlayer(Capsule capsule, Vector3D oldPosition, Vector3D newPosition, List<Collidable> collidables) {
         for (Collidable collidable : collidables) {
             Hitbox hitbox = collidable.getPlayerCollisionShape();
             if (hitbox instanceof AABB) {
@@ -33,7 +33,8 @@ public class CollisionHandler {
                 }
             } else if (hitbox instanceof Capsule) {
                 if (detector.detectCollision(capsule, (Capsule) hitbox)) {
-                    newPosition = collidable.handlePlayerCollision(newPosition);
+                    collidable.handlePlayerCollision(newPosition);
+                    newPosition = oldPosition;
                 }
             }
         }
