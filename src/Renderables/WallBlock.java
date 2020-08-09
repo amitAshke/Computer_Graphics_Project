@@ -4,13 +4,11 @@ import Collision.AABB;
 import Collision.Collidable;
 import Collision.Hitbox;
 import LinearAlgebra.Vectors.Vector3D;
+import Main.Render3D;
 import Player.Player;
 import com.jogamp.opengl.util.texture.Texture;
-import com.jogamp.opengl.util.texture.TextureIO;
 
 import javax.media.opengl.GL2;
-import java.io.File;
-import java.io.IOException;
 
 public class WallBlock implements Renderable, Collidable {
     private float x1, x2, y1, y2, z1, z2;
@@ -27,15 +25,7 @@ public class WallBlock implements Renderable, Collidable {
 
         aabb = new AABB(x1, x2, y1, y2, z1, z2);
 
-//        if (wallTex == null) {
-            try {
-                String filename="src\\resources\\textures\\stone_wall.jpg";
-                wallTex = TextureIO.newTexture(new File( filename ),true);
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
-//        }
+        wallTex = Render3D.wallTex;
     }
 
     public Hitbox getProjectileCollisionShape() {

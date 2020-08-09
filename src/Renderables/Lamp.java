@@ -2,6 +2,7 @@ package Renderables;
 
 import LinearAlgebra.Vectors.Vector3D;
 import Main.Display;
+import Main.Render3D;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 
@@ -15,16 +16,8 @@ public class Lamp implements Renderable {
     private MaterialProps material;
 
     public Lamp(String texturePath, int row, int col) {
-        try {
-            if (!texturePath.equals("")) {
-                this.texture = TextureIO.newTexture(new File( texturePath ),true);
-            } else {
-                this.texture = null;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+
+        texture = Render3D.lampTex;
 
         this.position = new Vector3D(row + 0.5, 1.6, col + 0.5);
     }

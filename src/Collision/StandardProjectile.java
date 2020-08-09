@@ -3,6 +3,7 @@ package Collision;
 import LinearAlgebra.Vectors.Vector3D;
 import Main.Display;
 import Main.World;
+import Main.Render3D;
 import Renderables.*;
 import Time.TimeBound;
 import com.jogamp.opengl.util.texture.Texture;
@@ -19,7 +20,7 @@ public class StandardProjectile extends Projectile implements Renderable, TimeBo
                               Vector3D position, Vector3D forward, Vector3D up) {
         super(modelPath, texturePath, materialPath, position, forward, up);
 
-        setDefaults();
+        texture = Render3D.projectileTex;
 
         updateProjectileCollidables();
     }

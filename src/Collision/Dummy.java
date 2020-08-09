@@ -2,6 +2,7 @@ package Collision;
 
 import LinearAlgebra.Vectors.Vector3D;
 import Main.Display;
+import Main.Render3D;
 import Player.Player;
 import Renderables.MaterialProps;
 import Renderables.Renderable;
@@ -26,16 +27,8 @@ public class Dummy implements Collidable, Renderable {
 
     public Dummy(String modelPath, String texturePath, String materialPath,
                       int row, int col, double leftRightAngle) {
-        try {
-            if (!texturePath.equals("")) {
-                this.texture = TextureIO.newTexture(new File( texturePath ),true);
-            } else {
-                this.texture = null;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+
+        texture = Render3D.dummyTex;
 
 //        if (!materialPath.equals("")) {
 //            this.material = new MaterialProps(materialPath);

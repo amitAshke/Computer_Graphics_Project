@@ -4,12 +4,10 @@ import Collision.AABB;
 import Collision.Collidable;
 import Collision.Hitbox;
 import LinearAlgebra.Vectors.Vector3D;
+import Main.Render3D;
 import com.jogamp.opengl.util.texture.Texture;
-import com.jogamp.opengl.util.texture.TextureIO;
 
 import javax.media.opengl.GL2;
-import java.io.File;
-import java.io.IOException;
 
 public class FloorTile implements Renderable, Collidable {
     private float x1, x2, y1, y2, z1, z2;
@@ -26,13 +24,7 @@ public class FloorTile implements Renderable, Collidable {
 
         aabb = new AABB(x1, x2, y1, y2, z1, z2);
 
-        try {
-            String filename="src\\resources\\textures\\stone_floor_texture.jpg";
-            floorTex = TextureIO.newTexture(new File( filename ),true);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        floorTex = Render3D.floorTex;
     }
 
     public Hitbox getProjectileCollisionShape() {

@@ -3,11 +3,15 @@ package Main;
 import Collision.Dummy;
 import Player.Player;
 import Renderables.Renderable;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureIO;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -16,6 +20,7 @@ import java.util.List;
 public class Render3D {
 
     public static GLU glu;
+    public static Texture floorTex, ceilingTex, wallTex, projectileTex, dummyTex, lampTex;
 
     public Render3D(GL2 gl) {
         glu = new GLU();
@@ -24,6 +29,25 @@ public class Render3D {
 
         gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
         gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
+
+        try {
+            String filename="src\\resources\\textures\\stone_floor_texture.jpg";
+            floorTex = TextureIO.newTexture(new File(filename),true);
+            filename = "src\\resources\\textures\\metal_ceiling_tiles.jpg";
+            ceilingTex = TextureIO.newTexture(new File(filename),true);
+            filename = "src\\resources\\textures\\stone_wall.jpg";
+            wallTex = TextureIO.newTexture(new File(filename),true);
+            filename = "src\\resources\\models\\textures\\Dagger_1K_Diffuse.png";
+            projectileTex = TextureIO.newTexture(new File(filename), true);
+            filename = "src\\resources\\models\\textures\\rough.tif";
+            dummyTex = TextureIO.newTexture(new File(filename), true);
+            filename = "src\\resources\\models\\textures\\black.png";
+            lampTex = TextureIO.newTexture(new File(filename), true);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Render3D: Error during texture loading.");
+            throw new RuntimeException(e);
+        }
     }
 
     // Render level related objects.

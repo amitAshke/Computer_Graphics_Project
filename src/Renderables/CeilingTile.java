@@ -4,16 +4,14 @@ import Collision.AABB;
 import Collision.Collidable;
 import Collision.Hitbox;
 import LinearAlgebra.Vectors.Vector3D;
+import Main.Render3D;
 import com.jogamp.opengl.util.texture.Texture;
-import com.jogamp.opengl.util.texture.TextureIO;
 
 import javax.media.opengl.GL2;
-import java.io.File;
-import java.io.IOException;
 
 public class CeilingTile implements Renderable, Collidable {
     private float x1, x2, y1, y2, z1, z2;
-    private Texture floorTex;
+    private Texture ceilingTex;
     private AABB aabb;
 
     public CeilingTile(float x1, float z1) {
@@ -26,13 +24,7 @@ public class CeilingTile implements Renderable, Collidable {
 
         aabb = new AABB(x1, x2, y1, y2, z1, z2);
 
-        try {
-            String filename="src\\resources\\textures\\metal_ceiling_tiles.jpg";
-            floorTex = TextureIO.newTexture(new File( filename ),true);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        ceilingTex = Render3D.ceilingTex;
     }
 
     public Hitbox getProjectileCollisionShape() {
@@ -45,8 +37,8 @@ public class CeilingTile implements Renderable, Collidable {
 
     public void render(GL2 gl) {
 
-        floorTex.enable(gl);
-        floorTex.bind(gl);
+        ceilingTex.enable(gl);
+        ceilingTex.bind(gl);
 
         gl.glBegin(GL2.GL_QUADS);
 
