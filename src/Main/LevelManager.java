@@ -12,7 +12,7 @@ public class LevelManager {
     private String[] levelFiles;
     private MapReader mapReader;
 
-    public Player player;
+    public static Player player;
 
     public LevelManager(Render3D render3D) {
         this.render3D = render3D;

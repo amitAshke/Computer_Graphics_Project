@@ -42,7 +42,7 @@ public class Display implements GLEventListener {
     private Render3D render3D;
 
     // Variables for game flow.
-    private LevelManager levelManager;
+    public static LevelManager levelManager;
     private Level level;
 
     // Variables for "fps" calculation and time functions.
