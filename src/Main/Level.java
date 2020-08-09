@@ -40,16 +40,13 @@ public class Level implements TimeBound {
                         renderables.add(newWallBlock);
                         break;
                     case (2):
-                        Dummy dummy = new Dummy("src\\resources\\models\\18489_Knight_V1_.obj",
-                                "src\\resources\\models\\textures\\rough.tif",
-                                "",
-                                row, col, 0);
+                        Dummy dummy = new Dummy(row, col, 0);
                         dummies.add(dummy);
                         renderables.add(new FloorTile(row, col));
                         renderables.add(new CeilingTile(row, col));
                         break;
                     case (3):
-                        renderables.add(new Lamp("src\\resources\\models\\textures\\black.png", row, col));
+                        renderables.add(new Lamp(row, col));
                         renderables.add(new FloorTile(row, col));
                         renderables.add(new CeilingTile(row, col));
                         break;
