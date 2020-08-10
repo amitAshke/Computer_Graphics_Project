@@ -160,4 +160,10 @@ public class Camera {
 
         return angle;
     }
+
+    public void resetDirections() {
+        w_Vector = new Vector3D(0, 0, 1);
+        v_Vector = new Vector3D(0, 1, 0);
+        this.u_Vector = w_Vector.crossProduct(v_Vector).normalize();
+    }
 }
