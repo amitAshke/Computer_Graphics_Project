@@ -1,0 +1,20 @@
+# First number is the number of rows, and the second number is the number of columns.
+10 17
+
+# Legend:
+# 0 - wall block
+# 1 - floor + ceiling
+# 2 - floor + ceiling + dummy
+# 3 - floor + ceiling + light
+# 4 - player + floor + ceiling
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 1 1 1 1 1 1 0 1 1 1 2 1 0
+0 1 1 0 1 1 2 1 2 1 0 1 1 1 1 1 0
+0 4 1 1 1 1 1 3 1 1 0 1 2 1 1 1 0
+0 1 1 0 1 1 2 1 2 1 0 1 1 1 1 1 0
+0 0 0 0 1 1 1 1 1 1 0 1 1 1 2 1 0
+0 0 0 0 0 0 1 1 0 0 0 1 2 1 1 1 0
+0 0 0 0 0 0 1 1 1 1 0 1 1 3 2 1 0
+0 0 0 0 0 0 2 1 1 1 1 1 1 1 1 1 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
