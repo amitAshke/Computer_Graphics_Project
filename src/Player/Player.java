@@ -16,7 +16,7 @@ import java.util.List;
 public class Player implements TimeBound, Collidable {
 
     private CollisionHandler collisionHandler;
-    private int mapX, mapZ, hitPoints = 5;
+    private int mapX, mapZ, maxHealth = 5, hitPoints = 5;
     private Capsule capsule;
     // A list of objects in the level that the player can collide with.
     private List<Collidable> playerCollidables;
@@ -44,6 +44,10 @@ public class Player implements TimeBound, Collidable {
         this.mapZ = -1;
 
         updatePlayerHitbox();
+    }
+
+    public int getHitPoints() {
+        return hitPoints;
     }
 
     /**
@@ -133,8 +137,10 @@ public class Player implements TimeBound, Collidable {
         projectiles.clear();
         altProjectile = null;
         camera.position = newPosition;
+        camera.resetDirections();
         Controller.inputHandler.resetMouseButtons();
         controller.resetValues();
+        hitPoints = maxHealth;
     }
 
     @Override
