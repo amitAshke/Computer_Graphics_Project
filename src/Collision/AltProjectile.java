@@ -67,11 +67,6 @@ public class AltProjectile extends Projectile implements Renderable, TimeBound {
     public void detachProjectiles() {
         for(int index = 0; index < projectiles.size(); ++index) {
             projectiles.get(index).makeIndependent();
-            double angle = (360.0 / projectileLimit) * index + yrot;
-            Vector3D forward = new Vector3D(Math.sin(Math.toRadians(angle)),0.001, Math.cos(Math.toRadians(angle))).normalize();
-            projectiles.get(index).setLeftRightAngle(angle);
-            projectiles.get(index).setForward(forward);
-            projectiles.get(index).setPosition(this.position.scaleAdd(0.05, forward));
         }
         detached = true;
     }
