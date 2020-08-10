@@ -18,7 +18,7 @@ public class LevelManager {
         this.render3D = render3D;
         currentLevel = -1;
         player = new Player();
-        levelFiles = new String[]{"src\\map1.txt", "src\\map2.txt"};
+        levelFiles = new String[]{"src\\map1.txt", "src\\map2.txt", "src\\map3.txt"};
         mapReader = new MapReader();
     }
 
