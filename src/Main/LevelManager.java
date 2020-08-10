@@ -47,4 +47,8 @@ public class LevelManager {
         player.reset(newPlayerPosition);
         return new Level(map, render3D);
     }
+
+    public void restartGame() {
+        currentLevel = -1;
+    }
 }

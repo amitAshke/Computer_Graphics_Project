@@ -27,6 +27,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         key.put(KeyEvent.VK_A, false);
         key.put(KeyEvent.VK_S, false);
         key.put(KeyEvent.VK_D, false);
+        key.put(KeyEvent.VK_R, false);
         key.put(KeyEvent.VK_F1, false);
         key.put(KeyEvent.VK_F2, false);
         key.put(1, false);
@@ -64,6 +65,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         key.replace(3, false);
         key.replace(KeyEvent.VK_F1, false);
         key.replace(KeyEvent.VK_F2, false);
+        key.replace(KeyEvent.VK_R, false);
     }
 
     /**
@@ -99,7 +101,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
     @Override
     public void keyReleased(KeyEvent keyEvent) {
         int keyCode = keyEvent.getKeyCode();
-        if (keyCode != KeyEvent.VK_F1 && keyCode != KeyEvent.VK_F2) {
+        if (keyCode != KeyEvent.VK_F1 && keyCode != KeyEvent.VK_F2 && keyCode != KeyEvent.VK_R) {
             key.replace(keyCode, false);
         } else {
             key.replace(keyCode, !key.get(keyCode));

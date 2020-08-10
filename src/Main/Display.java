@@ -153,10 +153,17 @@ public class Display implements GLEventListener {
     public void display(GLAutoDrawable glAutoDrawable) {
         GL2 gl = glAutoDrawable.getGL().getGL2();
         GLUT glut = new GLUT();
+        boolean loseCondition = LevelManager.player.getHitPoints() <= 0, restartCondition = inputHandler.key.get(KeyEvent.VK_R);
+
+        if (restartCondition) {
+            levelManager.restartGame();
+            level = levelManager.getNextLevel();
+            return;
+        }
 
         // Predicate true only if the player won (finished all of the levels).
-        if (level == null) {
-            renderYouWin(gl, glut);
+        if (level == null || loseCondition) {
+            renderResult(gl, glut);
             return;
         }
 
@@ -234,16 +241,22 @@ public class Display implements GLEventListener {
         gl.glColor3f( 1.0f, 1.0f, 1.0f );
     }
 
-    private void renderYouWin(GL2 gl, GLUT glut) {
+    private void renderResult(GL2 gl, GLUT glut) {
         gl.glLoadIdentity();
-        gl.glDisable( GL.GL_TEXTURE_2D );
-        gl.glColor3f( 1.0f, 1.0f, 1.0f );
+        gl.glDisable(GL.GL_TEXTURE_2D);
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
 
-        gl.glWindowPos2d( WINDOW_WIDTH / 2 - 50, WINDOW_HEIGHT / 2 );
-        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "YOU WIN!");
+        gl.glWindowPos2d(WINDOW_WIDTH / 2 - 50, WINDOW_HEIGHT / 2);
+        if (level == null) {
+            glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "YOU WIN!");
+        } else {
+            glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "You Lose!");
+        }
+        gl.glWindowPos2d(WINDOW_WIDTH / 2 - 40, WINDOW_HEIGHT / 2 - 20);
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "Press R to restart");
 
-        gl.glRasterPos2d( 0, 0 );
-        gl.glColor3f( 1.0f, 1.0f, 1.0f );
+        gl.glRasterPos2d(0, 0);
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
     }
 
     private void renderNextFrame(GL2 gl) {
