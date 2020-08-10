@@ -207,30 +207,37 @@ public class Display implements GLEventListener {
     }
 
     private void renderInstructions(GL2 gl, GLUT glut) {
-        gl.glDisable( GL.GL_TEXTURE_2D );
-        gl.glColor3f( 1.0f, 1.0f, 1.0f );
 
-        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 100 );
-        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "Objective: shoot the knight status.");
-        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 140 );
-        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "Controls:");
-        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 160 );
-        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "W - move forward");
-        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 180 );
-        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "A - move left:");
-        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 200 );
-        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "S - move back:");
-        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 220 );
-        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "D - move right:");
-        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 240 );
-        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "Left mouse button - shoot");
-        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 260 );
-        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "right mouse button - activate special ability");
-        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 280 );
-        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, "right mouse button while special ability is active - shoot all projectiles");
+        int leftOffset = 20, topOffset = 100;
+        String[] instructions = new String[] {
+                "Objective: shoot the knight status.",
+                "Controls:",
+                "W - move forward",
+                "A - move left",
+                "S - move back",
+                "D - move right",
+                "Left mouse button - shoot",
+                "right mouse button - activate special ability",
+                "right mouse button while special ability is active - shoot all projectiles",
+                "F1 - pause and show instructions",
+                "F2 - skip to the next level",
+                "R - restart game"
+        };
 
-        gl.glRasterPos2d( 0, 0 );
-        gl.glColor3f( 1.0f, 1.0f, 1.0f );
+        gl.glDisable(GL.GL_TEXTURE_2D);
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
+
+        gl.glWindowPos2d(leftOffset, WINDOW_HEIGHT - topOffset);
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, instructions[0]);
+
+        topOffset = 120;
+        for (int i = 1; i < instructions.length; ++i) {
+            gl.glWindowPos2d(leftOffset, WINDOW_HEIGHT - topOffset - 20 * i);
+            glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, instructions[i]);
+        }
+
+        gl.glRasterPos2d(0, 0);
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
     }
 
     private void renderFpsCounter(GL2 gl, GLUT glut) {
