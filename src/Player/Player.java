@@ -166,6 +166,10 @@ public class Player implements TimeBound, Collidable {
 
     public void playerHit() {
         --hitPoints;
-        System.out.println(hitPoints);
+        if(hitPoints > 0) {
+            Controller.soundPlayer.playPlayerHit();
+        } else {
+            Controller.soundPlayer.playPlayerDie();
+        }
     }
 }
