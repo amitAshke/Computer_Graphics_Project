@@ -68,7 +68,6 @@ public class Controller {
             if (key.get(KeyEvent.VK_S) && key.get(KeyEvent.VK_A)) {
                 newPosition = newPosition.scaleAdd(-1 * diagonalSpeed, w_Projection);
                 newPosition = newPosition.scaleAdd(-1 * diagonalSpeed, u_Projection);
-
             }
         }
         // If a single movement button is pressed.
@@ -115,8 +114,9 @@ public class Controller {
 
         // If the player clicked on the left mouse button.
         if (inputHandler.key.get(1)) {
-            // If the player has not reached his projectile limit and the special attack is not active.
-            if (Player.projectiles.size() < Player.projectileLimit && !altActive) {
+            // If the player has not reached his projectile limit with or without the special attack.
+            if ((!altActive && Player.projectiles.size() < Player.projectileLimit) ||
+                    (altActive && Player.projectiles.size() + Player.altProjectile.getProjectiles().size() < Player.projectileLimit)) {
                 long currentTimeFire = System.nanoTime(), passedTime = currentTimeFire - lastTimeFired;
                 // If the time that passed since the last shot is greater than the cooldown.
                 if (passedTime / 1000000000.0 > Player.COOLDOWN) {
