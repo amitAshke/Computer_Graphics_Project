@@ -20,7 +20,7 @@ import java.util.List;
 public class Render3D {
 
     public static GLU glu;
-    public static Texture floorTex, ceilingTex, wallTex, projectileTex, dummyTex, lampTex;
+    public static Texture floorTex, ceilingTex, wallTex, projectileTex, dummyTex, lampTex, healthTex;
 
     public Render3D(GL2 gl) {
         glu = new GLU();
@@ -43,6 +43,8 @@ public class Render3D {
             dummyTex = TextureIO.newTexture(new File(filename), true);
             filename = "src\\resources\\models\\textures\\black.png";
             lampTex = TextureIO.newTexture(new File(filename), true);
+            filename = "src\\resources\\textures\\health.png";
+            healthTex = TextureIO.newTexture(new File(filename), true);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Render3D: Error during texture loading.");
@@ -98,6 +100,8 @@ public class Render3D {
         for (Renderable projectile : Player.projectiles) {
             projectile.render(gl);
         }
+
+        Player.hud.render(gl);
 
 //        gl.glPopMatrix();
     }

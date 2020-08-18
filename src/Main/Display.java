@@ -208,7 +208,7 @@ public class Display implements GLEventListener {
 
     private void renderInstructions(GL2 gl, GLUT glut) {
 
-        int leftOffset = 20, topOffset = 100;
+        int leftOffset = 20, topOffset = 110;
         String[] instructions = new String[] {
                 "Objective: shoot the knight status.",
                 "Controls:",
