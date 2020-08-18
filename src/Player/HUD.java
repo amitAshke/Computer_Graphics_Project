@@ -19,7 +19,6 @@ public class HUD implements Renderable {
     }
 
     void glEnable2D(GL2 gl) {
-        int[] vPort = new int[4];
 
         gl.glMatrixMode(GL_PROJECTION);
         gl.glPushMatrix();
@@ -38,8 +37,7 @@ public class HUD implements Renderable {
         gl.glPopMatrix();
     }
 
-    public void render(GL2 gl) {
-
+    private void renderHealth(GL2 gl) {
         int leftInitial = 20, upInitial = 540, width = 30, height = 30, leftOffset = 40;
 
         healthTex.enable(gl);
@@ -67,5 +65,10 @@ public class HUD implements Renderable {
 
         gl.glEnd();
         glDisable2D(gl);
+    }
+    public void render(GL2 gl) {
+
+        renderHealth(gl);
+
     }
 }
