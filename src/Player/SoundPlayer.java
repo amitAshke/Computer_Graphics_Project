@@ -57,7 +57,7 @@ public class SoundPlayer {
     /**
      * Plays the sound effect of an enemy hit.
      */
-    public void playHit() {
+    public void playDummyHit() {
         try {
             Random rand = new Random();
             int randomIndex = rand.nextInt(dummyHitSound.length);
@@ -72,7 +72,7 @@ public class SoundPlayer {
     /**
      * Plays the sound effect of an enemy kill.
      */
-    public void playKill() {
+    public void playDummyKill() {
         try {
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(dummyKillSound));

@@ -79,10 +79,6 @@ public class Dummy implements Collidable, Renderable, TimeBound {
 
         double rotationAngle = 0;
 
-//        if (model == null) {
-//            return;
-//        }
-
         if (material != null) {
             if (material.getShininess() != -1) {
                 gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, material.getShininess());
@@ -157,11 +153,11 @@ public class Dummy implements Collidable, Renderable, TimeBound {
     public void projectileCollisionEffect() {
         --hitPoints;
         if (hitPoints <= 0) {
-            soundPlayer.playKill();
+            soundPlayer.playDummyKill();
             playerCollisionCapsule = null;
             projectileCollisionCapsule = null;
         } else {
-            soundPlayer.playHit();
+            soundPlayer.playDummyHit();
         }
     }
 
