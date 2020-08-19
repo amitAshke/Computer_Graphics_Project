@@ -80,7 +80,6 @@ public class Render3D {
 
     // Render player related objects.
     public void renderPlayer(GL2 gl, Player player) {
-//        float[] material = {0.8f,0.8f,0.8f,1.0f};
 
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 
@@ -91,7 +90,6 @@ public class Render3D {
         gl.glTexParameteri(GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_T, GL2.GL_REPEAT);
         gl.glTexParameteri(GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_S, GL2.GL_REPEAT);
 
-//        gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, material, 0);
 
         if (Player.altProjectile != null) {
             Player.altProjectile.render(gl);
@@ -102,7 +100,7 @@ public class Render3D {
         }
 
         Player.hud.render(gl);
-
+        
 //        gl.glPopMatrix();
     }
 }
