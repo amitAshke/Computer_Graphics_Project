@@ -202,7 +202,7 @@ public class Display implements GLEventListener {
         GL2 gl = glAutoDrawable.getGL().getGL2();
         gl.glMatrixMode(GL2.GL_PROJECTION);
         gl.glLoadIdentity();
-        Render3D.glu.gluPerspective(50, Display.WINDOW_WIDTH / Display.WINDOW_HEIGHT, Player.HIT_RADIUS - 0.2,1000);
+        Render3D.glu.gluPerspective(50, Display.WINDOW_WIDTH / Display.WINDOW_HEIGHT, Player.HIT_RADIUS - 0.2, 1000);
         gl.glMatrixMode(GL2.GL_MODELVIEW);
     }
 
@@ -241,11 +241,11 @@ public class Display implements GLEventListener {
     }
 
     private void renderFpsCounter(GL2 gl, GLUT glut) {
-        gl.glColor3f( 1.0f, 1.0f, 1.0f );
-        gl.glWindowPos2d( 20, WINDOW_HEIGHT - 60 );
-        glut.glutBitmapString( GLUT.BITMAP_HELVETICA_12, (int) (1 / unprocessedSeconds) + " FPS");
-        gl.glRasterPos2d( 0, 0 );
-        gl.glColor3f( 1.0f, 1.0f, 1.0f );
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
+        gl.glWindowPos2d(20, WINDOW_HEIGHT - 60);
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, (int) (1 / unprocessedSeconds) + " FPS");
+        gl.glRasterPos2d(0, 0);
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
     }
 
     private void renderResult(GL2 gl, GLUT glut) {
@@ -259,7 +259,7 @@ public class Display implements GLEventListener {
         } else {
             glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "You Lose!");
         }
-        gl.glWindowPos2d(WINDOW_WIDTH / 2 - 40, WINDOW_HEIGHT / 2 - 20);
+        gl.glWindowPos2d(WINDOW_WIDTH / 2 - 70, WINDOW_HEIGHT / 2 - 20);
         glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "Press R to restart");
 
         gl.glRasterPos2d(0, 0);
@@ -271,7 +271,7 @@ public class Display implements GLEventListener {
         gl.glLoadIdentity();
         render3D.renderPlayer(gl, levelManager.player);
         level.render(gl);
-        gl.glDisable( GL.GL_TEXTURE_2D );
+        gl.glDisable(GL.GL_TEXTURE_2D);
         gl.glPopMatrix();
     }
 
