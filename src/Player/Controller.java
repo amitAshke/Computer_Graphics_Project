@@ -157,6 +157,7 @@ public class Controller {
 
                 Player.projectiles.add(new StandardProjectile(camera.position, camera.w_Vector, camera.v_Vector, -1));
                 Player.projectileFireCooldown.activated();
+                Display.soundPlayer.playStandard();
             }
         }
         inputHandler.resetMouseButtons();
@@ -176,6 +177,7 @@ public class Controller {
             altActive = false;
             inputHandler.resetMouseButtons();
             Player.altProjectile = null;
+            Display.soundPlayer.playSpecial();
         }
     }
 
