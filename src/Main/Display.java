@@ -8,12 +8,15 @@ import com.jogamp.opengl.util.gl2.GLUT;
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 import static Player.Controller.inputHandler;
 
@@ -34,6 +37,7 @@ public class Display implements GLEventListener {
     public static int dummyModel;
     public static int lampBaseModel;
     public static int sphereModel;
+    public static SoundPlayer soundPlayer;
 
     // Variables used for presentation of window, animation and rendering.
     static GLCanvas canvas;
@@ -132,6 +136,8 @@ public class Display implements GLEventListener {
         render3D = new Render3D(gl);
         levelManager = new LevelManager(render3D);
         level = levelManager.getNextLevel();
+
+        soundPlayer = new SoundPlayer();
 
         // Set input listeners for canvas.
         canvas.addKeyListener(inputHandler);

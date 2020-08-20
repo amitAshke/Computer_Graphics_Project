@@ -2,7 +2,7 @@ package Player;
 
 import Collision.*;
 import LinearAlgebra.Vectors.Vector3D;
-import Main.SoundPlayer;
+import Main.Display;
 
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
@@ -18,11 +18,9 @@ public class Controller {
     private boolean altActive = false;
 
     public static InputHandler inputHandler;
-    public static SoundPlayer soundPlayer;
 
     public Controller() {
         inputHandler = new InputHandler();
-        this.soundPlayer = new SoundPlayer();
     }
 
     public void setAltActive(boolean altActive) {
@@ -161,7 +159,7 @@ public class Controller {
                 lastTimeFired = currentTimeFire;
 
                 Player.projectiles.add(new StandardProjectile(camera.position, camera.w_Vector, camera.v_Vector, -1));
-                soundPlayer.playStandard();
+                Display.soundPlayer.playStandard();
             }
         }
         inputHandler.resetMouseButtons();
@@ -174,7 +172,7 @@ public class Controller {
             Player.altProjectile = new AltProjectile(camera.position, new Vector3D(0, 0, 1));
             inputHandler.resetMouseButtons();
             altActive = true;
-            soundPlayer.playSpecial();
+            Display.soundPlayer.playSpecial();
         } else if (altActive) {
             Player.altProjectile.detachProjectiles();
             Player.projectiles = Player.altProjectile.getProjectiles();

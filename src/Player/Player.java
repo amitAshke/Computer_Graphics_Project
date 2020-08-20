@@ -2,6 +2,7 @@ package Player;
 
 import Collision.*;
 import LinearAlgebra.Vectors.Vector3D;
+import Main.Display;
 import Main.Level;
 import Renderables.WallBlock;
 import Time.TimeBound;
@@ -167,9 +168,9 @@ public class Player implements TimeBound, Collidable {
     public void playerHit() {
         --hitPoints;
         if(hitPoints > 0) {
-            Controller.soundPlayer.playPlayerHit();
+            Display.soundPlayer.playPlayerHit();
         } else {
-            Controller.soundPlayer.playPlayerDie();
+            Display.soundPlayer.playPlayerDie();
         }
     }
 }

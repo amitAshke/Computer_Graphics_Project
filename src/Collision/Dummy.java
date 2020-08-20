@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static Player.Controller.soundPlayer;
+import static Main.Display.soundPlayer;
 
 public class Dummy implements Collidable, Renderable, TimeBound {
     private MaterialProps material;
