@@ -1,4 +1,4 @@
-package Player;
+package Main;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;

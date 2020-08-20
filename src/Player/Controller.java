@@ -2,6 +2,7 @@ package Player;
 
 import Collision.*;
 import LinearAlgebra.Vectors.Vector3D;
+import Main.SoundPlayer;
 
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
