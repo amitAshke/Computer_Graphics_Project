@@ -10,19 +10,21 @@ import javax.media.opengl.GL2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AltProjectile extends Projectile implements Renderable, TimeBound {
+public class AltProjectile implements Renderable, TimeBound {
 
+    private Vector3D position, forward, up;
+    private double maxRange;
+    private List<Collidable> projectileCollidables;
     private List<StandardProjectile> projectiles;
-    private double yrot, initialDistance = 0.5;
+    private double yrot, initialDistance, rotationSpeed;
     private int mapX, mapZ, projectileLimit = Player.projectileLimit;
     private CollisionHandler collisionHandler;
-    private boolean detached = false;
+    private boolean detached = false, alive = true;
 
     public AltProjectile(Vector3D position, Vector3D forward) {
-        super(position, forward, new Vector3D(0, 1, 0));
 
-        this.yrot = 0;
-        this.projectiles = new ArrayList<>(Player.projectileLimit);
+        setDefaults(position, forward, new Vector3D(0, 1, 0));
+
         Vector3D tempProjPosition = position.add(0, -0.2, 0);
         for (int i = 1; i <= projectileLimit; ++i) {
             double angle = (360.0 / projectileLimit) * i + yrot;
@@ -31,12 +33,22 @@ public class AltProjectile extends Projectile implements Renderable, TimeBound {
             projectiles.add(new StandardProjectile(projPosition, projForward, up, 0));
         }
 
+        updateProjectileCollidables();
+    }
+
+    private void setDefaults(Vector3D position, Vector3D forward, Vector3D up) {
         this.position = position;
+        this.forward = forward;
+        this.up = up;
+        this.projectileCollidables = new ArrayList<>();
         this.mapX = -1;
         this.mapZ = -1;
         this.collisionHandler = new CollisionHandler();
-
-        updateProjectileCollidables();
+        this.maxRange = 15;
+        this.initialDistance = 0.5;
+        this.yrot = 0;
+        this.rotationSpeed = 1;
+        this.projectiles = new ArrayList<>(Player.projectileLimit);
     }
 
     public List<StandardProjectile> getProjectiles() {
@@ -86,7 +98,7 @@ public class AltProjectile extends Projectile implements Renderable, TimeBound {
 
         if (projectiles.size() > 0) {
             if (!detached) {
-                yrot = (yrot + 2) % 360;
+                yrot = (yrot + rotationSpeed) % 360;
                 this.setPosition(Player.camera.position);
                 for(int index = 0; index < projectiles.size(); ++index) {
                     StandardProjectile projectile = projectiles.get(index);
