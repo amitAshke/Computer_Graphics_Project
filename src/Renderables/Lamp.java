@@ -21,7 +21,7 @@ public class Lamp implements Renderable {
 
     @Override
     public void render(GL2 gl) {
-        float[] fPosition = { (float) position.getX(), (float) position.getY(), (float) position.getZ(), 1.0f };
+        float[] fPosition = { (float) position.getX(), (float) (position.getY() - 0.4), (float) position.getZ(), 1.0f };
 
         if (material != null) {
             if (material.getShininess() != -1) {
@@ -45,6 +45,7 @@ public class Lamp implements Renderable {
         }
 
         gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, fPosition, 0);
+        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, fPosition, 0);
 
         gl.glPushMatrix();
 
