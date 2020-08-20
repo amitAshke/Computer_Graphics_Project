@@ -14,7 +14,6 @@ public class Controller {
 
     private double straightSpeed = 0.05, diagonalSpeed = straightSpeed * Math.sqrt(2) / 2;
     private double horizontalSensitivity = 0.03, verticalSensitivity = 0.03;
-    private long lastTimeFired = System.nanoTime();
     private boolean altActive = false;
 
     public static InputHandler inputHandler;
@@ -153,13 +152,11 @@ public class Controller {
         // If the player has not reached his projectile limit with or without the special attack.
         if ((!altActive && Player.projectiles.size() < Player.projectileLimit) ||
                 (altActive && Player.projectiles.size() + Player.altProjectile.getProjectiles().size() < Player.projectileLimit)) {
-            long currentTimeFire = System.nanoTime(), passedTime = currentTimeFire - lastTimeFired;
-            // If the time that passed since the last shot is greater than the cooldown.
-            if (passedTime / 1000000000.0 > Player.COOLDOWN) {
-                lastTimeFired = currentTimeFire;
+
+            if (Player.projectileFireCooldown.canActivate()) {
 
                 Player.projectiles.add(new StandardProjectile(camera.position, camera.w_Vector, camera.v_Vector, -1));
-                Display.soundPlayer.playStandard();
+                Player.projectileFireCooldown.activated();
             }
         }
         inputHandler.resetMouseButtons();

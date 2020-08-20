@@ -5,6 +5,7 @@ import LinearAlgebra.Vectors.Vector3D;
 import Main.Display;
 import Main.Level;
 import Renderables.WallBlock;
+import Time.Cooldown;
 import Time.TimeBound;
 
 import javax.media.opengl.glu.GLU;
@@ -28,8 +29,9 @@ public class Player implements TimeBound, Collidable {
     public static List<StandardProjectile> projectiles;
     public static AltProjectile altProjectile = null;
     public static Camera camera;
-    public static final double HIT_RADIUS = 0.3, COOLDOWN = 0.3;
+    public static final double HIT_RADIUS = 0.3, FIRE_RATE = 0.3;
     public static HUD hud;
+    public static Cooldown projectileFireCooldown;
 
     public Player() {
 
@@ -42,6 +44,7 @@ public class Player implements TimeBound, Collidable {
         playerCollidables = new ArrayList<>();
         projectiles = new ArrayList<>();
         hud = new HUD();
+        projectileFireCooldown = new Cooldown(FIRE_RATE);
 
         this.mapX = -1;
         this.mapZ = -1;
