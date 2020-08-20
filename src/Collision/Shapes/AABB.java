@@ -1,4 +1,4 @@
-package Collision;
+package Collision.Shapes;
 
 /**
  * This class represents a collision shape of type AABB.

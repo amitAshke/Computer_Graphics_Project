@@ -1,4 +1,4 @@
-package Collision;
+package Collision.Shapes;
 
 import LinearAlgebra.Vectors.Vector3D;
 

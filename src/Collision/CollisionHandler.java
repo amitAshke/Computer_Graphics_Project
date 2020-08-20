@@ -1,5 +1,8 @@
 package Collision;
 
+import Collision.Shapes.AABB;
+import Collision.Shapes.Capsule;
+import Collision.Shapes.Hitbox;
 import LinearAlgebra.Vectors.Vector3D;
 
 import java.util.List;

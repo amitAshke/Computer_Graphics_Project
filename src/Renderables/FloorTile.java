@@ -1,8 +1,8 @@
 package Renderables;
 
-import Collision.AABB;
+import Collision.Shapes.AABB;
 import Collision.Collidable;
-import Collision.Hitbox;
+import Collision.Shapes.Hitbox;
 import LinearAlgebra.Vectors.Vector3D;
 import Main.Render3D;
 import com.jogamp.opengl.util.texture.Texture;

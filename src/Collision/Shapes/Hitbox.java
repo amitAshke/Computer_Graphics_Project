@@ -1,4 +1,4 @@
-package Collision;
+package Collision.Shapes;
 
 public interface Hitbox {
 }

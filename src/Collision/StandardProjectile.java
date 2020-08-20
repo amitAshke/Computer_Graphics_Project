@@ -1,5 +1,6 @@
 package Collision;
 
+import Collision.Shapes.Capsule;
 import LinearAlgebra.Vectors.Vector3D;
 import Main.Display;
 import Main.Level;
