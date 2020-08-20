@@ -1,5 +1,6 @@
 package Collision;
 
+import Collision.Shapes.Hitbox;
 import LinearAlgebra.Vectors.Vector3D;
 
 public interface Collidable {
