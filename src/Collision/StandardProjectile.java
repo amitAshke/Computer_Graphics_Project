@@ -141,13 +141,17 @@ public class StandardProjectile implements Renderable, TimeBound {
                         WallBlock newWallBlock = new WallBlock(row, col);
                         projectileCollidables.add(newWallBlock);
                         break;
-                    case (2):
-                    case (1):
+//                    case (2):
+//                    case (1):
+//                        FloorTile newFloorTile = new FloorTile(row, col);
+//                        projectileCollidables.add(newFloorTile);
+//                        projectileCollidables.add(new CeilingTile(row, col));
+//                        break;
+                    default:
                         FloorTile newFloorTile = new FloorTile(row, col);
                         projectileCollidables.add(newFloorTile);
                         projectileCollidables.add(new CeilingTile(row, col));
                         break;
-                    default:
                 }
             }
         }
