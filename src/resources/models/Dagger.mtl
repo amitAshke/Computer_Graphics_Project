@@ -1,0 +1,16 @@
+# Blender MTL File: 'Dagger.blend'
+# Material Count: 1
+
+newmtl Dagger_Mat
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.120000 0.120000 0.120000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump Dagger 4K_Normal.png
+map_Kd Dagger 4K_Diffuse.png
+map_Ns Dagger 4K_Roughness.png
+refl Dagger 4K_Metallic.png
