@@ -140,6 +140,8 @@ public class Player implements TimeBound, Collidable {
      * @param newPosition is the players new position.
      */
     public void reset(Vector3D newPosition) {
+        mapX = -1;
+        mapZ = -1;
         playerCollidables.clear();
         projectiles.clear();
         specialProjectile = null;
