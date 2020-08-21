@@ -133,34 +133,6 @@ public class Camera {
                 v_Vector.getX(), v_Vector.getY(), v_Vector.getZ());
     }
 
-    public double getUpDownAngle() {
-        double angle = Math.toDegrees(Math.acos(this.projectWtoXZ().dotProduct(w_Vector)));
-
-        if (w_Vector.getY() > 0) {
-            angle *= -1;
-        }
-
-        return angle;
-    }
-
-    public double getLeftRightAngle() {
-        double angle = 0;
-
-        if (Player.camera.w_Vector.getX() < 0) {
-            angle = Math.toDegrees(Math.acos(Player.camera.projectWtoXZ().dotProduct(new Vector3D(0, 0, 1)))) * -1;
-        } else if (Player.camera.w_Vector.getX() > 0) {
-            angle = Math.toDegrees(Math.acos(Player.camera.projectWtoXZ().dotProduct(new Vector3D(0, 0, 1))));
-        } else {
-            if (Player.camera.v_Vector.getX() < 0) {
-                angle = Math.toDegrees(Math.acos(Player.camera.v_Vector.dotProduct(new Vector3D(0, 0, 1)))) * -1;
-            } else if (Player.camera.v_Vector.getX() > 0) {
-                angle = Math.toDegrees(Math.acos(Player.camera.v_Vector.dotProduct(new Vector3D(0, 0, 1))));
-            }
-        }
-
-        return angle;
-    }
-
     public void resetDirections() {
         w_Vector = new Vector3D(0, 0, 1);
         v_Vector = new Vector3D(0, 1, 0);
