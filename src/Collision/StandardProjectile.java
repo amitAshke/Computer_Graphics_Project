@@ -80,6 +80,10 @@ public class StandardProjectile implements Renderable, TimeBound {
         this.leftRightAngle = leftRightAngle;
     }
 
+    public void addRotation() {
+        rotation = (rotation + rotationAngle) % 360;
+    }
+
     @Override
     public void render(GL2 gl) {
 
@@ -212,7 +216,7 @@ public class StandardProjectile implements Renderable, TimeBound {
         if (!alive) { return false; }
 
         if (!collided) {
-            rotation += rotationAngle;
+            addRotation();
             this.position = position.scaleAdd(speed, forward);
             updateCollisionCapsule();
             updateProjectileCollidables();
