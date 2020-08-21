@@ -17,9 +17,11 @@ public class Controller {
     private boolean specialActive = false;
 
     private InputHandler inputHandler;
+    private Camera camera;
 
     public Controller() {
         inputHandler = InputHandler.getInstance();
+        camera = Camera.getInstance();
     }
 
     public void setSpecialActive(boolean specialActive) {
@@ -45,7 +47,6 @@ public class Controller {
      */
     private void handleDiagonalMovement() {
         HashMap<Integer, Boolean> key = inputHandler.key;
-        Camera camera = Player.camera;
 
         if (key.get(KeyEvent.VK_W) && key.get(KeyEvent.VK_D)) {
             camera.moveForwardOrBackward(diagonalSpeed);
@@ -70,7 +71,6 @@ public class Controller {
      */
     private void handleStraightMovement() {
         HashMap<Integer, Boolean> key = inputHandler.key;
-        Camera camera = Player.camera;
 
         if (key.get(KeyEvent.VK_W)) {
             camera.moveForwardOrBackward(straightSpeed);
@@ -90,7 +90,6 @@ public class Controller {
      * This functions handles the camera rotation based on the input.
      */
     public void handleRotation() {
-        Camera camera = Player.camera;
         double leftRightAngle = inputHandler.mouseDistance.getX() * horizontalSensitivity;
         double upDownAngle = inputHandler.mouseDistance.getY() * verticalSensitivity;
 
@@ -106,7 +105,6 @@ public class Controller {
      * This functions projectiles that the player fires based on the input.
      */
     public void handleFire() {
-        Camera camera = Player.camera;
 
         // If the player clicked on the left mouse button.
         if (inputHandler.key.get(1)) {
@@ -122,7 +120,6 @@ public class Controller {
     }
 
     private void handleStandardProjectileActivation() {
-        Camera camera = Player.camera;
 
         // If the player has not reached his projectile limit with or without the special attack.
         if ((!specialActive && Player.projectiles.size() < Player.projectileLimit) ||
@@ -139,7 +136,6 @@ public class Controller {
     }
 
     private void handleSpecialProjectileActivation() {
-        Camera camera = Player.camera;
 
         if (!specialActive && Player.projectiles.size() == 0) {
             Player.specialProjectile = new SpecialProjectile(camera.position, new Vector3D(0, 0, 1));
@@ -156,7 +152,7 @@ public class Controller {
         }
     }
 
-        public void resetValues() {
+    public void resetValues() {
         specialActive = false;
         inputHandler.resetMouseButtons();
     }

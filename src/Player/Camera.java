@@ -10,9 +10,20 @@ import javax.media.opengl.glu.GLU;
  * This class represents the camera of the game.
  */
 public class Camera {
+    private static Camera singleInstance = null;
     public Vector3D position, w_Vector, u_Vector, v_Vector;
 
-    public Camera(Vector3D position, Vector3D look, Vector3D up) {
+    public Camera() {
+    }
+
+    public static Camera getInstance() {
+        if (singleInstance == null)
+            singleInstance = new Camera();
+
+        return singleInstance;
+    }
+
+    public void setValues(Vector3D position, Vector3D look, Vector3D up) {
         this.position = position;
         this.w_Vector = look.normalize();
         this.v_Vector = up.normalize();

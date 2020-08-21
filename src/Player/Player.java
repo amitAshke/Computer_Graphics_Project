@@ -36,10 +36,7 @@ public class Player implements TimeBound, Collidable {
 
     public Player() {
 
-        Vector3D position = new Vector3D(0, 0, 0),
-                w_Vector = new Vector3D(0, 0, 1),
-                v_Vector = new Vector3D(0, 1, 0);
-        camera = new Camera(position, w_Vector, v_Vector);
+        camera = Camera.getInstance();
         controller = new Controller();
         collisionHandler = new CollisionHandler();
         playerCollidables = new ArrayList<>();
@@ -50,7 +47,6 @@ public class Player implements TimeBound, Collidable {
         this.mapX = -1;
         this.mapZ = -1;
 
-        updatePlayerHitbox();
     }
 
     public int getHitPoints() {
@@ -145,8 +141,7 @@ public class Player implements TimeBound, Collidable {
         playerCollidables.clear();
         projectiles.clear();
         specialProjectile = null;
-        camera.position = newPosition;
-        camera.resetDirections();
+        camera.setValues(newPosition, new Vector3D(0, 0, 1), new Vector3D(0, 1, 0));
         controller.resetValues();
         hitPoints = maxHealth;
     }
