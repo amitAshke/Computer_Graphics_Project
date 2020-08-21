@@ -30,85 +30,61 @@ public class Controller {
      * This functions handles the camera position based on the input.
      */
     public void handleMovement() {
-        Camera camera = Player.camera;
-        HashMap<Integer, Boolean> key = inputHandler.key;
-
-        Vector3D newPosition = camera.position, u_Projection = camera.u_Vector, w_Projection;
-
-        // Make projection of the forward vector of the camera to the XZ plane.
-        if (camera.v_Vector.getY() > 0) {
-             w_Projection = camera.w_Vector.projectToXZ().normalize();
-        } else {
-            if (camera.w_Vector.getY() == 1) {
-                w_Projection = camera.v_Vector.projectToXZ().neg().normalize();
-            } else {
-                w_Projection = camera.v_Vector.projectToXZ().normalize();
-            }
-        }
 
         // If more than one movement button is pressed.
         if (inputHandler.getMovementKeysPressed() > 1) {
-            newPosition = handleDiagonalMovement(newPosition, w_Projection);
+            handleDiagonalMovement();
         }
         // If a single movement button is pressed.
         else {
-            newPosition = handleStraightMovement(newPosition, w_Projection);
+            handleStraightMovement();
         }
-
-        // Sets the new position of the camera.
-        camera.position = newPosition;
     }
 
     /**
      * This functions determines the diagonal direction according to the player's input and returns the new player location.
      */
-    private Vector3D handleDiagonalMovement(Vector3D newPosition, Vector3D w_Projection) {
+    private void handleDiagonalMovement() {
         HashMap<Integer, Boolean> key = inputHandler.key;
-        Vector3D u_Projection = Player.camera.u_Vector;
+        Camera camera = Player.camera;
 
         if (key.get(KeyEvent.VK_W) && key.get(KeyEvent.VK_D)) {
-            newPosition = newPosition.scaleAdd(diagonalSpeed, w_Projection);
-            newPosition = newPosition.scaleAdd(diagonalSpeed, u_Projection);
-
+            camera.moveForwardOrBackward(diagonalSpeed);
+            camera.moveRightOrLeft(diagonalSpeed);
         }
         if (key.get(KeyEvent.VK_W) && key.get(KeyEvent.VK_A)) {
-            newPosition = newPosition.scaleAdd(diagonalSpeed, w_Projection);
-            newPosition = newPosition.scaleAdd(-1 * diagonalSpeed, u_Projection);
-
+            camera.moveForwardOrBackward(diagonalSpeed);
+            camera.moveRightOrLeft(-1 * diagonalSpeed);
         }
         if (key.get(KeyEvent.VK_S) && key.get(KeyEvent.VK_D)) {
-            newPosition = newPosition.scaleAdd(-1 * diagonalSpeed, w_Projection);
-            newPosition = newPosition.scaleAdd(diagonalSpeed, u_Projection);
-
+            camera.moveForwardOrBackward(-1 * diagonalSpeed);
+            camera.moveRightOrLeft(diagonalSpeed);
         }
         if (key.get(KeyEvent.VK_S) && key.get(KeyEvent.VK_A)) {
-            newPosition = newPosition.scaleAdd(-1 * diagonalSpeed, w_Projection);
-            newPosition = newPosition.scaleAdd(-1 * diagonalSpeed, u_Projection);
+            camera.moveForwardOrBackward(-1 * diagonalSpeed);
+            camera.moveRightOrLeft(-1 * diagonalSpeed);
         }
-
-        return newPosition;
     }
 
     /**
      * This functions determines the straight direction according to the player's input and returns the new player location.
      */
-    private Vector3D handleStraightMovement(Vector3D newPosition, Vector3D w_Projection) {
+    private void handleStraightMovement() {
         HashMap<Integer, Boolean> key = inputHandler.key;
-        Vector3D u_Projection = Player.camera.u_Vector;
+        Camera camera = Player.camera;
 
         if (key.get(KeyEvent.VK_W)) {
-            newPosition = newPosition.scaleAdd(straightSpeed, w_Projection);
+            camera.moveForwardOrBackward(straightSpeed);
         }
         if (key.get(KeyEvent.VK_S)) {
-            newPosition = newPosition.scaleAdd(-1 * straightSpeed, w_Projection);
+            camera.moveForwardOrBackward(-1 * straightSpeed);
         }
         if (key.get(KeyEvent.VK_D)) {
-            newPosition = newPosition.scaleAdd(straightSpeed, u_Projection);
+            camera.moveRightOrLeft(straightSpeed);
         }
         if (key.get(KeyEvent.VK_A)) {
-            newPosition = newPosition.scaleAdd(-1 * straightSpeed, u_Projection);
+            camera.moveRightOrLeft(-1 * straightSpeed);
         }
-        return newPosition;
     }
 
     /**
