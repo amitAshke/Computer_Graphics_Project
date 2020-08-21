@@ -28,7 +28,7 @@ public class Player implements TimeBound, Collidable {
     public static Controller controller;
     public static int projectileLimit = 8, hitPoints = 5;
     public static List<StandardProjectile> projectiles;
-    public static AltProjectile altProjectile = null;
+    public static SpecialProjectile specialProjectile = null;
     public static Camera camera;
     public static final double HIT_RADIUS = 0.3, FIRE_RATE = 0.3;
     public static HUD hud;
@@ -64,10 +64,10 @@ public class Player implements TimeBound, Collidable {
     public boolean tick() {
         Vector3D oldPosition = camera.position;
 
-        if (altProjectile != null) {
-            boolean alive = altProjectile.tick();
-            if (!altProjectile.tick()) {
-                controller.setAltActive(alive);
+        if (specialProjectile != null) {
+            boolean alive = specialProjectile.tick();
+            if (!specialProjectile.tick()) {
+                controller.setSpecialActive(alive);
             }
         }
 
@@ -142,7 +142,7 @@ public class Player implements TimeBound, Collidable {
     public void reset(Vector3D newPosition) {
         playerCollidables.clear();
         projectiles.clear();
-        altProjectile = null;
+        specialProjectile = null;
         camera.position = newPosition;
         camera.resetDirections();
         Controller.inputHandler.resetMouseButtons();

@@ -91,8 +91,8 @@ public class Render3D {
         gl.glTexParameteri(GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_S, GL2.GL_REPEAT);
 
 
-        if (Player.altProjectile != null) {
-            Player.altProjectile.render(gl);
+        if (Player.specialProjectile != null) {
+            Player.specialProjectile.render(gl);
         }
 
         for (Renderable projectile : Player.projectiles) {

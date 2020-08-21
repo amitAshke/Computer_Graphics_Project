@@ -10,7 +10,7 @@ import javax.media.opengl.GL2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AltProjectile implements Renderable, TimeBound {
+public class SpecialProjectile implements Renderable, TimeBound {
 
     private Vector3D position, forward, up;
     private double maxRange;
@@ -21,7 +21,7 @@ public class AltProjectile implements Renderable, TimeBound {
     private CollisionHandler collisionHandler;
     private boolean detached = false, alive = true;
 
-    public AltProjectile(Vector3D position, Vector3D forward) {
+    public SpecialProjectile(Vector3D position, Vector3D forward) {
 
         setDefaults(position, forward, new Vector3D(0, 1, 0));
 

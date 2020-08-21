@@ -14,7 +14,7 @@ public class Controller {
 
     private double straightSpeed = 0.05, diagonalSpeed = straightSpeed * Math.sqrt(2) / 2;
     private double horizontalSensitivity = 0.03, verticalSensitivity = 0.03;
-    private boolean altActive = false;
+    private boolean specialActive = false;
 
     public static InputHandler inputHandler;
 
@@ -22,8 +22,8 @@ public class Controller {
         inputHandler = new InputHandler();
     }
 
-    public void setAltActive(boolean altActive) {
-        this.altActive = altActive;
+    public void setSpecialActive(boolean specialActive) {
+        this.specialActive = specialActive;
     }
 
     /**
@@ -150,8 +150,8 @@ public class Controller {
         Camera camera = Player.camera;
 
         // If the player has not reached his projectile limit with or without the special attack.
-        if ((!altActive && Player.projectiles.size() < Player.projectileLimit) ||
-                (altActive && Player.projectiles.size() + Player.altProjectile.getProjectiles().size() < Player.projectileLimit)) {
+        if ((!specialActive && Player.projectiles.size() < Player.projectileLimit) ||
+                (specialActive && Player.projectiles.size() + Player.specialProjectile.getProjectiles().size() < Player.projectileLimit)) {
 
             if (Player.projectileFireCooldown.canActivate()) {
 
@@ -166,22 +166,22 @@ public class Controller {
     private void handleSpecialProjectileActivation() {
         Camera camera = Player.camera;
 
-        if (!altActive && Player.projectiles.size() == 0) {
-            Player.altProjectile = new AltProjectile(camera.position, new Vector3D(0, 0, 1));
+        if (!specialActive && Player.projectiles.size() == 0) {
+            Player.specialProjectile = new SpecialProjectile(camera.position, new Vector3D(0, 0, 1));
             inputHandler.resetMouseButtons();
-            altActive = true;
+            specialActive = true;
             Display.soundPlayer.playSpecial();
-        } else if (altActive) {
-            Player.altProjectile.detachProjectiles();
-            Player.projectiles = Player.altProjectile.getProjectiles();
-            altActive = false;
+        } else if (specialActive) {
+            Player.specialProjectile.detachProjectiles();
+            Player.projectiles = Player.specialProjectile.getProjectiles();
+            specialActive = false;
             inputHandler.resetMouseButtons();
-            Player.altProjectile = null;
+            Player.specialProjectile = null;
             Display.soundPlayer.playSpecial();
         }
     }
 
         public void resetValues() {
-        altActive = false;
+        specialActive = false;
     }
 }
