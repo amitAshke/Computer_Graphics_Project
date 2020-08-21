@@ -176,7 +176,7 @@ public class Display implements GLEventListener {
         long currentTime = System.nanoTime(), passedTime = currentTime - previousTime;
         double secondsPerTick = 1 / 60.0;
         boolean isPaused = inputHandler.key.get(KeyEvent.VK_F1),
-                winCondition = Level.dummies.isEmpty() || inputHandler.key.get(KeyEvent.VK_F2);
+                winCondition = Level.enemies.isEmpty() || inputHandler.key.get(KeyEvent.VK_F2);
 
         previousTime = currentTime;
         unprocessedSeconds += passedTime / 1000000000.0;
