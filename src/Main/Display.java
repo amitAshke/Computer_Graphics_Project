@@ -43,6 +43,7 @@ public class Display implements GLEventListener {
     static Frame frame = new Frame();
     static Animator animator;
     private Render3D render3D;
+    private InputHandler inputHandler;
 
     // Variables for game flow.
     public static LevelManager levelManager;
