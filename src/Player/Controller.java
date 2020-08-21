@@ -16,10 +16,10 @@ public class Controller {
     private double horizontalSensitivity = 0.03, verticalSensitivity = 0.03;
     private boolean specialActive = false;
 
-    public static InputHandler inputHandler;
+    private InputHandler inputHandler;
 
     public Controller() {
-        inputHandler = new InputHandler();
+        inputHandler = InputHandler.getInstance();
     }
 
     public void setSpecialActive(boolean specialActive) {
@@ -30,7 +30,6 @@ public class Controller {
      * This functions handles the camera position based on the input.
      */
     public void handleMovement() {
-
         // If more than one movement button is pressed.
         if (inputHandler.getMovementKeysPressed() > 1) {
             handleDiagonalMovement();
@@ -159,5 +158,6 @@ public class Controller {
 
         public void resetValues() {
         specialActive = false;
+        inputHandler.resetMouseButtons();
     }
 }

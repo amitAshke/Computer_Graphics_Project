@@ -12,8 +12,10 @@ import java.util.HashMap;
  */
 public class InputHandler implements KeyListener, MouseListener, MouseMotionListener, FocusListener {
 
+    private static InputHandler singleInstance = null;
+
     // A Robot object to to recenter the mouse after each movement to the center of the screen.
-    Robot robot;
+    private Robot robot;
 
     private final Point2D windowCenter = new Point2D.Double(Display.WINDOW_WIDTH / 2.0, Display.WINDOW_HEIGHT / 2.0);
 
@@ -39,6 +41,14 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         } catch (Exception e) {
             System.out.println(e.toString());
         }
+    }
+
+    public static InputHandler getInstance()
+    {
+        if (singleInstance == null)
+            singleInstance = new InputHandler();
+
+        return singleInstance;
     }
 
     /**

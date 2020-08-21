@@ -147,7 +147,6 @@ public class Player implements TimeBound, Collidable {
         specialProjectile = null;
         camera.position = newPosition;
         camera.resetDirections();
-        Controller.inputHandler.resetMouseButtons();
         controller.resetValues();
         hitPoints = maxHealth;
     }

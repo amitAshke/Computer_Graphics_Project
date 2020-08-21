@@ -1,6 +1,7 @@
 package Main;
 
 import Player.Player;
+import Player.InputHandler;
 import Renderables.WavefrontObject;
 import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.gl2.GLUT;
@@ -17,8 +18,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
-import static Player.Controller.inputHandler;
 
 /**
  * Main class from which the game runs.
@@ -140,6 +139,7 @@ public class Display implements GLEventListener {
         soundPlayer = new SoundPlayer();
 
         // Set input listeners for canvas.
+        inputHandler = InputHandler.getInstance();
         canvas.addKeyListener(inputHandler);
         canvas.addMouseListener(inputHandler);
         canvas.addMouseMotionListener(inputHandler);
