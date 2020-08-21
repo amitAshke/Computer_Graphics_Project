@@ -77,10 +77,6 @@ public class Camera {
         RotationMatrix3D rotate = new RotationMatrix3D(angle, 'x');
         WorldViewMatrix3D reversedWorldViewMatrix = worldViewMatrix.transpose();
 
-//        LinearAlgebra.Matrices.TransformationMatrix3D transformation = reversedWorldViewMatrix.matrixMultiplication(rotate.matrixMultiplication(worldViewMatrix));
-//        w_Vector = transformation.transform(w_Vector);
-//        v_Vector = transformation.transform(v_Vector);
-
         w_Vector = worldViewMatrix.transform(w_Vector).normalize();
         w_Vector = rotate.transform(w_Vector).normalize();
         w_Vector = reversedWorldViewMatrix.transform(w_Vector).normalize();
@@ -100,28 +96,10 @@ public class Camera {
 
         if (angle == 0) { return; }
 
-//        LinearAlgebra.Vectors.Vector3D[] uvw = {u_Vector, v_Vector, w_Vector};
-
-//        LinearAlgebra.Matrices.WorldViewMatrix3D worldViewMatrix = new LinearAlgebra.Matrices.WorldViewMatrix3D(position, uvw);
         RotationMatrix3D rotate = new RotationMatrix3D(angle, 'y');
-//        LinearAlgebra.Matrices.WorldViewMatrix3D reversedWorldViewMatrix = worldViewMatrix.transpose();
 
-//        LinearAlgebra.Matrices.TransformationMatrix3D transformation = reversedWorldViewMatrix.matrixMultiplication(rotate.matrixMultiplication(worldViewMatrix));
-//        w_Vector = transformation.transform(w_Vector);
-//        u_Vector = transformation.transform(u_Vector);
-
-//        w_Vector = worldViewMatrix.transform(w_Vector).normalize();
         w_Vector = rotate.transform(w_Vector).normalize();
-//        w_Vector = reversedWorldViewMatrix.transform(w_Vector).normalize();
-
-//        u_Vector = worldViewMatrix.transform(u_Vector).normalize();
         u_Vector = rotate.transform(u_Vector).normalize();
-//        u_Vector = reversedWorldViewMatrix.transform(u_Vector).normalize();
-    }
-
-
-    public Vector3D projectWtoXZ() {
-        return w_Vector.projectToXZ();
     }
 
     /**
