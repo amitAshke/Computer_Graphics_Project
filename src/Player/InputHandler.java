@@ -43,8 +43,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         }
     }
 
-    public static InputHandler getInstance()
-    {
+    public static InputHandler getInstance() {
         if (singleInstance == null)
             singleInstance = new InputHandler();
 
