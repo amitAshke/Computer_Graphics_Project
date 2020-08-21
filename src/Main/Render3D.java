@@ -1,6 +1,6 @@
 package Main;
 
-import Collision.Dummy;
+import Collision.Enemy;
 import Player.Player;
 import Renderables.Renderable;
 import com.jogamp.opengl.util.texture.Texture;
@@ -67,8 +67,8 @@ public class Render3D {
 
         gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, material, 0);
 
-        for (Dummy dummy : Level.dummies) {
-            dummy.render(gl);
+        for (Enemy enemy : Level.enemies) {
+            enemy.render(gl);
         }
 
         for (Renderable renderable : renderables) {

@@ -4,7 +4,7 @@
 # Legend:
 # 0 - wall block
 # 1 - floor + ceiling
-# 2 - floor + ceiling + dummy
+# 2 - floor + ceiling + enemy
 # 3 - floor + ceiling + light
 # 4 - player + floor + ceiling
 

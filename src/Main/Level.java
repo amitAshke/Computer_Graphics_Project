@@ -1,6 +1,6 @@
 package Main;
 
-import Collision.Dummy;
+import Collision.Enemy;
 import Renderables.*;
 import Time.TimeBound;
 
@@ -17,12 +17,12 @@ public class Level implements TimeBound {
     private Render3D render3D;
 
     public static int[][] map;
-    public static List<Dummy> dummies;
+    public static List<Enemy> enemies;
 
     public Level(int[][] map, Render3D render3D) {
         this.render3D = render3D;
         this.renderables = new ArrayList<>();
-        this.dummies = new ArrayList<>();
+        this.enemies = new ArrayList<>();
         this.map = map;
         getRenderablesAndCollidablesInMap();
     }
@@ -39,8 +39,8 @@ public class Level implements TimeBound {
                         renderables.add(newWallBlock);
                         break;
                     case (2):
-                        Dummy dummy = new Dummy(row, col, 0);
-                        dummies.add(dummy);
+                        Enemy enemy = new Enemy(row, col, 0);
+                        enemies.add(enemy);
                         renderables.add(new FloorTile(row, col));
                         renderables.add(new CeilingTile(row, col));
                         break;
@@ -66,9 +66,9 @@ public class Level implements TimeBound {
     public boolean tick() {
 
         // Checks if a dummy "died" and removes it if so.
-        for (int i = 0; i < dummies.size(); ++i) {
-            if (!dummies.get(i).tick()) {
-                dummies.remove(i);
+        for (int i = 0; i < enemies.size(); ++i) {
+            if (!enemies.get(i).tick()) {
+                enemies.remove(i);
                 --i;
             }
         }

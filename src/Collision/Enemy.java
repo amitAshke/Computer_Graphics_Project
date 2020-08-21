@@ -22,7 +22,7 @@ import java.util.Random;
 
 import static Main.Display.soundPlayer;
 
-public class Dummy implements Collidable, Renderable, TimeBound {
+public class Enemy implements Collidable, Renderable, TimeBound {
     private MaterialProps material;
     private Texture texture;
     private Vector3D position;
@@ -36,7 +36,7 @@ public class Dummy implements Collidable, Renderable, TimeBound {
     private static CollisionHandler collisionHandler;
 
 
-    public Dummy(int row, int col, double leftRightAngle) {
+    public Enemy(int row, int col, double leftRightAngle) {
 
         texture = Render3D.dummyTex;
 

@@ -56,7 +56,7 @@ public class AltProjectile implements Renderable, TimeBound {
     }
 
     protected void updateProjectileCollidables() {
-        projectileCollidables.addAll(Level.dummies);
+        projectileCollidables.addAll(Level.enemies);
     }
 
     public void setPosition(Vector3D position) {

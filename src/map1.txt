@@ -4,14 +4,14 @@
 # Legend:
 # 0 - Wall block
 # 1 - Floor + ceiling
-# 2 - Floor + ceiling + dummy
+# 2 - Floor + ceiling + enemy
 # 3 - Floor + ceiling + light
 # 4 - player + floor + ceiling
 
 0 0 0 0 0 0 0
 0 1 1 1 1 1 0
 0 1 1 1 1 1 0
-0 4 1 1 1 2 0
-0 1 3 1 1 1 0
+0 4 1 1 3 2 0
+0 1 1 1 1 1 0
 0 1 1 1 1 1 0
 0 0 0 0 0 0 0

@@ -155,7 +155,7 @@ public class StandardProjectile implements Renderable, TimeBound {
                 }
             }
         }
-        projectileCollidables.addAll(Level.dummies);
+        projectileCollidables.addAll(Level.enemies);
     }
 
     protected void updateCollisionCapsule() {

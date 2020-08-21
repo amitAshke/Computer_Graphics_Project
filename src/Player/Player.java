@@ -25,7 +25,6 @@ public class Player implements TimeBound, Collidable {
     // A list of objects in the level that the player can collide with.
     private List<Collidable> playerCollidables;
 
-
     public static Controller controller;
     public static int projectileLimit = 8, hitPoints = 5;
     public static List<StandardProjectile> projectiles;
@@ -133,7 +132,7 @@ public class Player implements TimeBound, Collidable {
                 }
             }
         }
-        playerCollidables.addAll(Level.dummies);
+        playerCollidables.addAll(Level.enemies);
     }
 
     /**
