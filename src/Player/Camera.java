@@ -19,13 +19,22 @@ public class Camera {
         this.u_Vector = w_Vector.crossProduct(v_Vector).normalize();
     }
 
-    public Vector3D getPosition() { return position; }
+    public void moveForwardOrBackward(double distance) {
+        Vector3D w_Projection;
+        if (v_Vector.getY() > 0) {
+            w_Projection = w_Vector.projectToXZ().normalize();
+        } else {
+            if (w_Vector.getY() == 1) {
+                w_Projection = v_Vector.projectToXZ().neg().normalize();
+            } else {
+                w_Projection = v_Vector.projectToXZ().normalize();
+            }
+        }
 
-    public void move_w(double linearSpeed) { position = position.scaleAdd(linearSpeed, w_Vector); }
+        position = position.scaleAdd(distance, w_Projection);
+    }
 
-    public void move_u(double linearSpeed) { position = position.scaleAdd(linearSpeed, u_Vector); }
-
-    public void move_v(double linearSpeed) { position = position.scaleAdd(linearSpeed, v_Vector); }
+    public void moveRightOrLeft(double distance) { position = position.scaleAdd(distance, u_Vector.projectToXZ()); }
 
     /**
      * This function fix inconsistencies with the orthogonality of the camera's vectors.
