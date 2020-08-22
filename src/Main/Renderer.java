@@ -17,10 +17,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
+
 /**
  * This class is responsible for all of the rendering of the game.
  */
 public class Renderer {
+
+    private Texture instructions;
 
     public static GLU glu;
     public static Texture floorTex, ceilingTex, wallTex, projectileTex, dummyTex, lampTex, healthTex, crosshairTex;
@@ -53,6 +58,8 @@ public class Renderer {
             healthTex = TextureIO.newTexture(new File(filename), true);
             filename = "src\\resources\\textures\\crosshair.png";
             crosshairTex = TextureIO.newTexture(new File(filename), true);
+            filename = "src\\resources\\instructions.png";
+            instructions = TextureIO.newTexture(new File(filename), true);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Renderer: Error during texture loading.");
@@ -127,37 +134,28 @@ public class Renderer {
     }
 
     public void renderInstructions(GL2 gl, GLUT glut) {
+        gl.glDisable(GL2.GL_LIGHTING);
+        instructions.enable(gl);
+        instructions.bind(gl);
 
-        int leftOffset = 20, topOffset = 110;
-        String[] instructions = new String[] {
-                "Objective: shoot the knight status.",
-                "Controls:",
-                "W - move forward",
-                "A - move left",
-                "S - move back",
-                "D - move right",
-                "Left mouse button - shoot",
-                "right mouse button - activate special ability",
-                "right mouse button while special ability is active - shoot all projectiles",
-                "F1 - pause and show instructions",
-                "F2 - skip to the next level",
-                "R - restart game"
-        };
+        glEnable2D(gl);
+        gl.glBegin(GL2.GL_QUADS);
 
-        gl.glDisable(GL.GL_TEXTURE_2D);
-        gl.glColor3f(1.0f, 1.0f, 1.0f);
+        gl.glTexCoord2f(1, 0);
+        gl.glVertex2d(Display.WINDOW_WIDTH, 0);
 
-        gl.glWindowPos2d(leftOffset, Display.WINDOW_HEIGHT - topOffset);
-        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, instructions[0]);
+        gl.glTexCoord2f(1, 1);
+        gl.glVertex2d(Display.WINDOW_WIDTH, Display.WINDOW_HEIGHT);
 
-        topOffset = 120;
-        for (int i = 1; i < instructions.length; ++i) {
-            gl.glWindowPos2d(leftOffset, Display.WINDOW_HEIGHT - topOffset - 20 * i);
-            glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, instructions[i]);
-        }
+        gl.glTexCoord2f(0, 1);
+        gl.glVertex2d(0, Display.WINDOW_HEIGHT);
 
-        gl.glRasterPos2d(0, 0);
-        gl.glColor3f(1.0f, 1.0f, 1.0f);
+        gl.glTexCoord2f(0, 0);
+        gl.glVertex2d(0, 0);
+
+        gl.glEnd();
+        glDisable2D(gl);
+        gl.glEnable(GL2.GL_LIGHTING);
     }
 
     public void renderFpsCounter(GL2 gl, GLUT glut, double unprocessedSeconds) {
@@ -192,6 +190,25 @@ public class Renderer {
         renderPlayer(gl, Display.levelManager.player);
         renderLevel(gl, level);
         gl.glDisable(GL.GL_TEXTURE_2D);
+        gl.glPopMatrix();
+    }
+
+    void glEnable2D(GL2 gl) {
+
+        gl.glMatrixMode(GL_PROJECTION);
+        gl.glPushMatrix();
+        gl.glLoadIdentity();
+
+        gl.glOrtho(0, Display.WINDOW_WIDTH, 0, Display.WINDOW_HEIGHT, -1, 1);
+        gl.glMatrixMode(GL_MODELVIEW);
+        gl.glPushMatrix();
+        gl.glLoadIdentity();
+    }
+
+    void glDisable2D(GL2 gl) {
+        gl.glMatrixMode(GL_PROJECTION);
+        gl.glPopMatrix();
+        gl.glMatrixMode(GL_MODELVIEW);
         gl.glPopMatrix();
     }
 }
