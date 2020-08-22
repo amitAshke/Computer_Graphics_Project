@@ -4,7 +4,7 @@ import Collision.Shapes.Capsule;
 import LinearAlgebra.Vectors.Vector3D;
 import Main.Display;
 import Main.Level;
-import Main.Render3D;
+import Main.Renderer;
 import Renderables.*;
 import Time.TimeBound;
 import com.jogamp.opengl.util.texture.Texture;
@@ -30,7 +30,7 @@ public class StandardProjectile implements Renderable, TimeBound {
 
     public StandardProjectile(Vector3D position, Vector3D forward, Vector3D up, double speed) {
 
-        texture = Render3D.projectileTex;
+        texture = Renderer.projectileTex;
 
         setDefaults(position, forward, up);
 

@@ -7,15 +7,15 @@ import Player.Player;
  * This class dictates the flow of the levels in the game. It also keeps a property of Player to move it between levels.
  */
 public class LevelManager {
-    private Render3D render3D;
+    private Renderer renderer;
     private int currentLevel;
     private String[] levelFiles;
     private MapReader mapReader;
 
     public static Player player;
 
-    public LevelManager(Render3D render3D) {
-        this.render3D = render3D;
+    public LevelManager(Renderer renderer) {
+        this.renderer = renderer;
         currentLevel = -1;
         player = new Player();
         levelFiles = new String[]{"src\\map1.txt", "src\\map2.txt", "src\\map3.txt"};
@@ -45,7 +45,7 @@ public class LevelManager {
         int[][] map = mapReader.loadMap(levelFiles[currentLevel]);
         Vector3D newPlayerPosition = getNewPlayerPosition(map);
         player.reset(newPlayerPosition);
-        return new Level(map, render3D);
+        return new Level(map, renderer);
     }
 
     public void restartGame() {

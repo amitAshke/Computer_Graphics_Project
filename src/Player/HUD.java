@@ -1,7 +1,7 @@
 package Player;
 
 import Main.Display;
-import Main.Render3D;
+import Main.Renderer;
 import Renderables.Renderable;
 import com.jogamp.opengl.util.texture.Texture;
 
@@ -15,7 +15,7 @@ public class HUD implements Renderable {
     private Texture healthTex;
 
     public HUD() {
-        healthTex = Render3D.healthTex;
+        healthTex = Renderer.healthTex;
     }
 
     void glEnable2D(GL2 gl) {

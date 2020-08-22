@@ -6,7 +6,7 @@ import LinearAlgebra.Vectors.Vector3D;
 import Main.Display;
 import Main.Level;
 import Main.LevelManager;
-import Main.Render3D;
+import Main.Renderer;
 import Player.Player;
 import Renderables.MaterialProps;
 import Renderables.Renderable;
@@ -38,7 +38,7 @@ public class Enemy implements Collidable, Renderable, TimeBound {
 
     public Enemy(int row, int col, double leftRightAngle) {
 
-        texture = Render3D.dummyTex;
+        texture = Renderer.dummyTex;
 
         this.position = new Vector3D(row + 0.5, 0, col + 0.5);
         this.leftRightAngle = leftRightAngle;

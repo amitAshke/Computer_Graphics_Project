@@ -42,7 +42,7 @@ public class Display implements GLEventListener {
     static GLCanvas canvas;
     static Frame frame = new Frame();
     static Animator animator;
-    private Render3D render3D;
+    private Renderer renderer;
     private InputHandler inputHandler;
 
     // Variables for game flow.
@@ -133,8 +133,8 @@ public class Display implements GLEventListener {
         gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 
-        render3D = new Render3D(gl);
-        levelManager = new LevelManager(render3D);
+        renderer = new Renderer(gl);
+        levelManager = new LevelManager(renderer);
         level = levelManager.getNextLevel();
 
         soundPlayer = new SoundPlayer();
@@ -209,7 +209,7 @@ public class Display implements GLEventListener {
         GL2 gl = glAutoDrawable.getGL().getGL2();
         gl.glMatrixMode(GL2.GL_PROJECTION);
         gl.glLoadIdentity();
-        Render3D.glu.gluPerspective(50, Display.WINDOW_WIDTH / Display.WINDOW_HEIGHT, Player.HIT_RADIUS - 0.2, 1000);
+        Renderer.glu.gluPerspective(50, Display.WINDOW_WIDTH / Display.WINDOW_HEIGHT, Player.HIT_RADIUS - 0.2, 1000);
         gl.glMatrixMode(GL2.GL_MODELVIEW);
     }
 
@@ -276,7 +276,7 @@ public class Display implements GLEventListener {
     private void renderNextFrame(GL2 gl) {
         gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         gl.glLoadIdentity();
-        render3D.renderPlayer(gl, levelManager.player);
+        renderer.renderPlayer(gl, levelManager.player);
         level.render(gl);
         gl.glDisable(GL.GL_TEXTURE_2D);
         gl.glPopMatrix();

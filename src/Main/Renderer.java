@@ -17,12 +17,12 @@ import java.util.List;
 /**
  * This class is responsible for all of the rendering of the game.
  */
-public class Render3D {
+public class Renderer {
 
     public static GLU glu;
-    public static Texture floorTex, ceilingTex, wallTex, projectileTex, dummyTex, lampTex, healthTex;
+    public static Texture floorTex, ceilingTex, wallTex, projectileTex, dummyTex, lampTex, healthTex, crosshairTex;
 
-    public Render3D(GL2 gl) {
+    public Renderer(GL2 gl) {
         glu = new GLU();
 
         gl.glEnable(GL.GL_TEXTURE_2D);
@@ -45,6 +45,8 @@ public class Render3D {
             lampTex = TextureIO.newTexture(new File(filename), true);
             filename = "src\\resources\\textures\\health.png";
             healthTex = TextureIO.newTexture(new File(filename), true);
+            filename = "src\\resources\\textures\\crosshair.png";
+            crosshairTex = TextureIO.newTexture(new File(filename), true);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Render3D: Error during texture loading.");
