@@ -3,11 +3,13 @@ package Main;
 import Collision.Enemy;
 import Player.Player;
 import Renderables.Renderable;
+import com.jogamp.opengl.util.gl2.GLUT;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
 import java.io.File;
@@ -104,5 +106,74 @@ public class Renderer {
         Player.hud.render(gl);
         
 //        gl.glPopMatrix();
+    }
+
+    public void renderInstructions(GL2 gl, GLUT glut) {
+
+        int leftOffset = 20, topOffset = 110;
+        String[] instructions = new String[] {
+                "Objective: shoot the knight status.",
+                "Controls:",
+                "W - move forward",
+                "A - move left",
+                "S - move back",
+                "D - move right",
+                "Left mouse button - shoot",
+                "right mouse button - activate special ability",
+                "right mouse button while special ability is active - shoot all projectiles",
+                "F1 - pause and show instructions",
+                "F2 - skip to the next level",
+                "R - restart game"
+        };
+
+        gl.glDisable(GL.GL_TEXTURE_2D);
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
+
+        gl.glWindowPos2d(leftOffset, Display.WINDOW_HEIGHT - topOffset);
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, instructions[0]);
+
+        topOffset = 120;
+        for (int i = 1; i < instructions.length; ++i) {
+            gl.glWindowPos2d(leftOffset, Display.WINDOW_HEIGHT - topOffset - 20 * i);
+            glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, instructions[i]);
+        }
+
+        gl.glRasterPos2d(0, 0);
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
+    }
+
+    public void renderFpsCounter(GL2 gl, GLUT glut, double unprocessedSeconds) {
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
+        gl.glWindowPos2d(20, Display.WINDOW_HEIGHT - 60);
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, (int) (1 / unprocessedSeconds) + " FPS");
+        gl.glRasterPos2d(0, 0);
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
+    }
+
+    public void renderResult(GL2 gl, GLUT glut, Level level) {
+        gl.glLoadIdentity();
+        gl.glDisable(GL.GL_TEXTURE_2D);
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
+
+        gl.glWindowPos2d(Display.WINDOW_WIDTH / 2 - 50, Display.WINDOW_HEIGHT / 2);
+        if (level == null) {
+            glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "YOU WIN!");
+        } else {
+            glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "You Lose!");
+        }
+        gl.glWindowPos2d(Display.WINDOW_WIDTH / 2 - 70, Display.WINDOW_HEIGHT / 2 - 20);
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "Press R to restart");
+
+        gl.glRasterPos2d(0, 0);
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
+    }
+
+    public void renderNextFrame(GL2 gl, Level level) {
+        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+        gl.glLoadIdentity();
+        renderPlayer(gl, Display.levelManager.player);
+        level.render(gl);
+        gl.glDisable(GL.GL_TEXTURE_2D);
+        gl.glPopMatrix();
     }
 }

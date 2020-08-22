@@ -170,7 +170,7 @@ public class Display implements GLEventListener {
 
         // Predicate true only if the player won (finished all of the levels).
         if (level == null || loseCondition) {
-            renderResult(gl, glut);
+            renderer.renderResult(gl, glut, level);
             return;
         }
 
@@ -196,12 +196,12 @@ public class Display implements GLEventListener {
             level.tick();
         }
 
-        renderNextFrame(gl);
+        renderer.renderNextFrame(gl, level);
 
         if (isPaused) {
-            renderInstructions(gl, glut);
+            renderer.renderInstructions(gl, glut);
         } else {
-            renderFpsCounter(gl, glut);
+            renderer.renderFpsCounter(gl, glut, unprocessedSeconds);
         }
     }
 
@@ -211,75 +211,6 @@ public class Display implements GLEventListener {
         gl.glLoadIdentity();
         Renderer.glu.gluPerspective(50, Display.WINDOW_WIDTH / Display.WINDOW_HEIGHT, Player.HIT_RADIUS - 0.2, 1000);
         gl.glMatrixMode(GL2.GL_MODELVIEW);
-    }
-
-    private void renderInstructions(GL2 gl, GLUT glut) {
-
-        int leftOffset = 20, topOffset = 110;
-        String[] instructions = new String[] {
-                "Objective: shoot the knight status.",
-                "Controls:",
-                "W - move forward",
-                "A - move left",
-                "S - move back",
-                "D - move right",
-                "Left mouse button - shoot",
-                "right mouse button - activate special ability",
-                "right mouse button while special ability is active - shoot all projectiles",
-                "F1 - pause and show instructions",
-                "F2 - skip to the next level",
-                "R - restart game"
-        };
-
-        gl.glDisable(GL.GL_TEXTURE_2D);
-        gl.glColor3f(1.0f, 1.0f, 1.0f);
-
-        gl.glWindowPos2d(leftOffset, WINDOW_HEIGHT - topOffset);
-        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, instructions[0]);
-
-        topOffset = 120;
-        for (int i = 1; i < instructions.length; ++i) {
-            gl.glWindowPos2d(leftOffset, WINDOW_HEIGHT - topOffset - 20 * i);
-            glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, instructions[i]);
-        }
-
-        gl.glRasterPos2d(0, 0);
-        gl.glColor3f(1.0f, 1.0f, 1.0f);
-    }
-
-    private void renderFpsCounter(GL2 gl, GLUT glut) {
-        gl.glColor3f(1.0f, 1.0f, 1.0f);
-        gl.glWindowPos2d(20, WINDOW_HEIGHT - 60);
-        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, (int) (1 / unprocessedSeconds) + " FPS");
-        gl.glRasterPos2d(0, 0);
-        gl.glColor3f(1.0f, 1.0f, 1.0f);
-    }
-
-    private void renderResult(GL2 gl, GLUT glut) {
-        gl.glLoadIdentity();
-        gl.glDisable(GL.GL_TEXTURE_2D);
-        gl.glColor3f(1.0f, 1.0f, 1.0f);
-
-        gl.glWindowPos2d(WINDOW_WIDTH / 2 - 50, WINDOW_HEIGHT / 2);
-        if (level == null) {
-            glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "YOU WIN!");
-        } else {
-            glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "You Lose!");
-        }
-        gl.glWindowPos2d(WINDOW_WIDTH / 2 - 70, WINDOW_HEIGHT / 2 - 20);
-        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "Press R to restart");
-
-        gl.glRasterPos2d(0, 0);
-        gl.glColor3f(1.0f, 1.0f, 1.0f);
-    }
-
-    private void renderNextFrame(GL2 gl) {
-        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-        gl.glLoadIdentity();
-        renderer.renderPlayer(gl, levelManager.player);
-        level.render(gl);
-        gl.glDisable(GL.GL_TEXTURE_2D);
-        gl.glPopMatrix();
     }
 
     private void playBackgroundMusic() {
