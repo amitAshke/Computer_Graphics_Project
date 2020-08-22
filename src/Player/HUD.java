@@ -66,9 +66,12 @@ public class HUD implements Renderable {
         gl.glEnd();
         glDisable2D(gl);
     }
+
     public void render(GL2 gl) {
+        gl.glDisable(GL2.GL_LIGHTING);
 
         renderHealth(gl);
 
+        gl.glEnable(GL2.GL_LIGHTING);
     }
 }

@@ -28,7 +28,7 @@ public class Renderer {
     private Texture instructions;
 
     public static GLU glu;
-    public static Texture floorTex, ceilingTex, wallTex, projectileTex, dummyTex, lampTex, healthTex, crosshairTex;
+    public static Texture floorTex, ceilingTex, wallTex, projectileTex, dummyTex, lampTex, healthTex;
 
     // Variable used to save the models' IDs.
     public static int lampBaseModel, sphereModel, projectileModel, enemyModel;
@@ -56,8 +56,6 @@ public class Renderer {
             lampTex = TextureIO.newTexture(new File(filename), true);
             filename = "src\\resources\\textures\\health.png";
             healthTex = TextureIO.newTexture(new File(filename), true);
-            filename = "src\\resources\\textures\\crosshair.png";
-            crosshairTex = TextureIO.newTexture(new File(filename), true);
             filename = "src\\resources\\instructions.png";
             instructions = TextureIO.newTexture(new File(filename), true);
         } catch (IOException e) {
