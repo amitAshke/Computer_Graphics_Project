@@ -145,7 +145,13 @@ public class Display implements GLEventListener {
     public void display(GLAutoDrawable glAutoDrawable) {
         GL2 gl = glAutoDrawable.getGL().getGL2();
         GLUT glut = new GLUT();
-        boolean loseCondition = LevelManager.player.getHitPoints() <= 0, restartCondition = inputHandler.key.get(KeyEvent.VK_R);
+        boolean loseCondition = LevelManager.player.getHitPoints() <= 0,
+                restartCondition = inputHandler.key.get(KeyEvent.VK_R),
+                exitCondition = inputHandler.key.get(KeyEvent.VK_ESCAPE);
+
+        if (exitCondition) {
+            exit();
+        }
 
         if (restartCondition) {
             levelManager.restartGame();
@@ -196,5 +202,11 @@ public class Display implements GLEventListener {
         gl.glLoadIdentity();
         Renderer.glu.gluPerspective(50, Display.WINDOW_WIDTH / Display.WINDOW_HEIGHT, Player.HIT_RADIUS - 0.2, 1000);
         gl.glMatrixMode(GL2.GL_MODELVIEW);
+    }
+
+    public static void exit(){
+        animator.stop();
+        frame.dispose();
+        System.exit(0);
     }
 }

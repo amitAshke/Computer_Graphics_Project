@@ -32,6 +32,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         key.put(KeyEvent.VK_R, false);
         key.put(KeyEvent.VK_F1, false);
         key.put(KeyEvent.VK_F2, false);
+        key.put(KeyEvent.VK_ESCAPE, false);
         key.put(1, false);
         key.put(3, false);
 
