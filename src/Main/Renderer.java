@@ -56,9 +56,11 @@ public class Renderer {
         }
     }
 
-    // Render level related objects.
-    public void renderLevel(GL2 gl, List<Renderable> renderables) {
-        float[] material = {0.8f,0.8f,0.8f,1.0f};
+    /**
+     * Render the level.
+     */
+    public void renderLevel(GL2 gl, Level level) {
+    float[] material = {0.8f,0.8f,0.8f,1.0f};
 
 //        gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 
@@ -75,7 +77,7 @@ public class Renderer {
             enemy.render(gl);
         }
 
-        for (Renderable renderable : renderables) {
+        for (Renderable renderable : level.getRenderables()) {
             renderable.render(gl);
         }
 
@@ -172,7 +174,7 @@ public class Renderer {
         gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         gl.glLoadIdentity();
         renderPlayer(gl, Display.levelManager.player);
-        level.render(gl);
+        renderLevel(gl, level);
         gl.glDisable(GL.GL_TEXTURE_2D);
         gl.glPopMatrix();
     }

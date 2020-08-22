@@ -4,7 +4,6 @@ import Collision.Enemy;
 import Renderables.*;
 import Time.TimeBound;
 
-import javax.media.opengl.GL2;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +24,10 @@ public class Level implements TimeBound {
         this.enemies = new ArrayList<>();
         this.map = map;
         getRenderablesAndCollidablesInMap();
+    }
+
+    public List<Renderable> getRenderables() {
+        return renderables;
     }
 
     /**
@@ -74,12 +77,5 @@ public class Level implements TimeBound {
         }
 
         return true;
-    }
-
-    /**
-     * Render the level.
-     */
-    public void render(GL2 gl) {
-        renderer.renderLevel(gl, renderables);
     }
 }
