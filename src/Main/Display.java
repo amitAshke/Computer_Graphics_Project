@@ -2,22 +2,18 @@ package Main;
 
 import Player.Player;
 import Player.InputHandler;
-import Renderables.WavefrontObject;
 import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.gl2.GLUT;
 
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
 /**
  * Main class from which the game runs.
@@ -31,11 +27,6 @@ public class Display implements GLEventListener {
     public static int MONITOR_HEIGHT;
     public static final String TITLE = "CG_Project_Blue";
 
-    // Variable used to save the models' IDs.
-    public static int projectileModel;
-    public static int dummyModel;
-    public static int lampBaseModel;
-    public static int sphereModel;
     public static SoundPlayer soundPlayer;
 
     // Variables used for presentation of window, animation and rendering.
@@ -145,12 +136,6 @@ public class Display implements GLEventListener {
         canvas.addMouseListener(inputHandler);
         canvas.addMouseMotionListener(inputHandler);
         canvas.addFocusListener(inputHandler);
-
-        // Set models IDs.
-        projectileModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\Dagger.obj");
-        dummyModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\Knight_Statue.obj");
-        lampBaseModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\lampobj.obj");
-        sphereModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\sphere.obj");
 
         soundPlayer.playBackgroundMusic();
     }

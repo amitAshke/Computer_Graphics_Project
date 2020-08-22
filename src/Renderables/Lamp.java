@@ -1,8 +1,7 @@
 package Renderables;
 
 import LinearAlgebra.Vectors.Vector3D;
-import Main.Display;
-import Main.Render3D;
+import Main.Renderer;
 import com.jogamp.opengl.util.texture.Texture;
 
 import javax.media.opengl.GL2;
@@ -14,7 +13,7 @@ public class Lamp implements Renderable {
 
     public Lamp(int row, int col) {
 
-        texture = Render3D.lampTex;
+        texture = Renderer.lampTex;
 
         this.position = new Vector3D(row + 0.5, 1.6, col + 0.5);
     }
@@ -50,7 +49,7 @@ public class Lamp implements Renderable {
         gl.glPushMatrix();
 
         gl.glTranslated(position.getX(), position.getY() + 0.4, position.getZ());
-        gl.glCallList(Display.lampBaseModel);
+        gl.glCallList(Renderer.lampBaseModel);
 
         if (texture != null) {
             texture.disable(gl);
@@ -58,7 +57,7 @@ public class Lamp implements Renderable {
 
         gl.glTranslated(0, -0.1, 0);
         gl.glScaled(0.8, 0.8, 0.8);
-        gl.glCallList(Display.sphereModel);
+        gl.glCallList(Renderer.sphereModel);
 
         gl.glPopMatrix();
     }

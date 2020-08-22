@@ -3,7 +3,6 @@ package Collision;
 import Collision.Shapes.Capsule;
 import Collision.Shapes.Hitbox;
 import LinearAlgebra.Vectors.Vector3D;
-import Main.Display;
 import Main.Level;
 import Main.LevelManager;
 import Main.Renderer;
@@ -114,7 +113,7 @@ public class Enemy implements Collidable, Renderable, TimeBound {
         gl.glTranslated(position.getX(), position.getY(), position.getZ());
         gl.glRotated(rotationAngle, 0, 1, 0);
 
-        gl.glCallList(Display.dummyModel);
+        gl.glCallList(Renderer.enemyModel);
 
         gl.glPopMatrix();
 

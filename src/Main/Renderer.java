@@ -3,6 +3,7 @@ package Main;
 import Collision.Enemy;
 import Player.Player;
 import Renderables.Renderable;
+import Renderables.WavefrontObject;
 import com.jogamp.opengl.util.gl2.GLUT;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
@@ -23,6 +24,9 @@ public class Renderer {
 
     public static GLU glu;
     public static Texture floorTex, ceilingTex, wallTex, projectileTex, dummyTex, lampTex, healthTex, crosshairTex;
+
+    // Variable used to save the models' IDs.
+    public static int lampBaseModel, sphereModel, projectileModel, enemyModel;
 
     public Renderer(GL2 gl) {
         glu = new GLU();
@@ -51,7 +55,19 @@ public class Renderer {
             crosshairTex = TextureIO.newTexture(new File(filename), true);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Render3D: Error during texture loading.");
+            System.out.println("Renderer: Error during texture loading.");
+            throw new RuntimeException(e);
+        }
+
+        try {
+            // Set models IDs.
+            projectileModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\Dagger.obj");
+            enemyModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\Knight_Statue.obj");
+            lampBaseModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\lampobj.obj");
+            sphereModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\sphere.obj");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Renderer: Error during models loading.");
             throw new RuntimeException(e);
         }
     }

@@ -2,7 +2,6 @@ package Collision;
 
 import Collision.Shapes.Capsule;
 import LinearAlgebra.Vectors.Vector3D;
-import Main.Display;
 import Main.Level;
 import Main.Renderer;
 import Renderables.*;
@@ -119,7 +118,7 @@ public class StandardProjectile implements Renderable, TimeBound {
         gl.glRotated(rotation, 0, 1, 0);
         gl.glTranslated(0, 0.06, 0);
 
-        gl.glCallList(Display.projectileModel);
+        gl.glCallList(Renderer.projectileModel);
 
         if (texture != null) {
             texture.disable(gl);

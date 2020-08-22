@@ -4,7 +4,7 @@ import Collision.Shapes.AABB;
 import Collision.Collidable;
 import Collision.Shapes.Hitbox;
 import LinearAlgebra.Vectors.Vector3D;
-import Main.Render3D;
+import Main.Renderer;
 import Player.Player;
 import com.jogamp.opengl.util.texture.Texture;
 
@@ -25,7 +25,7 @@ public class WallBlock implements Renderable, Collidable {
 
         aabb = new AABB(x1, x2, y1, y2, z1, z2);
 
-        wallTex = Render3D.wallTex;
+        wallTex = Renderer.wallTex;
     }
 
     public Hitbox getProjectileCollisionShape() {

@@ -4,7 +4,7 @@ import Collision.Shapes.AABB;
 import Collision.Collidable;
 import Collision.Shapes.Hitbox;
 import LinearAlgebra.Vectors.Vector3D;
-import Main.Render3D;
+import Main.Renderer;
 import com.jogamp.opengl.util.texture.Texture;
 
 import javax.media.opengl.GL2;
@@ -24,7 +24,7 @@ public class CeilingTile implements Renderable, Collidable {
 
         aabb = new AABB(x1, x2, y1, y2, z1, z2);
 
-        ceilingTex = Render3D.ceilingTex;
+        ceilingTex = Renderer.ceilingTex;
     }
 
     public Hitbox getProjectileCollisionShape() {
