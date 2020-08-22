@@ -9,6 +9,7 @@ import java.util.Random;
  * This class represents the sound effects player.
  */
 public class SoundPlayer {
+    private File backgroundMusic;
     private File[] standardSounds = new File[2];
     private File specialSound;
     private File[] dummyHitSound = new File[2];
@@ -17,6 +18,8 @@ public class SoundPlayer {
     private File[] playerDieSound = new File[4];
 
     public SoundPlayer() {
+        backgroundMusic = new File("src\\resources\\sfx\\BGM.wav");
+
         standardSounds[0] = new File("src\\resources\\sfx\\StandardActivation1.wav");
         standardSounds[1] = new File("src\\resources\\sfx\\StandardActivation2.wav");
         specialSound = new File("src\\resources\\sfx\\SpecialActivation.wav");
@@ -33,6 +36,16 @@ public class SoundPlayer {
         playerDieSound[1] = new File("src\\resources\\sfx\\PlayerDie2.wav");
         playerDieSound[2] = new File("src\\resources\\sfx\\PlayerDie3.wav");
         playerDieSound[3] = new File("src\\resources\\sfx\\PlayerDie4.wav");
+    }
+
+    public void playBackgroundMusic() {
+        try {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(backgroundMusic));
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 
     /**

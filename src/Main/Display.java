@@ -152,7 +152,7 @@ public class Display implements GLEventListener {
         lampBaseModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\lampobj.obj");
         sphereModel = WavefrontObject.loadWavefrontObjectAsDisplayList(gl, "src\\resources\\models\\sphere.obj");
 
-        playBackgroundMusic();
+        soundPlayer.playBackgroundMusic();
     }
 
     public void dispose(GLAutoDrawable glAutoDrawable) {}
@@ -211,15 +211,5 @@ public class Display implements GLEventListener {
         gl.glLoadIdentity();
         Renderer.glu.gluPerspective(50, Display.WINDOW_WIDTH / Display.WINDOW_HEIGHT, Player.HIT_RADIUS - 0.2, 1000);
         gl.glMatrixMode(GL2.GL_MODELVIEW);
-    }
-
-    private void playBackgroundMusic() {
-        try {
-            Clip clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(new File("src\\resources\\sfx\\BGM.wav")));
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
     }
 }
