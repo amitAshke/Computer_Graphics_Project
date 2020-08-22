@@ -13,13 +13,11 @@ import java.util.List;
 public class Level implements TimeBound {
 
     private List<Renderable> renderables;
-    private Renderer renderer;
 
     public static int[][] map;
     public static List<Enemy> enemies;
 
-    public Level(int[][] map, Renderer renderer) {
-        this.renderer = renderer;
+    public Level(int[][] map) {
         this.renderables = new ArrayList<>();
         this.enemies = new ArrayList<>();
         this.map = map;
