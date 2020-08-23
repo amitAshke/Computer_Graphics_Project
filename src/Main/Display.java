@@ -125,6 +125,8 @@ public class Display implements GLEventListener {
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 
         renderer = new Renderer(gl);
+        renderer = Renderer.getInstance();
+        renderer.loadResources(gl);
         levelManager = new LevelManager(renderer);
         level = levelManager.getNextLevel();
 

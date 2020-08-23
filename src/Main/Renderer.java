@@ -15,7 +15,6 @@ import javax.media.opengl.glu.GLU;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
@@ -25,15 +24,26 @@ import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
  */
 public class Renderer {
 
-    private Texture instructions;
+    private static Renderer singleInstance = null;
 
+    private Texture instructions;
     public static GLU glu;
     public static Texture floorTex, ceilingTex, wallTex, projectileTex, dummyTex, lampTex, healthTex;
 
     // Variable used to save the models' IDs.
     public static int lampBaseModel, sphereModel, projectileModel, enemyModel;
 
-    public Renderer(GL2 gl) {
+    public Renderer() {
+    }
+
+    public static Renderer getInstance() {
+        if (singleInstance == null) {
+            singleInstance = new Renderer();
+        }
+        return singleInstance;
+    }
+
+    public void loadResources(GL2 gl) {
         glu = new GLU();
 
         gl.glEnable(GL.GL_TEXTURE_2D);
