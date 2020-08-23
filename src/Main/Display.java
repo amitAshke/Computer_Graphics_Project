@@ -128,7 +128,7 @@ public class Display implements GLEventListener {
         levelManager = new LevelManager(renderer);
         level = levelManager.getNextLevel();
 
-        soundPlayer = new SoundPlayer();
+        soundPlayer = SoundPlayer.getInstance();
 
         // Set input listeners for canvas.
         inputHandler = InputHandler.getInstance();

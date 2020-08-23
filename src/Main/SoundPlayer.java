@@ -9,6 +9,8 @@ import java.util.Random;
  * This class represents the sound effects player.
  */
 public class SoundPlayer {
+    private static SoundPlayer singleInstance = null;
+
     private File backgroundMusic;
     private File[] standardSounds = new File[2];
     private File specialSound;
@@ -36,6 +38,13 @@ public class SoundPlayer {
         playerDieSound[1] = new File("src\\resources\\sfx\\PlayerDie2.wav");
         playerDieSound[2] = new File("src\\resources\\sfx\\PlayerDie3.wav");
         playerDieSound[3] = new File("src\\resources\\sfx\\PlayerDie4.wav");
+    }
+
+    public static SoundPlayer getInstance() {
+        if (singleInstance == null)
+            singleInstance = new SoundPlayer();
+
+        return singleInstance;
     }
 
     public void playBackgroundMusic() {
