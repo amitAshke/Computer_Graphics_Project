@@ -20,7 +20,6 @@ public class StandardProjectile implements Renderable, TimeBound {
     protected List<Collidable> projectileCollidables;
     protected int mapX, mapZ;
     protected boolean alive = true;
-    protected MaterialProps material = null;
     protected Texture texture;
     protected Vector3D position, forward, up;
     protected double upDownAngle, leftRightAngle, rotation, speed, length, hitRadius;;
@@ -87,19 +86,6 @@ public class StandardProjectile implements Renderable, TimeBound {
     public void render(GL2 gl) {
 
         if (!alive) { return; }
-
-        if (material != null) {
-            if (material.getShininess() != -1) {
-                gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, material.getShininess());
-            }
-            if (material.getLuminance() != -1) {
-                gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_LUMINANCE, material.getLuminance());
-            }
-            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT, material.getAmbient(), 0);
-            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_DIFFUSE, material.getDiffuse(), 0);
-            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, material.getSpecular(), 0);
-            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_EMISSION, material.getEmission(), 0);
-        }
 
         if (texture != null) {
             texture.enable(gl);

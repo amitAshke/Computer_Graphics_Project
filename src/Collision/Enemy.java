@@ -7,7 +7,6 @@ import Main.Level;
 import Main.LevelManager;
 import Main.Renderer;
 import Player.Player;
-import Renderables.MaterialProps;
 import Renderables.Renderable;
 import Renderables.WallBlock;
 import Time.TimeBound;
@@ -22,7 +21,6 @@ import java.util.Random;
 import static Main.Display.soundPlayer;
 
 public class Enemy implements Collidable, Renderable, TimeBound {
-    private MaterialProps material;
     private Texture texture;
     private Vector3D position;
     private double leftRightAngle, projectileHitRadius = 0.15, playerHitRadius = 0.4, playerHitHeight = 1.2,
@@ -79,22 +77,6 @@ public class Enemy implements Collidable, Renderable, TimeBound {
     public void render(GL2 gl) {
 
         double rotationAngle = 0;
-
-        if (material != null) {
-            if (material.getShininess() != -1) {
-                gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, material.getShininess());
-            }
-//            if (material.getDissolve() != -1) {
-//                gl.glMaterialf(GL2.GL_FRONT_AND_BACK, , material.getShininess());
-//            }
-            if (material.getLuminance() != -1) {
-                gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_LUMINANCE, material.getLuminance());
-            }
-            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT, material.getAmbient(), 0);
-            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_DIFFUSE, material.getDiffuse(), 0);
-            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, material.getSpecular(), 0);
-            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_EMISSION, material.getEmission(), 0);
-        }
 
         if (isPlayerInAgroRange()) {
             rotationAngle = Player.camera.position.subtract(0, Player.camera.position.getY(), 0).subtract(position).angle(new Vector3D(0, 0, -1));

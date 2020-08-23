@@ -9,7 +9,6 @@ import javax.media.opengl.GL2;
 public class Lamp implements Renderable {
     private Vector3D position;
     private Texture texture;
-    private MaterialProps material;
 
     public Lamp(int row, int col) {
 
@@ -21,22 +20,6 @@ public class Lamp implements Renderable {
     @Override
     public void render(GL2 gl) {
         float[] fPosition = { (float) position.getX(), (float) (position.getY() - 0.4), (float) position.getZ(), 1.0f };
-
-        if (material != null) {
-            if (material.getShininess() != -1) {
-                gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, material.getShininess());
-            }
-//            if (material.getDissolve() != -1) {
-//                gl.glMaterialf(GL2.GL_FRONT_AND_BACK, , material.getShininess());
-//            }
-            if (material.getLuminance() != -1) {
-                gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_LUMINANCE, material.getLuminance());
-            }
-            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT, material.getAmbient(), 0);
-            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_DIFFUSE, material.getDiffuse(), 0);
-            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, material.getSpecular(), 0);
-            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_EMISSION, material.getEmission(), 0);
-        }
 
         if (texture != null) {
             texture.enable(gl);
