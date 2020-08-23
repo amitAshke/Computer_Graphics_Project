@@ -141,7 +141,7 @@ public class Renderer {
 //        gl.glPopMatrix();
     }
 
-    public void renderInstructions(GL2 gl, GLUT glut) {
+    public void renderInstructions(GL2 gl) {
         gl.glDisable(GL2.GL_LIGHTING);
         instructions.enable(gl);
         instructions.bind(gl);

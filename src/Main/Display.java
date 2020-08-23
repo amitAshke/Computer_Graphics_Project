@@ -192,7 +192,7 @@ public class Display implements GLEventListener {
         renderer.renderNextFrame(gl, level);
 
         if (isPaused) {
-            renderer.renderInstructions(gl, glut);
+            renderer.renderInstructions(gl);
         } else {
             renderer.renderFpsCounter(gl, glut, unprocessedSeconds);
         }
